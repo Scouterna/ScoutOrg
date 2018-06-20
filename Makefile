@@ -1,28 +1,30 @@
-SOURCE = ./src
-SOURCEFILES = $(wildcard $(SOURCE)/*)
+lib_source := $(wildcard src/Org/*.php)
+joomla_source := $(wildcard src/joomla/*)
 
-BUILD = ./build
-BUILDFILES = $(wildcard $(BUILD)/*)
+joomla_targetname = JScoutOrg.zip
+joomla_target := build/$(joomla_targetname)
 
-LIB = $(SOURCE)/Org
-LIBFILES = $(wildcard $(LIB)/*)
+phpdoc_targetname = phpdoc
+phpdoc_target := build/$(phpdoc_targetname)
 
-JOOMLA = $(SOURCE)/joomla
-JOOMLAFILES = $(wildcard $(JOOMLA)/*)
+.PHONY: all joomla doc clean
 
-DOC = $(BUILD)/phpdoc
-DOCFILES = $(wildcard $(DOC)/*)
+all: $(joomla_target) $(phpdoc_target)
 
-joomla: $(LIBFILES) $(JOOMLAFILES)
-	@rm -rf $(BUILD)/tmp
-	@mkdir $(BUILD)/tmp
-	@cp -lr $(LIB) $(BUILD)/tmp
-	@cp -lr $(JOOMLA)/* $(BUILD)/tmp
-	@cd $(BUILD)/tmp && zip -FSr ../JScoutOrg.zip ./
-	@rm -rf $(BUILD)/tmp
+joomla: $(joomla_target)
 
-doc: $(LIBFILES)
-	@php phpDocumentor.phar run -d $(LIB) -t $(DOC) --visibility public --template clean
+doc: $(phpdoc_target)
 
-clean: $(BUILDFILES)
-	@rm -rf $(BUILDFILES)
+clean:
+	@rm -r build
+
+$(joomla_target): $(joomla_source) $(lib_source)
+	@rm -rf build/tmp
+	@mkdir -p build/tmp
+	@cp -lr src/Org build/tmp
+	@cp -lr src/joomla/* build/tmp
+	@cd build/tmp && zip -FSr ../$(joomla_targetname) ./
+	@rm -r build/tmp
+
+$(phpdoc_target): $(lib_source)
+	@php phpDocumentor.phar run -d src/Org -t $(phpdoc_target) --visibility public --template clean
