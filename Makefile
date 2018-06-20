@@ -1,11 +1,16 @@
-SOURCE = ./src
+SOURCE = ./src/Org
 SOURCEFILES = $(wildcard $(SOURCE)/*.php)
-TARGET = ./phpdoc
-TARGETFILES = $(wildcard $(TARGET)/*)
+DOC = ./phpdoc
+DOCFILES = $(wildcard $(DOC)/*)
 DOCS = $(wildcard ./docs/*)
+ZIP = ./build/ScoutOrg.zip
 
-all: $(TARGETFILES) $(DOCS)
-	@php phpDocumentor.phar run -d $(SOURCE) -t $(TARGET) --visibility public --template clean
+zip: $(SOURCE)
+	@zip -r $(ZIP) $(SOURCE)
+
+doc: $(DOCFILES) $(DOCS)
+	@php phpDocumentor.phar run -d $(SOURCE) -t $(DOC) --visibility public --template clean
 
 clean:
-	@rm -rf $(TARGETFILES)
+	@rm -rf $(DOCFILES)
+	@rm $(ZIP)

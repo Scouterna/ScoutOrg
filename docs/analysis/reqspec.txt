@@ -1,0 +1,8 @@
+1. A scout group (list of members) is received from scoutnet database through a REST API.
+2. The scout group is indexed according to troops, patrols, and roles.
+3. The index can be browsed through according to the structure below:
+	The scout group consists of members, role groups, and troops.
+	A troop consists of members, patrols, and leaders (also assistant leaders).
+	A patrol consists of members and a patrol leader.
+	Members can only be part of one troop and one patrol.
+	Members can have several roles that are separated by a comma. More specifically the string ", ".
