@@ -1,16 +1,28 @@
-SOURCE = ./src/Org
-SOURCEFILES = $(wildcard $(SOURCE)/*.php)
-DOC = ./phpdoc
+SOURCE = ./src
+SOURCEFILES = $(wildcard $(SOURCE)/*)
+
+BUILD = ./build
+BUILDFILES = $(wildcard $(BUILD)/*)
+
+LIB = $(SOURCE)/Org
+LIBFILES = $(wildcard $(LIB)/*)
+
+JOOMLA = $(SOURCE)/joomla
+JOOMLAFILES = $(wildcard $(JOOMLA)/*)
+
+DOC = $(BUILD)/phpdoc
 DOCFILES = $(wildcard $(DOC)/*)
-DOCS = $(wildcard ./docs/*)
-ZIP = ./build/ScoutOrg.zip
 
-zip: $(SOURCE)
-	@zip -r $(ZIP) $(SOURCE)
+joomla: $(LIBFILES) $(JOOMLAFILES)
+	@rm -rf $(BUILD)/tmp
+	@mkdir $(BUILD)/tmp
+	@cp -lr $(LIB) $(BUILD)/tmp
+	@cp -lr $(JOOMLA)/* $(BUILD)/tmp
+	@cd $(BUILD)/tmp && zip -FSr ../JScoutOrg.zip ./
+	@rm -rf $(BUILD)/tmp
 
-doc: $(DOCFILES) $(DOCS)
-	@php phpDocumentor.phar run -d $(SOURCE) -t $(DOC) --visibility public --template clean
+doc: $(LIBFILES)
+	@php phpDocumentor.phar run -d $(LIB) -t $(DOC) --visibility public --template clean
 
-clean:
-	@rm -rf $(DOCFILES)
-	@rm $(ZIP)
+clean: $(BUILDFILES)
+	@rm -rf $(BUILDFILES)
