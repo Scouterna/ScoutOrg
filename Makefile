@@ -1,19 +1,18 @@
-lib_source := $(wildcard src/Org/*.php)
-joomla_source := $(wildcard src/joomla/*)
+lib_source := $(shell find src/Org -type f)
+joomla_source := $(shell find src/joomla -type f)
 
-joomla_targetname = JScoutOrg.zip
+joomla_targetname := JScoutOrg.zip
 joomla_target := build/$(joomla_targetname)
-
-phpdoc_targetname = phpdoc
-phpdoc_target := build/$(phpdoc_targetname)
 
 .PHONY: all joomla doc clean
 
-all: $(joomla_target) $(phpdoc_target)
+all: joomla
 
 joomla: $(joomla_target)
 
-doc: $(phpdoc_target)
+doc:
+	@php phpDocumentor.phar run -d src/Org -t build/phpdoc \
+		--visibility public --template clean
 
 clean:
 	@rm -r build
@@ -25,6 +24,4 @@ $(joomla_target): $(joomla_source) $(lib_source)
 	@cp -lr src/joomla/* build/tmp
 	@cd build/tmp && zip -FSr ../$(joomla_targetname) ./
 	@rm -r build/tmp
-
-$(phpdoc_target): $(lib_source)
-	@php phpDocumentor.phar run -d src/Org -t $(phpdoc_target) --visibility public --template clean
+	

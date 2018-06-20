@@ -2,7 +2,7 @@
 namespace Org\Models;
 
 /**
- * Personal info
+ * Personal info.
  */
 class PersonInfo {
     private $firstname;
