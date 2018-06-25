@@ -59,6 +59,7 @@ class Patrol {
         return $this->members->getArrayCopy();
     }
 
+    /** @ignore */
     public function __set(string $name, $value) {
         $callstack = debug_backtrace(0, 2);
         $class = $callstack[1]['class'];
@@ -67,6 +68,7 @@ class Patrol {
         }
     }
 
+    /** @ignore */
     public function __get(string $name) {
         if (isset($this->$name)) {
             $callstack = \debug_backtrace(0, 2);

@@ -31,13 +31,19 @@ class ScoutGroupController {
         $this->groupId = $groupId;
     }
 
+    /**
+     * Sets the api key for fetching the member list.
+     * Must be called before loading the scout group.
+     * @param string $key The api key
+     * @return void
+     */
     public function setMemberListApiKey(string $key) {
         $this->memberListApiKey = $key;
     }
 
     /**
      * Loads the group structure from scoutnet.
-     * @param string $key The api key.
+     * Must have called <code>setMemberListApiKey</code> or it will fail.
      * @return \Org\Models\ScoutGroup A scout group.
      */
     public function loadScoutGroup() {

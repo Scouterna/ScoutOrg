@@ -129,6 +129,7 @@ class Member {
         }
     }
 
+    /** @ignore */
     public function __set(string $name, $value) {
         $callstack = debug_backtrace(0, 2);
         $class = $callstack[1]['class'];
@@ -137,6 +138,7 @@ class Member {
         }
     }
 
+    /** @ignore */
     public function __get(string $name) {
         if (isset($this->$name)) {
             $callstack = debug_backtrace(0, 2);

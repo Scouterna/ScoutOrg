@@ -9,11 +9,9 @@ $scoutGroup = $scoutOrg->loadScoutGroup();
         <li>
             <?php
             echo $troop->getName();
-            foreach ($troop->getMembers() as $member) {
-                if ($member->getTroopRole() == 'Avdelningsledare') {
-                    $pInfo = $member->getPersonInfo();
-                    echo " (Avdelningsledare: {$pInfo->getFirstname()} {$pInfo->getLastname()})";
-                }
+            if (($troopLeader = $troop->getTroopLeader()) !== null) {
+                $pInfo = $troopLeader->getPersonInfo();
+                echo " (Avdelningsledare: {$pInfo->getFirstname()} {$pInfo->getLastname()})";
             }
             ?>
         </li>
