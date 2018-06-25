@@ -78,10 +78,6 @@ class Scoutnet {
      * @return array A json parsed member list.
      */
     private function fetchMemberList(int $groupId, string $key) {
-        if (file_exists('data.json')) {
-            return json_decode(file_get_contents('data.json'));
-        }
-
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_CUSTOMREQUEST => 'GET',
@@ -91,8 +87,6 @@ class Scoutnet {
             CURLOPT_RETURNTRANSFER => TRUE,
         ]);
         $memberList = curl_exec($curl);
-
-        file_put_contents('data.json',$memberList);
 
         return json_decode($memberList);
     }
