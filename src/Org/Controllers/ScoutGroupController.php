@@ -11,7 +11,7 @@ class ScoutGroupController {
     /** @var string */
     private $domain;
 
-    /** @var \Org\Scoutnet\Scoutnet */
+    /** @var \Org\Integrations\Scoutnet */
     private $scoutnetController;
 
     /** @var int */
@@ -27,7 +27,7 @@ class ScoutGroupController {
      */
     public function __construct(string $domain, int $groupId) {
         $this->domain = $domain;
-        $this->scoutnetController = \Org\Scoutnet\Scoutnet::getMultiton($domain);
+        $this->scoutnetController = \Org\Integrations\Scoutnet::getMultiton($domain);
         $this->groupId = $groupId;
     }
 

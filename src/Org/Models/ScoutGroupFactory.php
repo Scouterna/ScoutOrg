@@ -1,6 +1,6 @@
 <?php
 namespace Org\Models;
-use \Org\Scoutnet\Scoutnet;
+use \Org\Integrations;
 
 /**
  * A factory for generating a scout group from its id and api key
@@ -22,7 +22,7 @@ class ScoutGroupFactory {
      * @param string $key the member list api key.
      * @param Scoutnet $scoutnetController The scoutnet link.
      */
-    public function __construct(int $id, string $key, Scoutnet $scoutnetController) {
+    public function __construct(int $id, string $key, Integrations\Scoutnet $scoutnetController) {
         $this->id = $id;
         $this->key = $key;
         $this->scoutnetController = $scoutnetController;
@@ -75,7 +75,7 @@ class ScoutGroupFactory {
     }
 
     /** @return RoleGroup[] */
-    private function getRoleGroups(ScoutGroup $group, \Org\Scoutnet\ValueAndRaw $roleGroupsInfo) {
+    private function getRoleGroups(ScoutGroup $group, Scoutnet\ValueAndRaw $roleGroupsInfo) {
         $roleGroupNames = explode(', ', $roleGroupsInfo->value);
         $roleGroups = [];
         foreach (explode(',', $roleGroupsInfo->rawValue) as $index => $roleGroupId) {
@@ -93,7 +93,7 @@ class ScoutGroupFactory {
     }
 
     /** @return Troop */
-    private function getTroop(ScoutGroup $group, \Org\Scoutnet\ValueAndRaw $troopInfo) {
+    private function getTroop(ScoutGroup $group, Scoutnet\ValueAndRaw $troopInfo) {
         if (isset($group->troopsIdIndexed[$troopInfo->rawValue])) {
             return $group->troopsIdIndexed[$troopInfo->rawValue];
         } else {
@@ -105,7 +105,7 @@ class ScoutGroupFactory {
     }
 
     /** @return Patrol */
-    private function getPatrol(Troop $troop, \Org\Scoutnet\ValueAndRaw $patrolInfo) {
+    private function getPatrol(Troop $troop, Scoutnet\ValueAndRaw $patrolInfo) {
         if (isset($troop->patrolsIdIndexed[$patrolInfo->rawValue])) {
             return $troop->patrolsIdIndexed[$patrolInfo->rawValue];
         } else {
@@ -118,7 +118,7 @@ class ScoutGroupFactory {
     }
 
     /** @return PersonInfo */
-    private function getPersonInfo(\Org\Scoutnet\MemberEntry $entry) {
+    private function getPersonInfo(Scoutnet\MemberEntry $entry) {
         $personInfo = new PersonInfo($entry->first_name,
             $entry->last_name,
             $entry->ssno,
@@ -128,7 +128,7 @@ class ScoutGroupFactory {
     }
 
     /** @return ContactInfo */
-    private function getContactInfo(\Org\Scoutnet\MemberEntry $entry) {
+    private function getContactInfo(Scoutnet\MemberEntry $entry) {
         $phoneNumbers = [];
         if ($entry->contact_mobile_phone !== NULL) {
             $phoneNumbers[] = $entry->contact_mobile_phone;
@@ -150,12 +150,12 @@ class ScoutGroupFactory {
     }
 
     /** @return Location */
-    private function getAccommodation(\Org\Scoutnet\MemberEntry $entry) {
+    private function getAccommodation(Scoutnet\MemberEntry $entry) {
         return new Location($entry->address_1, $entry->postcode, $entry->town);
     }
 
     /** @return Contact[] */
-    private function getContacts(\Org\Scoutnet\MemberEntry $entry) {
+    private function getContacts(Scoutnet\MemberEntry $entry) {
         $contacts = [];
         // Create contact 1
         if ($entry->contact_mothers_name !== NULL) {
