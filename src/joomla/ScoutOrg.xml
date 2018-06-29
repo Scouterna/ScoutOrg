@@ -3,11 +3,9 @@
     <name>System - ScoutOrg</name>
     <author>Alexander Krantz</author>
     <creationDate>June 2018</creationDate>
-    <copyright>Copyright (C) 2018.</copyright>
-    <license>WTFPL</license>
-    <authorEmail>alexander.krantz@spangascouterna.se</authorEmail>
-    <authorUrl>www.spangascouterna.se</authorUrl>
-    <version>1.0.0</version>
+    <license>GNU General Public License version 2 or later</license>
+    <authorUrl>https://github.com/Klako</authorUrl>
+    <version>0.1.1</version>
     <description>
         Plugin that contains scout organisation library.
         The library is accessed through the $scoutOrg global which is an \Org\Controllers\ScoutGroupController.
@@ -23,18 +21,28 @@
             <fieldset name="basic">
                 <field name="domain" type="text"
 			    	default="www.scoutnet.se"
-			    	description="The scoutnet server that has the api"
+			    	description="The scoutnet server that has the api."
 			    	label="Scoutnet server"
 			    />
                 <field name="groupId" type="text"
                     default="0"
-                    description="The scoutnet id of the scout group"
+                    description="The scoutnet id of the scout group."
                     label="Scoutnet group id"
                 />
                 <field name="memberListApiKey" type="text"
                     default="S0M3TH1N653CUR3"
-                    description="The api key for the member list"
+                    description="The api key for the member list."
                     label="Member list key"
+                />
+                <field name="mailingListsApiKey" type="text"
+                    default="S0M3TH1N653CUR3"
+                    description="The api key for the mailing lists."
+                    label="Mailing lists key"
+                />
+                <field name="scoutnetCacheLifeTime" type="text"
+                    default="0"
+                    description="The life time of the cached scoutnet data. A value of zero will disable cache."
+                    label="Scoutnet Cache Life Time"
                 />
             </fieldset>
         </fields>

@@ -1,5 +1,9 @@
 <?php
-namespace Org\Integrations;
+/**
+ * Contains MemberEntry class
+ * @author Alexander Krantz
+ */
+namespace Org\Scoutnet;
 
 /**
  * Contains fields equivalent to the data received through

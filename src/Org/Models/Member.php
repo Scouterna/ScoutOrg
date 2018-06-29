@@ -1,10 +1,16 @@
 <?php
+/**
+ * Contains Member class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * Contains info about a scout member
+ * A scout member with various personal and group info.
  */
 class Member {
+    use InternalTrait;
+
     /** @var int */
     private $id;
 
@@ -23,14 +29,14 @@ class Member {
     /** @var string */
     private $startdate;
 
-    /** @var string */
-    private $troopRole;
+    /** @var TroopMemberLink[] */
+    private $troopsIdIndexed;
 
-    /** @var Troop */
-    private $troop;
+    /** @var TroopMemberLink[] */
+    private $troopsNameIndexed;
 
-    /** @var Patrol */
-    private $patrol;
+    /** @var Patrol[] */
+    private $patrolsIdIndexed;
 
     /** @var RoleGroup[] */
     private $roleGroupsIdIndexed;
@@ -38,8 +44,15 @@ class Member {
     /** @var RoleGroup[] */
     private $roleGroupsNameIndexed;
 
+    /**
+     * Creates a new member.
+     * @param int $id
+     */
     public function __construct(int $id) {
         $this->id = $id;
+        $this->troopsIdIndexed = new \ArrayObject();
+        $this->troopsNameIndexed = new \ArrayObject();
+        $this->patrolsIdIndexed = new \ArrayObject();
         $this->roleGroupsIdIndexed = new \ArrayObject();
         $this->roleGroupsNameIndexed = new \ArrayObject();
     }
@@ -93,27 +106,24 @@ class Member {
     }
 
     /**
-     * Gets the member's role in their troop.
-     * @return string
+     * Gets the member's troops.
+     * @param bool $idIndexed Wether to get list indexed by id or name.
+     * @return TroopMemberLink[]
      */
-    public function getTroopRole() {
-        return $this->troopRole;
+    public function getTroops(bool $idIndexed = false) {
+        if ($idIndexed) {
+            return $this->troopsIdIndexed->getArrayCopy();
+        } else {
+            return $this->troopsNameIndexed->getArrayCopy();
+        }
     }
 
     /**
-     * Gets the member's troop.
-     * @return Troop
+     * Gets the member's patrols indexed by their scoutnet id.
+     * @return Patrol[]
      */
-    public function getTroop() {
-        return $this->troop;
-    }
-
-    /**
-     * Gets the member's patrol
-     * @return Patrol
-     */
-    public function getPatrol() {
-        return $this->patrol;
+    public function getPatrols() {
+        return $this->patrolsIdIndexed;
     }
 
     /**
@@ -126,26 +136,6 @@ class Member {
             return $this->roleGroupsIdIndexed->getArrayCopy();
         } else {
             return $this->roleGroupsNameIndexed->getArrayCopy();
-        }
-    }
-
-    /** @ignore */
-    public function __set(string $name, $value) {
-        $callstack = debug_backtrace(0, 2);
-        $class = $callstack[1]['class'];
-        if ($class === 'Org\\Models\\ScoutGroupFactory') {
-            $this->$name = $value;
-        }
-    }
-
-    /** @ignore */
-    public function __get(string $name) {
-        if (isset($this->$name)) {
-            $callstack = debug_backtrace(0, 2);
-            $class = $callstack[1]['class'];
-            if ($class === 'Org\\Models\\ScoutGroupFactory') {
-                return $this->$name;
-            }
         }
     }
 }

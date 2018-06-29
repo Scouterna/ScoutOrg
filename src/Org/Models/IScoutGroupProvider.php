@@ -1,0 +1,19 @@
+<?php
+/**
+ * Contains IScoutGroupProvider interface
+ * @author Alexander Krantz
+ */
+namespace Org\Models;
+
+/**
+ * Contains interface for a scout group provider.
+ * For example one that loads from scoutnet or
+ * one that loads from an independent database.
+ */
+interface IScoutGroupProvider {
+    /**
+     * Gets a scout group in some concrete way.
+     * @return ScoutGroup
+     */
+    public function getScoutGroup();
+}

@@ -2,11 +2,11 @@ lib_source := $(shell find src/Org -type f)
 joomla_source := $(shell find src/joomla -type f)
 
 joomla_targetname := JScoutOrg.zip
-joomla_target := build/$(joomla_targetname)
+joomla_target := build/joomla/$(joomla_targetname)
 
 .PHONY: all joomla doc clean
 
-all: joomla
+all: joomlas
 
 joomla: $(joomla_target)
 
@@ -20,8 +20,8 @@ clean:
 $(joomla_target): $(joomla_source) $(lib_source)
 	@rm -rf build/tmp
 	@mkdir -p build/tmp
-	@cp -lr src/Org build/tmp
-	@cp -lr src/joomla/* build/tmp
-	@cd build/tmp && zip -FSr ../$(joomla_targetname) ./
-	@rm -r build/tmp
-	
+	@cp -r src/Org build/tmp
+	@cp -r src/joomla/* build/tmp
+	@mkdir -p build/joomla
+	@cd build/tmp && zip -FSr ../joomla/$(joomla_targetname) ./
+	@rm -rf build/tmp

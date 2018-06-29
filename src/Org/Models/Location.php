@@ -1,12 +1,21 @@
 <?php
+/**
+ * Contains Location class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
  * Contains accommodation info about a member.
  */
 class Location {
+    /** @var string */
     private $address;
+
+    /** @var string */
     private $postCode;
+    
+    /** @var string */
     private $postTown;
 
     /**

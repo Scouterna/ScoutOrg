@@ -1,8 +1,12 @@
 <?php
+/**
+ * Contains Contact class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * Contains a contact of a member.
+ * Contains a contact or guardian of a member.
  */
 class Contact {
     private $name;

@@ -1,20 +1,23 @@
 <?php
+/**
+ * Contains Troop class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * A troop that is in the scout group
+ * A troop that is in the scout group.
  */
 class Troop {
+    use InternalTrait;
+    
     /** @var int */
     private $id;
 
     /** @var string */
     private $name;
 
-    /** @var ScoutGroup */
-    private $scoutGroup;
-
-    /** @var Member[] */
+    /** @var TroopMemberLink[] */
     private $members;
 
     /** @var Patrol[] */
@@ -27,13 +30,10 @@ class Troop {
      * Creates a new troop with the specified info.
      * @param int $id The troop scoutnet id.
      * @param string $name The troop name.
-     * @param Member[] $members The list of members.
-     * @param Patrol[] $patrols The list of patrols.
      */
-    public function __construct(int $id, string $name, ScoutGroup $scoutGroup) {
+    public function __construct(int $id, string $name) {
         $this->id = $id;
         $this->name = $name;
-        $this->scoutGroup = $scoutGroup;
         $this->members = new \ArrayObject();
         $this->patrolsIdIndexed = new \ArrayObject();
         $this->patrolsNameIndexed = new \ArrayObject();
@@ -57,7 +57,7 @@ class Troop {
 
     /**
      * Gets the list of member of the troop.
-     * @return Member[]
+     * @return TroopMemberLink[]
      */
     public function getMembers() {
         return $this->members->getArrayCopy();
@@ -77,13 +77,13 @@ class Troop {
     }
 
     /**
-     * Gets the troop leader (Avdelningsledare) or NULL if not found
+     * Gets the troop leader (Avdelningsledare) or <code>null</code> if not found.
      * @return Member|null
      */
     public function getTroopLeader() {
-        foreach ($this->getMembers() as $member) {
-            if ($member->getTroopRole() == 'Avdelningsledare') {
-                return $member;
+        foreach ($this->members as $memberLink) {
+            if ($memberLink->getRole() == 'Avdelningsledare') {
+                return $memberLink->getMember();
             }
         }
         return null;
@@ -91,49 +91,29 @@ class Troop {
 
     /**
      * Gets all leaders in the troop. All results will have a troop role.
-     * @return Member[]
+     * @return TroopMemberLink[]
      */
     public function getLeaders() {
         $leaders = [];
-        foreach ($this->members as $member) {
-            if ($member->getTroopRole() !== null) {
-                $leaders[] = $member;
+        foreach ($this->members as $memberLink) {
+            if ($memberLink->getRole() !== null) {
+                $leaders[] = $memberLink;
             }
         }
         return $leaders;
     }
 
     /**
-     * Gest all scouts in the troop. No results will have a troop role.
+     * Gets all scouts in the troop.
      * @return Member[]
      */
     public function getScouts() {
         $scouts = [];
-        foreach ($this->members as $member) {
-            if ($member->getTroopRole() === null) {
-                $scouts[] = $member;
+        foreach ($this->members as $memberLink) {
+            if ($memberLink->getRole() === null) {
+                $scouts[] = $memberLink->getMember();
             }
         }
         return $scouts;
-    }
-
-    /** @ignore */
-    public function __set(string $name, $value) {
-        $callstack = debug_backtrace(0, 2);
-        $class = $callstack[1]['class'];
-        if ($class === 'Org\\Models\\ScoutGroupFactory') {
-            $this->$name = $value;
-        }
-    }
-
-    /** @ignore */
-    public function __get(string $name) {
-        if (isset($this->$name)) {
-            $callstack = \debug_backtrace(0, 2);
-            $class = $callstack[1]['class'];
-            if ($class === 'Org\\Models\\ScoutGroupFactory') {
-                return $this->$name;
-            }
-        }
     }
 }

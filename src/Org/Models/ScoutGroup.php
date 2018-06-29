@@ -1,10 +1,16 @@
 <?php
+/**
+ * Contains ScoutGroup class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * The whole scout group that is part of the scout organisation
+ * The whole scout group that is part of the scout organisation.
  */
 class ScoutGroup {
+    use InternalTrait;
+
     /** @var int */
     private $id;
 
@@ -23,12 +29,15 @@ class ScoutGroup {
     /** @var RoleGroup[] */
     private $roleGroupsNameIndexed;
 
+    /** @var CustomList[] */
+    private $customListsIdIndexed;
+
+    /** @var CustomList[] */
+    private $customListsTitleIndexed;
+
     /**
      * Creates a new ScoutGroup with the specified id.
      * @param int $id The scout group id.
-     * @param Member[] $memberList The list of members in the scout group.
-     * @param Troop[] $troopList The list of troops in the scout group.
-     * @param RoleGroup[] $roleList The list of roles and their groups.
      */
     public function __construct(int $id) {
         $this->id = $id;
@@ -37,6 +46,8 @@ class ScoutGroup {
         $this->troopsNameIndexed = new \ArrayObject();
         $this->roleGroupsIdIndexed = new \ArrayObject();
         $this->roleGroupsNameIndexed = new \ArrayObject();
+        $this->customListsIdIndexed = new \ArrayObject();
+        $this->customListsTitleIndexed = new \ArrayObject();
     }
 
     /**
@@ -81,23 +92,16 @@ class ScoutGroup {
         }
     }
 
-    /** @ignore */
-    public function __set(string $name, $value) {
-        $callstack = debug_backtrace(0, 2);
-        $class = $callstack[1]['class'];
-        if ($class === 'Org\\Models\\ScoutGroupFactory') {
-            $this->$name = $value;
-        }
-    }
-
-    /** @ignore */
-    public function __get(string $name) {
-        if (isset($this->$name)) {
-            $callstack = \debug_backtrace(0, 2);
-            $class = $callstack[1]['class'];
-            if ($class === 'Org\\Models\\ScoutGroupFactory') {
-                return $this->$name;
-            }
+    /**
+     * Gets the list of custom lists of the group.
+     * @param bool $idIndexed Wether to get the list indexed by id or title.
+     * @return CustomList[]
+     */
+    public function getCustomLists(bool $idIndexed = false) {
+        if ($idIndexed) {
+            return $this->customListsIdIndexed->getArrayCopy();
+        } else {
+            return $this->customListsTitleIndexed->getArrayCopy();
         }
     }
 }

@@ -1,8 +1,12 @@
 <?php
+/**
+ * Contains PersonalInfo class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * Personal info.
+ * Personal info about a member.
  */
 class PersonInfo {
     private $firstname;

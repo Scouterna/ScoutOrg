@@ -1,10 +1,16 @@
 <?php
+/**
+ * Contains Patrol class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
- * A scout patrol that is in a troop
+ * A scout patrol that is in a troop.
  */
 class Patrol {
+    use InternalTrait;
+
     /** @var int */
     private $id;
 
@@ -17,6 +23,11 @@ class Patrol {
     /** @var Member[] */
     private $members;
     
+    /**
+     * Creates a new patrol.
+     * @param int $id
+     * @param string $name
+     */
     public function __construct(int $id, string $name) {
         $this->id = $id;
         $this->name = $name;
@@ -57,25 +68,5 @@ class Patrol {
     public function getMembers()
     {
         return $this->members->getArrayCopy();
-    }
-
-    /** @ignore */
-    public function __set(string $name, $value) {
-        $callstack = debug_backtrace(0, 2);
-        $class = $callstack[1]['class'];
-        if ($class === 'Org\\Models\\ScoutGroupFactory') {
-            $this->$name = $value;
-        }
-    }
-
-    /** @ignore */
-    public function __get(string $name) {
-        if (isset($this->$name)) {
-            $callstack = \debug_backtrace(0, 2);
-            $class = $callstack[1]['class'];
-            if ($class === 'Org\\Models\\ScoutGroupFactory') {
-                return $this->$name;
-            }
-        }
     }
 }

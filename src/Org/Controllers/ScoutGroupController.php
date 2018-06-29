@@ -1,60 +1,41 @@
 <?php
+/**
+ * Contains ScoutGroupController class
+ * @author Alexander Krantz
+ */
 namespace Org\Controllers;
+use \Org\Models;
 
 /**
  * Is used for getting structured information about scout groups.
  */
 class ScoutGroupController {
-    /** @var \Org\Models\ScoutGroup[] */
-    private static $loadedScoutGroups = [];
-    
-    /** @var string */
-    private $domain;
+    /** @var \Org\Models\IScoutGroupProvider */
+    private $scoutGroupProvider;
 
-    /** @var \Org\Integrations\Scoutnet */
-    private $scoutnetController;
-
-    /** @var int */
-    private $groupId;
-
-    /** @var string */
-    private $memberListApiKey;
+    /** @var \Org\Models\ScoutGroup */
+    private $loadedScoutGroup;
 
     /**
-     * Creates a new controller from a database domain and scout group scoutnet id.
-     * @param string $domain The domain that the data will be fetched from.
-     * @param int $groupId The scoutnet group id.
+     * Creates a new controller from a scout group provider.
+     * @param \Org\Models\IScoutGroupProvider $provider
      */
-    public function __construct(string $domain, int $groupId) {
-        $this->domain = $domain;
-        $this->scoutnetController = \Org\Integrations\Scoutnet::getMultiton($domain);
-        $this->groupId = $groupId;
+    public function __construct(Models\IScoutGroupProvider $provider) {
+        $this->scoutGroupProvider = $provider;
     }
 
     /**
-     * Sets the api key for fetching the member list.
-     * Must be called before loading the scout group.
-     * @param string $key The api key
-     * @return void
+     * Loads the group structure from a provider.
+     * @return \Org\Models\ScoutGroup
      */
-    public function setMemberListApiKey(string $key) {
-        $this->memberListApiKey = $key;
-    }
-
-    /**
-     * Loads the group structure from scoutnet.
-     * Must have called <code>setMemberListApiKey</code> or it will fail.
-     * @return \Org\Models\ScoutGroup A scout group.
-     */
-    public function loadScoutGroup() {
-        if (isset(ScoutGroupController::$loadedScoutGroups[$groupId])) {
-            return ScoutGroupController::$loadedScoutGroups[$groupId];
+    public function getScoutGroup() {
+        if ($this->loadedScoutGroup !== null) {
+            return $this->loadedScoutGroup;
         }
 
-        $factory = new \Org\Models\ScoutGroupFactory($this->groupId, $this->memberListApiKey, $this->scoutnetController);
-        $scoutGroup = $factory->createObject();
+        $scoutGroup = $this->scoutGroupProvider->getScoutGroup();
         
-        ScoutGroupController::$loadedScoutGroups[$this->groupId] = $scoutGroup;
+        $this->loadedScoutGroup = $scoutGroup;
         return $scoutGroup;
     }
 }

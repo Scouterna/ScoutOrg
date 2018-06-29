@@ -1,11 +1,18 @@
 <?php
+/**
+ * Contains ContactInfo class
+ * @author Alexander Krantz
+ */
 namespace Org\Models;
 
 /**
  * Contains contact info for a member or guardian.
  */
 class ContactInfo {
+    /** @var string[] */
     private $phoneNumbers;
+
+    /** @var string[] */
     private $emailAddresses;
 
     /**
