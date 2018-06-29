@@ -6,7 +6,7 @@ joomla_target := build/joomla/$(joomla_targetname)
 
 .PHONY: all joomla doc clean
 
-all: joomlas
+all: joomla
 
 joomla: $(joomla_target)
 
