@@ -214,7 +214,6 @@ class ScoutnetController {
     private function fetchMailingMemberList(int $listId, int $ruleId = -1) {
         $domain = ScoutnetController::$domain;
         $urlVars = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
-        echo "$urlVars\n";
 
         $curl = curl_init();
         curl_setopt_array($curl, [
