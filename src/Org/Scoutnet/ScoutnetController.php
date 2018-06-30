@@ -46,6 +46,7 @@ class ScoutnetController {
 
     /**
      * Gets an instance of the scoutnet controller.
+     * @static
      * @param string $groupId The group's scoutnet id.
      * @return Scoutnet
      */
