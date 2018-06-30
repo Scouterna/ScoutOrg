@@ -1,6 +1,6 @@
 # ScoutOrg
 ScoutOrg är ett bibliotek i php som innehåller en datastruktur för en scoutorganisation. Biblioteket är skrivet för att vara grunden till många olika applikationer där organisationen hanteras på scoutkårers hemsidor. Datastrukturen är skriven så att den fungerar bäst för data som hämtas från scoutnet. Biblioteket är dock skrivet så att det även går att implementera andra datakällor som en egen databas eller en blandning av en egen databas och scoutnet.
-Det finns ett förhoppningsvis uppdaterat [klassdiagram](docs/classdiag.asta) som kan läsas med [astah community](http://astah.net/editions/community).
+Det finns ett förhoppningsvis uppdaterat [klassdiagram](https://github.com/scouternasetjanster/ScoutOrg/blob/master/docs/classDiag.asta) som kan läsas med [astah community](http://astah.net/editions/community).
 Just nu finns endast support för joomla men utrymme finns att skapa en plugin för t.ex. wordpress.
 
 ## Installation och användning
@@ -26,7 +26,7 @@ Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
 5. Aktivera pluginen (Bör ej göras innan den är konfigurerad).
 
 #### Användning (Utveckling utav moduler och komponenter)
-När pluginen är aktiverad och initieras vid varje sidhämtning kommer den att skapa en global variabel som heter $scoutOrg som är av typen [Org\Controllers\ScoutGroupController](src/Org/Controllers/ScoutGroupController.php).
+När pluginen är aktiverad och initieras vid varje sidhämtning kommer den att skapa en global variabel som heter $scoutOrg som är av typen [Org\Controllers\ScoutGroupController](https://github.com/scouternasetjanster/ScoutOrg/blob/master/src/Org/Controllers/ScoutGroupController.php).
 I dokumentationen som går att generera kan man hitta samtliga metoder för att hämta de olika objekten i datastrukturen.
 
 ## Att bygga projektet och generera dokumentation
@@ -34,7 +34,7 @@ Om man vill bygga en plugin eller generera dokumentationen för biblioteket krä
 
 ### Bygga projektet
 För att skapa pluginen för joomla kan man köra ``` make ``` eller ``` make joomla ```.
-Zipfilen kommer då att hamna i [joomlamappen](build/joomla/).
+Zipfilen kommer då att hamna i 'build/joomla/'.
 Om projektet skulle expandera och börjar ge stöd för att bygga en plugin för t.ex. wordpress så kommer ``` make ``` att bygga för samtliga mål.
 
 ``` make joomla ``` kräver programmet zip: ``` sudo apt install zip ```
