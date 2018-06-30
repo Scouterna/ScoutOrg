@@ -24,6 +24,9 @@ class ScoutnetController {
     /** @var MemberEntry[] */
     private $loadedMemberList = null;
 
+    /** @var WaitingMemberEntry[] */
+    private $loadedWaitingList = null;
+
     /** @var CustomListEntry[] */
     private $loadedCustomLists = null;
 
@@ -37,10 +40,10 @@ class ScoutnetController {
     private $mailingListsApiKey = null;
 
     /**
-     * Creates a new scoutnet link with the specified domain.
-     * @param string $domain The domain of the scoutnet server to fetch data from.
+     * Creates a new scoutnet group link.
+     * @param int $groupId The group scoutnet id.
      */
-    private function __construct(string $groupId) {
+    private function __construct(int $groupId) {
         $this->groupId = $groupId;
     }
 
@@ -48,7 +51,7 @@ class ScoutnetController {
      * Gets an instance of the scoutnet controller.
      * @static
      * @param string $groupId The group's scoutnet id.
-     * @return Scoutnet
+     * @return ScoutnetController
      */
     public static function getMultiton(string $groupId) {
         if (isset(ScoutnetController::$multitons[$groupId])) {
@@ -57,6 +60,14 @@ class ScoutnetController {
         $multiton = new ScoutnetController($groupId);
         ScoutnetController::$multitons[$groupId] = $multiton;
         return $multiton;
+    }
+
+    /**
+     * Gets the group scoutnet id.
+     * @return int
+     */ 
+    public function getGroupId() {
+        return $this->groupId;
     }
 
     /**
@@ -78,9 +89,7 @@ class ScoutnetController {
     }
 
     /**
-     * Gets the member list of a scout group.
-     * @param int $groupId
-     * @param string $key
+     * Gets the group member list.
      * @return MemberEntry[]
      */
     public function getMemberList() {
@@ -131,6 +140,55 @@ class ScoutnetController {
         curl_close($curl);
 
         return json_decode($memberList);
+    }
+
+    /**
+     * Gets the group waiting list.
+     * @return WaitingMemberEntry[]
+     */
+    public function getWaitingList() {
+        if ($this->loadedWaitingList !== null) {
+            return $this->loadedWaitingList;
+        }
+
+        $waitingList = $this->fetchWaitingList();
+        $returnList = [];
+        foreach ($waitingList as $waitingMember) {
+            $newWaitingMemberEntry = new WaitingMemberEntry();
+            foreach ($member as $dataFieldName => $dataField) {
+                if (isset($dataField->raw_value)) {
+                    $newValue = new ValueAndRaw();
+                    $newValue->rawValue = $dataField->raw_value;
+                    $newValue->value = $dataField->value;
+                    $newWaitingMemberEntry->{$dataFieldName} = $newValue;
+                } else {
+                    $newValue = new Value();
+                    $newValue->value = $dataField->value;
+                    $newWaitingMemberEntry->{$dataFieldName} = $newValue;
+                }
+            }
+            $returnList[] = $newMemberEntry;
+        }
+        
+        $this->loadedWaitingList = $returnList;
+        return $returnList;
+    }
+
+    private function fetchWaitingList() {
+        $domain = ScoutnetController::$domain;
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_URL => "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?waiting=1&format=json",
+            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => FALSE,
+            CURLOPT_RETURNTRANSFER => TRUE,
+        ]);
+        $waitingList = curl_exec($curl);
+        curl_close($curl);
+
+        return json_decode($waitingList);
     }
 
     /**

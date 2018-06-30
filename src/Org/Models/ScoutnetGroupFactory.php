@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains ScoutnetFactory class
+ * Contains ScoutnetGroupFactory class
  * @author Alexander Krantz
  */
 namespace Org\Models;
@@ -9,38 +9,16 @@ use \Org\Scoutnet;
 /**
  * A factory for generating a scout group from its id and api key.
  */
-class ScoutnetFactory implements IScoutGroupProvider {
-    /** @var int */
-    private $id;
-
+class ScoutnetGroupFactory implements IScoutGroupProvider {
     /** @var \Org\Scoutnet\ScoutnetController */
     private $scoutnet;
 
     /**
-     * Creates a new ScoutGroup factory.
-     * @param int $groupId The scout group scoutnet id.
+     * Creates a new scout group factory.
+     * @param \Org\Scoutnet\ScoutnetController $scoutnet The scoutnet link.
      */
-    public function __construct(int $groupId) {
-        $this->groupId = $groupId;
-        $this->scoutnet = Scoutnet\ScoutnetController::getMultiton($groupId);
-    }
-
-    /**
-     * Sets the api key for fetching the member list.
-     * @param string $key The api key.
-     * @return void
-     */
-    public function setMemberListApiKey(string $key) {
-        $this->scoutnet->setMemberListApiKey($key);
-    }
-
-    /**
-     * Sets the api key for fetching the mailing lists.
-     * @param string $key The api key.
-     * @return void
-     */
-    public function setMailingListsApiKey(string $key) {
-        $this->scoutnet->setMailingListsApiKey($key);
+    public function __construct(Scoutnet\ScoutnetController $scoutnet) {
+        $this->scoutnet = $scoutnet;
     }
     
     /**
@@ -48,7 +26,7 @@ class ScoutnetFactory implements IScoutGroupProvider {
      * @return ScoutGroup
      */
     public function getScoutGroup() {
-        $scoutGroup = new ScoutGroup($this->groupId);
+        $scoutGroup = new ScoutGroup($this->scoutnet->getGroupId());
 
         $memberEntrys = $this->scoutnet->getMemberList();
         foreach ($memberEntrys as $entry) {

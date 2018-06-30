@@ -119,7 +119,7 @@ class MemberEntry {
     public $town;
 
     /**
-     * @var Value The conuntry where the person lives.
+     * @var Value The country where the person lives.
      */
     public $country;
 

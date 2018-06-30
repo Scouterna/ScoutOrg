@@ -16,12 +16,20 @@ class ScoutGroupController {
     /** @var \Org\Models\ScoutGroup */
     private $loadedScoutGroup;
 
+    /** @var \Org\Models\IWaitingListProvider */
+    private $waitingListProvider;
+
+    /** @var \Org\Models\WaitingMember[] */
+    private $loadedWaitingList;
+
     /**
      * Creates a new controller from a scout group provider.
      * @param \Org\Models\IScoutGroupProvider $provider
      */
-    public function __construct(Models\IScoutGroupProvider $provider) {
-        $this->scoutGroupProvider = $provider;
+    public function __construct(Models\IScoutGroupProvider $scoutGroupProvider,
+                                Models\IWaitingListProvider $waitingListProvider) {
+        $this->scoutGroupProvider = $scoutGroupProvider;
+        $this->waitingListProvider = $waitingListProvider;
     }
 
     /**
@@ -37,5 +45,16 @@ class ScoutGroupController {
         
         $this->loadedScoutGroup = $scoutGroup;
         return $scoutGroup;
+    }
+
+    public function getWaitingList() {
+        if ($this->loadedWaitingList !== null) {
+            return $this->loadedWaitingList;
+        }
+
+        $waitingList = $this->waitingListProvider->getWaitingList();
+
+        $this->loadedWaitingList = $waitingList;
+        return $waitingList;
     }
 }

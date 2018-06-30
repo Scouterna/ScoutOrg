@@ -56,10 +56,13 @@ class plgSystemScoutOrg extends JPlugin
         \Org\Scoutnet\ScoutnetController::setDomain($domain);
         \Org\Scoutnet\ScoutnetController::setCacheLifeTime($scoutnetCacheLifeTime);
 
-        $factory = new \Org\Models\ScoutnetFactory($groupId);
-        $factory->setMemberListApiKey($memberListKey);
-        $factory->setMailingListsApiKey($mailingListsKey);
+        $scoutnetController = \Org\Scoutnet\ScoutnetController::getMultiton($groupId);
+        $scoutnetController->setMemberListApiKey($memberListKey);
+        $scoutnetController->setMailingListsApiKey($mailingListsKey);
 
-        $scoutOrg = new \Org\Controllers\ScoutGroupController($factory);
+        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnet);
+        $waitingListFactory = new \Org\Models\ScoutnetWaitingListFactory($groupId);
+
+        $scoutOrg = new \Org\Controllers\ScoutGroupController($scoutGroupfactory, $waitingListFactory);
     }
 }
