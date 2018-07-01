@@ -17,6 +17,7 @@ class PersonInfo {
 
     /**
      * Creates a new set of person info.
+     * @internal
      * @param string $firstname The person's first name.
      * @param string $lastname The person's last name.
      * @param string $ssno The person's swedish personal number.

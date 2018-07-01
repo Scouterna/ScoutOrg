@@ -248,7 +248,7 @@ class ScoutnetController {
      * Leave to default (-1) if the whole mailing list is wanted.
      * @return CustomListMemberEntry[]
      */
-    public function getMailingMemberList(int $listId, int $ruleId = -1) {
+    public function getMailingListMembers(int $listId, int $ruleId = -1) {
         $listKey = "{$listId},{$ruleId}";
         if (isset($this->loadedCustomMemberLists[$listKey])) {
             return $this->loadedCustomMemberLists[$listKey];

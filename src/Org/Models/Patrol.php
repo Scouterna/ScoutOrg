@@ -25,6 +25,7 @@ class Patrol {
     
     /**
      * Creates a new patrol.
+     * @internal
      * @param int $id
      * @param string $name
      */

@@ -5,6 +5,9 @@
  */
 namespace Org\Models;
 
+/**
+ * A member that's waiting for group placement.
+ */
 class WaitingMember {
     use InternalTrait;
 
@@ -29,6 +32,11 @@ class WaitingMember {
     /** @var string */
     private $note;
 
+    /**
+     * Creates a new waiting member
+     * @internal
+     * @param int $id
+     */
     public function __construct(int $id) {
         $this->id = $id;
     }

@@ -6,6 +6,9 @@
 namespace Org\Models;
 use Org\Scoutnet;
 
+/**
+ * A factory for generating a list of members waiting for placement.
+ */
 class ScoutnetWaitingListFactory implements IWaitingListProvider {
     /** @var \Org\Scoutnet\ScoutnetController */
     private $scoutnet;

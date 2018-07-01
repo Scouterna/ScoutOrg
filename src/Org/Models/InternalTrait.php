@@ -13,6 +13,7 @@ trait InternalTrait {
     /**
      * Sets a private field only if the
      * setting class is in the Models namespace.
+     * @internal
      * @param string $name
      * @param mixed $value
      */
@@ -27,6 +28,7 @@ trait InternalTrait {
     /**
      * Gets a private field only if the
      * getting class is in the Models namespace.
+     * @internal
      * @param string $name
      * @return mixed
      */

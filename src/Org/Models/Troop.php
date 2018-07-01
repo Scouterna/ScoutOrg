@@ -28,6 +28,7 @@ class Troop {
     
     /**
      * Creates a new troop with the specified info.
+     * @internal
      * @param int $id The troop scoutnet id.
      * @param string $name The troop name.
      */

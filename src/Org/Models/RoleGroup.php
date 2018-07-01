@@ -22,6 +22,7 @@ class RoleGroup {
 
     /**
      * Creates a new RoleGroup with the specified role.
+     * @internal
      * @param int $id
      * @param string $roleName
      */

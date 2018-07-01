@@ -5,7 +5,7 @@
     <creationDate>June 2018</creationDate>
     <license>GNU General Public License version 2 or later</license>
     <authorUrl>https://github.com/Klako</authorUrl>
-    <version>0.1.2</version>
+    <version>0.2.2</version>
     <description>
         Plugin that contains scout organisation library.
         The library is accessed through the $scoutOrg global which is an \Org\Controllers\ScoutGroupController.

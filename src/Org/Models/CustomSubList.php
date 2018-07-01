@@ -22,6 +22,7 @@ class CustomSubList {
 
     /**
      * Creates a new custom sub list.
+     * @internal
      * @param int $id
      * @param string $title
      */

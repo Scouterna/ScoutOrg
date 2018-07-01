@@ -21,6 +21,7 @@ class TroopMemberLink {
 
     /**
      * Creates a new link.
+     * @internal
      * @param Troop $troop
      * @param Member $member
      * @param string $role

@@ -37,6 +37,7 @@ class ScoutGroup {
 
     /**
      * Creates a new ScoutGroup with the specified id.
+     * @internal
      * @param int $id The scout group id.
      */
     public function __construct(int $id) {

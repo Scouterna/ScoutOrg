@@ -14,6 +14,7 @@ class Contact {
 
     /**
      * Creates a new contact.
+     * @internal
      * @param string $name
      * @param ContactInfo $contactInfo
      */

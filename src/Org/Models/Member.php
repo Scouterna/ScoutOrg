@@ -46,6 +46,7 @@ class Member {
 
     /**
      * Creates a new member.
+     * @internal
      * @param int $id
      */
     public function __construct(int $id) {

@@ -76,13 +76,13 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
         $customLists = $this->scoutnet->getMailingLists();
         foreach ($customLists as $customList) {
             $newCustomList = new CustomList($customList->id, $customList->title, $customList->description);
-            $customListMembers = $this->scoutnet->getMailingMemberList($customList->id);
+            $customListMembers = $this->scoutnet->getMailingListMembers($customList->id);
             foreach ($customListMembers as $member) {
                 $newCustomList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
             }
             foreach ($customList->rules as $customListRule) {
                 $newCustomSubList = new CustomSubList($customListRule->id, $customListRule->title);
-                $customListRuleMembers = $this->scoutnet->getMailingMemberList($customList->id, $customListRule->id);
+                $customListRuleMembers = $this->scoutnet->getMailingListMembers($customList->id, $customListRule->id);
                 foreach ($customListRuleMembers as $member) {
                     $newCustomSubList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
                 }

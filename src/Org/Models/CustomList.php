@@ -31,6 +31,7 @@ class CustomList {
 
     /**
      * Creates a new custom list.
+     * @internal
      * @param int $id
      * @param string $title
      * @param string $description

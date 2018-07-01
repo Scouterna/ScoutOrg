@@ -20,6 +20,7 @@ class Location {
 
     /**
      * Creates a new location.
+     * @internal
      * @param string $address The living address.
      * @param string $postCode The swedish post code of the address.
      * @param string $postTown The town of the post code.

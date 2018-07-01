@@ -24,7 +24,8 @@ class ScoutGroupController {
 
     /**
      * Creates a new controller from a scout group provider.
-     * @param \Org\Models\IScoutGroupProvider $provider
+     * @param \Org\Models\IScoutGroupProvider $scoutGroupProvider
+     * @param \Org\Models\IWaitingListProvider $waitingListProvider
      */
     public function __construct(Models\IScoutGroupProvider $scoutGroupProvider,
                                 Models\IWaitingListProvider $waitingListProvider) {
@@ -47,6 +48,10 @@ class ScoutGroupController {
         return $scoutGroup;
     }
 
+    /**
+     * Gets the list of members waiting for placement.
+     * @return \Org\Models\WaitingMember[]
+     */
     public function getWaitingList() {
         if ($this->loadedWaitingList !== null) {
             return $this->loadedWaitingList;

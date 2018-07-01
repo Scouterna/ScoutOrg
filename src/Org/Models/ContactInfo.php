@@ -17,6 +17,7 @@ class ContactInfo {
 
     /**
      * Creates contact info.
+     * @internal
      * @param string[] $phoneNumbers A list of phone numbers.
      * @param string[] $emailAddresses A list of email addresses.
      */
