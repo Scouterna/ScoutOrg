@@ -23,10 +23,12 @@ class ScoutnetWaitingListFactory implements IWaitingListProvider {
 
     /**
      * Gets the waiting list of the scout group.
-     * @return WaitingMember[]
+     * @return WaitingMember[]|false
      */
     public function getWaitingList() {
-        $waitingListEntrys = $this->scoutnet->getWaitingList();
+        if (($waitingListEntrys = $this->scoutnet->getWaitingList()) === false) {
+            return false;
+        }
         $returnList = [];
         foreach ($waitingListEntrys as $entry) {
             $newWaitingMember = new WaitingMember($entry->member_no->value);

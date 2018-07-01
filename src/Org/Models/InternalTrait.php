@@ -8,6 +8,7 @@ namespace Org\Models;
 /**
  * A replacement for making namespace private members.
  * Should only be used inside \Org\Models
+ * @internal
  */
 trait InternalTrait {
     /**

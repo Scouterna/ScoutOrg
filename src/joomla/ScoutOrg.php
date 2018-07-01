@@ -20,7 +20,7 @@ class plgSystemScoutOrg extends JPlugin
         $domain = $this->params->get('domain');
         $groupId = intval($this->params->get('groupId'));
         $memberListKey = $this->params->get('memberListApiKey');
-        $mailingListsKey = $this->params->get('mailingListsApiKey');
+        $customListsKey = $this->params->get('customListsApiKey');
         $scoutnetCacheLifeTime = intval($this->params->get('scoutnetCacheLifeTime'));
 
         $error = false;
@@ -58,10 +58,10 @@ class plgSystemScoutOrg extends JPlugin
 
         $scoutnetController = \Org\Scoutnet\ScoutnetController::getMultiton($groupId);
         $scoutnetController->setMemberListApiKey($memberListKey);
-        $scoutnetController->setMailingListsApiKey($mailingListsKey);
+        $scoutnetController->setCustomListsApiKey($customListsKey);
 
-        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnet);
-        $waitingListFactory = new \Org\Models\ScoutnetWaitingListFactory($groupId);
+        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnetController);
+        $waitingListFactory = new \Org\Models\ScoutnetWaitingListFactory($scoutnetController);
 
         $scoutOrg = new \Org\Controllers\ScoutGroupController($scoutGroupfactory, $waitingListFactory);
     }

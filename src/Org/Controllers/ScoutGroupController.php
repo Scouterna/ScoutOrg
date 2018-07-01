@@ -35,7 +35,7 @@ class ScoutGroupController {
 
     /**
      * Loads the group structure from a provider.
-     * @return \Org\Models\ScoutGroup
+     * @return \Org\Models\ScoutGroup|false
      */
     public function getScoutGroup() {
         if ($this->loadedScoutGroup !== null) {
@@ -43,6 +43,10 @@ class ScoutGroupController {
         }
 
         $scoutGroup = $this->scoutGroupProvider->getScoutGroup();
+
+        if ($scoutGroup === false) {
+            return false;
+        }
         
         $this->loadedScoutGroup = $scoutGroup;
         return $scoutGroup;
@@ -50,7 +54,7 @@ class ScoutGroupController {
 
     /**
      * Gets the list of members waiting for placement.
-     * @return \Org\Models\WaitingMember[]
+     * @return \Org\Models\WaitingMember[]|false
      */
     public function getWaitingList() {
         if ($this->loadedWaitingList !== null) {
@@ -58,6 +62,10 @@ class ScoutGroupController {
         }
 
         $waitingList = $this->waitingListProvider->getWaitingList();
+
+        if ($waitingList === false) {
+            return false;
+        }
 
         $this->loadedWaitingList = $waitingList;
         return $waitingList;

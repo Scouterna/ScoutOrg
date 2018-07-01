@@ -37,7 +37,7 @@ class ScoutnetController {
     private $memberListApiKey = null;
 
     /** @var string */
-    private $mailingListsApiKey = null;
+    private $customListsApiKey = null;
 
     /**
      * Creates a new scoutnet group link.
@@ -84,20 +84,23 @@ class ScoutnetController {
      * @param string $key The api key.
      * @return void
      */
-    public function setMailingListsApiKey(string $key) {
-        $this->mailingListsApiKey = $key;
+    public function setCustomListsApiKey(string $key) {
+        $this->customListsApiKey = $key;
     }
 
     /**
      * Gets the group member list.
-     * @return MemberEntry[]
+     * @return MemberEntry[]|false
      */
     public function getMemberList() {
         if ($this->loadedMemberList !== null) {
             return $this->loadedMemberList;
         }
 
-        $memberList = $this->fetchMemberList($this->groupId, $this->memberListApiKey);
+        if (($memberList = $this->fetchMemberListApi('')) === false) {
+            return false;
+        }
+
         $returnList = [];
         foreach ($memberList->data as $member) {
             $newMemberEntry = new MemberEntry();
@@ -122,38 +125,20 @@ class ScoutnetController {
     }
 
     /**
-     * Fetches member list from scoutnet.
-     * @return array A json parsed member list.
-     */
-    private function fetchMemberList() {
-        $domain = ScoutnetController::$domain;
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_URL => "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?format=json",
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        ]);
-        $memberList = curl_exec($curl);
-        curl_close($curl);
-
-        return json_decode($memberList);
-    }
-
-    /**
      * Gets the group waiting list.
-     * @return WaitingMemberEntry[]
+     * @return WaitingMemberEntry[]|false
      */
     public function getWaitingList() {
         if ($this->loadedWaitingList !== null) {
             return $this->loadedWaitingList;
         }
 
-        $waitingList = $this->fetchWaitingList();
+        if (($waitingList = $this->fetchMemberListApi('waiting=1')) === false) {
+            return false;
+        }
+
         $returnList = [];
-        foreach ($waitingList as $waitingMember) {
+        foreach ($waitingList->data as $member) {
             $newWaitingMemberEntry = new WaitingMemberEntry();
             foreach ($member as $dataFieldName => $dataField) {
                 if (isset($dataField->raw_value)) {
@@ -167,40 +152,26 @@ class ScoutnetController {
                     $newWaitingMemberEntry->{$dataFieldName} = $newValue;
                 }
             }
-            $returnList[] = $newMemberEntry;
+            $returnList[] = $newWaitingMemberEntry;
         }
         
         $this->loadedWaitingList = $returnList;
         return $returnList;
     }
 
-    private function fetchWaitingList() {
-        $domain = ScoutnetController::$domain;
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_URL => "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?waiting=1&format=json",
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        ]);
-        $waitingList = curl_exec($curl);
-        curl_close($curl);
-
-        return json_decode($waitingList);
-    }
-
     /**
      * Gets all custom mailing lists from scoutnet.
-     * @return CustomListEntry[]
+     * @return CustomListEntry[]|false
      */
-    public function getMailingLists() {
+    public function getCustomLists() {
         if ($this->loadedCustomLists !== null) {
             return $this->loadedCustomLists;
         }
 
-        $customLists = $this->fetchMailingLists();
+        if (($customLists = $this->fetchCustomListsApi('')) === false) {
+            return false;
+        }
+
         $returnList = [];
         foreach ($customLists as $customList) {
             $newCustomList = new CustomListEntry();
@@ -224,37 +195,24 @@ class ScoutnetController {
         return $returnList;
     }
 
-    private function fetchMailingLists() {
-        $domain = ScoutnetController::$domain;
-
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_URL => "https://{$this->groupId}:{$this->mailingListsApiKey}@{$domain}/api/group/customlists?format=json",
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        ]);
-        $mailingLists = curl_exec($curl);
-        curl_close($curl);
-
-        return json_decode($mailingLists);
-    }
-
     /**
      * Gets all members in a custom mailinng list or one of its rules.
      * @param int $listId The custom mailing list id.
      * @param int $ruleId The rule id.
      * Leave to default (-1) if the whole mailing list is wanted.
-     * @return CustomListMemberEntry[]
+     * @return CustomListMemberEntry[]|false
      */
-    public function getMailingListMembers(int $listId, int $ruleId = -1) {
+    public function getCustomListMembers(int $listId, int $ruleId = -1) {
         $listKey = "{$listId},{$ruleId}";
         if (isset($this->loadedCustomMemberLists[$listKey])) {
             return $this->loadedCustomMemberLists[$listKey];
         }
 
-        $customMemberList = $this->fetchMailingMemberList($listId, $ruleId);
+        $urlVars = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
+        if (($customMemberList = $this->fetchCustomListsApi($urlVars)) === false) {
+            return false;
+        }
+
         $returnList = [];
         foreach ($customMemberList->data as $member) {
             $newMemberEntry = new CustomListMemberEntry();
@@ -270,33 +228,53 @@ class ScoutnetController {
         return $returnList;
     }
 
-    private function fetchMailingMemberList(int $listId, int $ruleId = -1) {
+    /** @return object|false */
+    private function fetchMemberListApi(string $urlVars) {
         $domain = ScoutnetController::$domain;
-        $urlVars = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
+        $url = "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?{$urlVars}&format=json";
+        $memberList = $this->fetchWebPage($url);
 
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_URL => "https://{$this->groupId}:{$this->mailingListsApiKey}@{$domain}/api/group/customlists?{$urlVars}&format=json",
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        ]);
-        $memberList = curl_exec($curl);
-        curl_close($curl);
+        if ($memberList === false ||  strlen($memberList) === 0) {
+            return false;
+        }
 
         return json_decode($memberList);
     }
 
-    
+    /** @return object|false */
+    private function fetchCustomListsApi(string $urlVars) {
+        $domain = ScoutnetController::$domain;
+        $url = "https://{$this->groupId}:{$this->customListsApiKey}@{$domain}/api/group/customlists?{$urlVars}&format=json";
+        $customList = $this->fetchWebPage($url);
+
+        if ($customList === false || strlen($customList) === 0) {
+            return false;
+        }
+
+        return json_decode($customList);
+    }
+
+    /** @return string|false */
+    private function fetchWebPage(string $url) {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => FALSE,
+            CURLOPT_RETURNTRANSFER => TRUE,
+        ]);
+        $result = curl_exec($curl);
+        curl_close($curl);
+        return $result;
+    }
 
     /**
      * Gets the domain to be used.
      * @static
      * @return string
      */ 
-    public static function getDomain()
-    {
+    public static function getDomain() {
         return ScoutnetController::$domain;
     }
 
@@ -306,8 +284,7 @@ class ScoutnetController {
      * @param string $domain
      * @return void
      */ 
-    public static function setDomain($domain)
-    {
+    public static function setDomain($domain) {
         ScoutnetController::$domain = $domain;
     }
 
@@ -334,6 +311,5 @@ class ScoutnetController {
         } else {
             return false;
         }
-        
     }
 }

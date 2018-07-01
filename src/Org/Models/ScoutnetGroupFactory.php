@@ -23,12 +23,14 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
     
     /**
      * Creates a scout group.
-     * @return ScoutGroup
+     * @return ScoutGroup|false
      */
     public function getScoutGroup() {
         $scoutGroup = new ScoutGroup($this->scoutnet->getGroupId());
 
-        $memberEntrys = $this->scoutnet->getMemberList();
+        if (($memberEntrys = $this->scoutnet->getMemberList()) === false) {
+            return false;
+        }
         foreach ($memberEntrys as $entry) {
             $newMember = new Member($entry->member_no->value);
 
@@ -72,25 +74,27 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
             $scoutGroup->members[$newMember->id] = $newMember;
         }
 
-        // Create custom member lists from scoutnet mailing lists.
-        $customLists = $this->scoutnet->getMailingLists();
-        foreach ($customLists as $customList) {
-            $newCustomList = new CustomList($customList->id, $customList->title, $customList->description);
-            $customListMembers = $this->scoutnet->getMailingListMembers($customList->id);
-            foreach ($customListMembers as $member) {
-                $newCustomList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
-            }
-            foreach ($customList->rules as $customListRule) {
-                $newCustomSubList = new CustomSubList($customListRule->id, $customListRule->title);
-                $customListRuleMembers = $this->scoutnet->getMailingListMembers($customList->id, $customListRule->id);
-                foreach ($customListRuleMembers as $member) {
-                    $newCustomSubList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
+        // Create custom member lists from scoutnet custom lists.
+        $customLists = $this->scoutnet->getCustomLists();
+        if ($customLists !== false) {
+            foreach ($customLists as $customList) {
+                $newCustomList = new CustomList($customList->id, $customList->title, $customList->description);
+                $customListMembers = $this->scoutnet->getCustomListMembers($customList->id);
+                foreach ($customListMembers as $member) {
+                    $newCustomList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
                 }
-                $newCustomList->subListsIdIndexed[intval($customListRule->id)] = $newCustomSubList;
-                $newCustomList->subListsTitleIndexed[$customListRule->title] = $newCustomSubList;
+                foreach ($customList->rules as $customListRule) {
+                    $newCustomSubList = new CustomSubList($customListRule->id, $customListRule->title);
+                    $customListRuleMembers = $this->scoutnet->getCustomListMembers($customList->id, $customListRule->id);
+                    foreach ($customListRuleMembers as $member) {
+                        $newCustomSubList->members[intval($member->member_no->value)] = $scoutGroup->members[intval($member->member_no->value)];
+                    }
+                    $newCustomList->subListsIdIndexed[intval($customListRule->id)] = $newCustomSubList;
+                    $newCustomList->subListsTitleIndexed[$customListRule->title] = $newCustomSubList;
+                }
+                $scoutGroup->customListsIdIndexed[intval($customList->id)] = $newCustomList;
+                $scoutGroup->customListsTitleIndexed[$customList->title] = $newCustomList;
             }
-            $scoutGroup->customListsIdIndexed[intval($customList->id)] = $newCustomList;
-            $scoutGroup->customListsTitleIndexed[$customList->title] = $newCustomList;
         }
         
         return $scoutGroup;
