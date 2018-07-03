@@ -7,13 +7,10 @@ Just nu finns endast support för joomla men utrymme finns att skapa en plugin f
 Just nu finns endast installation för joomla och detta görs just nu manuellt.
 
 Biblioteket använder ett par paket som inte är inkluderade i php.
-Se till att installera rätt version då olika servrar kan ha olika versioner av php. Om du har en annan version så bör du kolla upp rätt kommando för den.
+Om du har en annan version av php så bör du kolla upp rätt kommando för den.
 * cURL
     * php 5: ``` sudo apt install php5-curl ```
     * php 7.0: ``` sudo apt install php7.0-curl ```
-* APCu
-    * php 5: ``` sudo apt install php5-apcu ```
-    * php 7.0: ``` sudo apt install php7.0-apcu ```
 
 ### Joomla
 
