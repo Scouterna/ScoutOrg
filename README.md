@@ -6,7 +6,7 @@ Just nu finns endast support för joomla men utrymme finns att skapa en plugin f
 ## Installation och användning
 Just nu finns endast installation för joomla och detta görs just nu manuellt.
 
-Biblioteket använder ett par paket som inte är inkluderade i php.
+Biblioteket använder ett paket som inte är inkluderat i php.
 Om du har en annan version av php så bör du kolla upp rätt kommando för den.
 * cURL
     * php 5: ``` sudo apt install php5-curl ```
