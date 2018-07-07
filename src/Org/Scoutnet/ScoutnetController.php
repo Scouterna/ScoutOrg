@@ -5,6 +5,9 @@
  */
 namespace Org\Scoutnet;
 
+use Org\Models\WaitingMember;
+
+
 /**
  * Contains methods for getting data from scoutnet.
  */
@@ -103,21 +106,7 @@ class ScoutnetController {
 
         $returnList = [];
         foreach ($memberList->data as $member) {
-            $newMemberEntry = new MemberEntry();
-            foreach ($member as $dataFieldName => $dataField) {
-                $classFieldName = str_replace('-', '', $dataFieldName);
-                if (isset($dataField->raw_value)) {
-                    $newValue = new ValueAndRaw();
-                    $newValue->rawValue = $dataField->raw_value;
-                    $newValue->value = $dataField->value;
-                    $newMemberEntry->{$classFieldName} = $newValue;
-                } else {
-                    $newValue = new Value();
-                    $newValue->value = $dataField->value;
-                    $newMemberEntry->{$classFieldName} = $newValue;
-                }
-            }
-            $returnList[] = $newMemberEntry;
+            $returnList[] = new MemberEntry($member);
         }
 
         $this->loadedMemberList = $returnList;
@@ -139,20 +128,7 @@ class ScoutnetController {
 
         $returnList = [];
         foreach ($waitingList->data as $member) {
-            $newWaitingMemberEntry = new WaitingMemberEntry();
-            foreach ($member as $dataFieldName => $dataField) {
-                if (isset($dataField->raw_value)) {
-                    $newValue = new ValueAndRaw();
-                    $newValue->rawValue = $dataField->raw_value;
-                    $newValue->value = $dataField->value;
-                    $newWaitingMemberEntry->{$dataFieldName} = $newValue;
-                } else {
-                    $newValue = new Value();
-                    $newValue->value = $dataField->value;
-                    $newWaitingMemberEntry->{$dataFieldName} = $newValue;
-                }
-            }
-            $returnList[] = $newWaitingMemberEntry;
+            $returnList[] = new WaitingMemberEntry($member);
         }
         
         $this->loadedWaitingList = $returnList;
@@ -174,21 +150,7 @@ class ScoutnetController {
 
         $returnList = [];
         foreach ($customLists as $customList) {
-            $newCustomList = new CustomListEntry();
-            $newCustomList->id = $customList->id;
-            $newCustomList->title = $customList->title;
-            $newCustomList->description = $customList->description;
-            $newCustomList->aliases = $customList->aliases;
-            $newCustomList->list_email_key = $customList->list_email_key;
-            $newCustomList->rules = [];
-            foreach ($customList->rules as $customListRule) {
-                $newCustomListRule = new CustomListRuleEntry();
-                $newCustomListRule->id = $customListRule->id;
-                $newCustomListRule->title = $customListRule->title;
-                $newCustomListRule->link = $customListRule->link;
-                $newCustomList->rules[] = $newCustomListRule;
-            }
-            $returnList[] = $newCustomList;
+            $returnList[] = new CustomListEntry($customList);
         }
 
         $this->loadedCustomLists = $returnList;
@@ -215,13 +177,7 @@ class ScoutnetController {
 
         $returnList = [];
         foreach ($customMemberList->data as $member) {
-            $newMemberEntry = new CustomListMemberEntry();
-            foreach ($member as $dataFieldName => $dataField) {
-                $newValue = new Value();
-                $newValue->value = $dataField->value;
-                $newMemberEntry->{$dataFieldName} = $newValue;
-            }
-            $returnList[] = $newMemberEntry;
+            $returnList[] = new CustomListMemberEntry($member);
         }
 
         $this->loadedCustomMemberLists[$listKey] = $returnList;
@@ -234,7 +190,7 @@ class ScoutnetController {
         $url = "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?{$urlVars}&format=json";
         $memberList = $this->fetchWebPage($url);
 
-        if ($memberList === false ||  strlen($memberList) === 0) {
+        if ($memberList === false || strlen($memberList) === 0) {
             return false;
         }
 

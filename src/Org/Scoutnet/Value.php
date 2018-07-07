@@ -13,6 +13,14 @@ class Value {
     public $value;
 
     /**
+     * Creates a new value from a scoutnet value.
+     * @param object $value
+     */
+    public function __construct($value) {
+        $this->value = $value->value;
+    }
+
+    /**
      * Gets the string equivalent of the class.
      * @return string
      */

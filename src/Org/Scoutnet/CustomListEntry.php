@@ -26,4 +26,20 @@ class CustomListEntry {
 
     /** @var CustomListRuleEntry[] The list of rules that the members are filtered through. */
     public $rules;
+
+    /**
+     * Creates a new custom list entry from a scoutnet entry.
+     * @param object $entry
+     */
+    public function __construct($entry) {
+        $this->id = $entry->id;
+        $this->title = $entry->title;
+        $this->description = $entry->description;
+        $this->list_email_key = $entry->list_email_key;
+        $this->aliases = $entry->aliases;
+        $this->rules = [];
+        foreach ($entry->rules as $rule) {
+            $this->rules[] = new CustomListRuleEntry($rule);
+        }
+    }
 }

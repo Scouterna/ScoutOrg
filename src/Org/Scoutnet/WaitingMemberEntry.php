@@ -138,4 +138,18 @@ class WaitingMemberEntry {
      * @var Value Unknown. May be wether instant messaging is enabled.
      */
     public $contact_instant_messaging;
+
+    /**
+     * Creates a new waiting member entry from a scoutnet entry.
+     * @param object $entry
+     */
+    public function __construct($entry) {
+        foreach ($entry as $dataFieldName => $dataField) {
+            if (isset($dataField->raw_value)) {
+                $newMemberEntry->{$dataFieldName} = new ValueAndRaw($dataField);
+            } else {
+                $newMemberEntry->{$dataFieldName} = new Value($dataField);
+            }
+        }
+    }
 }

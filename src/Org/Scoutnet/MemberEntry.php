@@ -310,4 +310,19 @@ class MemberEntry {
      * @var Value The due date for the current term payment.
      */
     public $current_term_due_date;
+
+    /**
+     * Creates a new member entry from a scoutnet entry.
+     * @param object $entry
+     */
+    public function __construct($entry) {
+        foreach ($entry as $dataFieldName => $dataField) {
+            $classFieldName = str_replace('-', '', $dataFieldName);
+            if (isset($dataField->raw_value)) {
+                $newMemberEntry->{$classFieldName} = new ValueAndRaw($dataField);
+            } else {
+                $newMemberEntry->{$classFieldName} = new Value($dataField);
+            }
+        }
+    }
 }

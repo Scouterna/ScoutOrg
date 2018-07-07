@@ -17,4 +17,14 @@ class CustomListRuleEntry {
 
     /** @var string The rule api link. */
     public $link;
+
+    /**
+     * Creates a new custom list rule entry from a scoutnet entry.
+     * @param object $entry
+     */
+    public function __construct($entry) {
+        $this->id = $entry->id;
+        $this->title = $entry->title;
+        $this->link = $entry->link;
+    }
 }
