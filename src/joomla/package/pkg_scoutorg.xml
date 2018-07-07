@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" version="3.0" method="upgrade">
+    <name>ScoutOrg Package</name>
+    <author>Alexander Krantz</author>
+    <creationDate>[[current_date]]</creationDate>
+    <packagename>scoutorg</packagename>
+    <version>0.1.0</version>
+    <url>https://github.com/scouternasetjanster/ScoutOrg</url>
+    <description>ScoutOrg package containing library and plugin</description>
+    <files folder="packages">
+        <file type="library" id="scoutorg">[[library_filename]]</file>
+        <file type="plugin" id="scoutorg" group="system">[[plugin_filename]]</file>
+    </files>
+</extension>

@@ -16,7 +16,7 @@ Om du har en annan version av php så bör du kolla upp rätt kommando för den.
 
 #### Installation
 Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
-1. Hämta rätt release från github eller bygg den själv. Den ska heta 'JScoutOrg.zip'.
+1. Hämta rätt release från github eller bygg den själv. Den ska heta 'scoutorg.zip'.
 2. Logga in som admin i joomla och gå till Extensions->Manage.
 3. Välj Upload Package File och dra in zipfilen.
 4. Konfigurera pluginen att använda rätt kår och api-nycklar.

@@ -15,7 +15,7 @@ class plgSystemScoutOrg extends JPlugin
     public function onAfterInitialise()
     {
         global $scoutOrg;
-        JLoader::registerNamespace('Org', __DIR__ );
+        JLoader::registerNamespace('Org', JPATH_LIBRARIES . '/scoutorg');
 
         $domain = $this->params->get('domain');
         $groupId = intval($this->params->get('groupId'));
