@@ -146,9 +146,9 @@ class WaitingMemberEntry {
     public function __construct($entry) {
         foreach ($entry as $dataFieldName => $dataField) {
             if (isset($dataField->raw_value)) {
-                $newMemberEntry->{$dataFieldName} = new ValueAndRaw($dataField);
+                $this->{$dataFieldName} = new ValueAndRaw($dataField);
             } else {
-                $newMemberEntry->{$dataFieldName} = new Value($dataField);
+                $this->{$dataFieldName} = new Value($dataField);
             }
         }
     }

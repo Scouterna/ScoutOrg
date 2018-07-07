@@ -319,9 +319,9 @@ class MemberEntry {
         foreach ($entry as $dataFieldName => $dataField) {
             $classFieldName = str_replace('-', '', $dataFieldName);
             if (isset($dataField->raw_value)) {
-                $newMemberEntry->{$classFieldName} = new ValueAndRaw($dataField);
+                $this->{$classFieldName} = new ValueAndRaw($dataField);
             } else {
-                $newMemberEntry->{$classFieldName} = new Value($dataField);
+                $this->{$classFieldName} = new Value($dataField);
             }
         }
     }
