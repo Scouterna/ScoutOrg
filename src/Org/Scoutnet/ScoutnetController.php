@@ -5,9 +5,6 @@
  */
 namespace Org\Scoutnet;
 
-use Org\Models\WaitingMember;
-
-
 /**
  * Contains methods for getting data from scoutnet.
  */
@@ -184,6 +181,59 @@ class ScoutnetController {
         return $returnList;
     }
 
+    /**
+     * Gets all members in all specified custom lists and their rules.
+     * @param CustomListIdPair[] $idPairs
+     * Set rule id to -1 if the whole list is wanted.
+     * @return CustomListMemberEntry[][][]|false
+     * List of entrys indexed firstly by list id and secondly by rule id.
+     */
+    public function getMultiCustomListMembers(array $idPairs) {
+        $returnList = [];
+
+        $urlVarsList = [];
+        foreach ($idPairs as $idPair) {
+            $listId = $idPair->listId;
+            $ruleId = $idPair->ruleId;
+
+            if (!isset($returnList[$listId])) {
+                $returnList[$listId] = [];
+            }
+
+            $listKey = "{$listId},{$ruleId}";
+            if (isset($this->loadedCustomMemberLists[$listKey])) {
+                $returnList[$listId][$ruleId] = $this->loadedCustomMemberLists[$listKey];
+                continue;
+            }
+            
+            $urlVarsList[$listKey] = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
+        }
+        if (($customMemberLists = $this->fetchMultiCustomListsApi($urlVarsList)) === false) {
+            return false;
+        }
+
+        foreach ($idPairs as $idPair) {
+            $listId = $idPair->listId;
+            $ruleId = $idPair->ruleId;
+
+            if (isset($returnList[$listId][$ruleId])) {
+                continue;
+            }
+
+            $listKey = "{$listId},{$ruleId}";
+            $customMemberList = $customMemberLists[$listKey];
+
+            if ($customMemberList === false) {
+                return false;
+            }
+
+            foreach ($customMemberList as $member) {
+                $returnList[$listId][$ruleId][] = new CustomListMemberEntry($member);
+            }
+        }
+        return $returnList;
+    }
+
     /** @return object|false */
     private function fetchMemberListApi(string $urlVars) {
         $domain = ScoutnetController::$domain;
@@ -210,6 +260,33 @@ class ScoutnetController {
         return json_decode($customList);
     }
 
+    /** @return object[]|false */
+    private function fetchMultiCustomListsApi(array $urlVarsList) {
+        $domain = ScoutnetController::$domain;
+        $urls = [];
+        foreach ($urlVarsList as $key => $urlVars) {
+            $urls[$key] = "https://{$this->groupId}:{$this->customListsApiKey}@{$domain}/api/group/customlists?{$urlVars}&format=json";
+        }
+        $customLists = $this->fetchWebPages($urls);
+
+        if ($customLists === false) {
+            return false;
+        }
+
+        $decodes = [];
+        foreach ($customLists as $key => $customList) {
+            if (strlen($customList) === 0) {
+                return false;
+            }
+            $decode = json_decode($customList);
+            if ($decode === false) {
+                return false;
+            }
+            $decodes[$key] = $decode;
+        }
+        return $decodes;
+    }
+
     /** @return string|false */
     private function fetchWebPage(string $url) {
         $curl = curl_init();
@@ -223,6 +300,54 @@ class ScoutnetController {
         $result = curl_exec($curl);
         curl_close($curl);
         return $result;
+    }
+
+    /** @return string[]|false */
+    private function fetchWebPages(array $urls) {
+        $multiCurl = curl_multi_init();
+        $handles = [];
+        foreach ($urls as $key => $url) {
+            $curl = curl_init();
+            curl_setopt_array($curl, [
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_URL => $url,
+                CURLOPT_SSL_VERIFYPEER => FALSE,
+                CURLOPT_SSL_VERIFYHOST => FALSE,
+                CURLOPT_RETURNTRANSFER => TRUE,
+            ]);
+            curl_multi_add_handle($multiCurl, $curl);
+            $handles[$key] = $curl;
+        }
+
+        // Do <<stuff>> to execute handles.
+        $active = null;
+        do {
+            $mrc = curl_multi_exec($mh, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+        if ($mrc != CURLM_OK) {
+            foreach ($handles as $handle) {
+                curl_multi_remove_handle($multiCurl, $handle);
+            }
+            curl_multi_close($multiCurl);
+            return false;
+        }
+        while ($active) {
+            if (curl_multi_select($mh) != -1) {
+                do {
+                    $mrc = curl_multi_exec($mh, $active);
+                } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+            }
+        }
+
+        $results = [];
+        $success = true;
+        foreach ($handles as $key => $handle) {
+            $result = curl_multi_getcontent($handle);
+            curl_multi_remove_handle($multiCurl, $handle);
+            $results[$key] = $result;
+        }
+        curl_multi_close($multiCurl);
+        return $results;
     }
 
     /**
