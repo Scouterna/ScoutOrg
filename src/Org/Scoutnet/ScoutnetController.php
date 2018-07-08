@@ -338,6 +338,13 @@ class ScoutnetController {
                 } while ($mrc == CURLM_CALL_MULTI_PERFORM);
             }
         }
+        if ($mrc != CURLM_OK) {
+            foreach ($handles as $handle) {
+                curl_multi_remove_handle($multiCurl, $handle);
+            }
+            curl_multi_close($multiCurl);
+            return false;
+        }
 
         $results = [];
         $success = true;
