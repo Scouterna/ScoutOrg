@@ -227,9 +227,12 @@ class ScoutnetController {
                 return false;
             }
 
-            foreach ($customMemberList as $member) {
+            $returnList[$listId][$ruleId] = [];
+            foreach ($customMemberList->data as $member) {
                 $returnList[$listId][$ruleId][] = new CustomListMemberEntry($member);
             }
+
+            $this->loadedCustomMemberLists[$listKey] = $returnList[$listId][$ruleId];
         }
         return $returnList;
     }
@@ -319,33 +322,11 @@ class ScoutnetController {
             $handles[$key] = $curl;
         }
 
-        // Do <<stuff>> to execute handles.
-        $active = null;
+        $running = null;
         do {
-            $mrc = curl_multi_exec($mh, $active);
-        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
-        if ($mrc != CURLM_OK) {
-            foreach ($handles as $handle) {
-                curl_multi_remove_handle($multiCurl, $handle);
-            }
-            curl_multi_close($multiCurl);
-            return false;
-        }
-        while ($active) {
-            if (curl_multi_select($mh) != -1) {
-                do {
-                    $mrc = curl_multi_exec($mh, $active);
-                } while ($mrc == CURLM_CALL_MULTI_PERFORM);
-            }
-        }
-        if ($mrc != CURLM_OK) {
-            foreach ($handles as $handle) {
-                curl_multi_remove_handle($multiCurl, $handle);
-            }
-            curl_multi_close($multiCurl);
-            return false;
-        }
-
+            curl_multi_exec($multiCurl, $running);
+        } while ($running);
+        
         $results = [];
         $success = true;
         foreach ($handles as $key => $handle) {

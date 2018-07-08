@@ -20,7 +20,7 @@ class CustomListIdPair {
      * @param int $listId
      * @param int $ruleId
      */
-    public function __construct(int $listId, int $ruleId) {
+    public function __construct(int $listId, int $ruleId = -1) {
         $this->listId = $listId;
         $this->ruleId = $ruleId;
     }
