@@ -35,7 +35,7 @@ class Member {
     /** @var TroopMemberLink[] */
     private $troopsNameIndexed;
 
-    /** @var Patrol[] */
+    /** @var PatrolMemberLink[] */
     private $patrolsIdIndexed;
 
     /** @var RoleGroup[] */
@@ -121,7 +121,7 @@ class Member {
 
     /**
      * Gets the member's patrols indexed by their scoutnet id.
-     * @return Patrol[]
+     * @return PatrolMemberLink[]
      */
     public function getPatrols() {
         return $this->patrolsIdIndexed;

@@ -7,7 +7,7 @@ namespace Org\Models;
 use \Org\Scoutnet;
 
 /**
- * A factory for generating a scout group from its id and api key.
+ * A factory for generating a scout group from scoutnet.
  */
 class ScoutnetGroupFactory implements IScoutGroupProvider {
     /** @var \Org\Scoutnet\ScoutnetController */
@@ -74,14 +74,14 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
             // Create patrol(s)
             if ($entry->patrol !== null) {
                 $patrol = $this->getPatrol($troop, $entry->patrol);
-                $newMember->patrolsIdIndexed[$patrol->id] = $patrol;
-                $patrol->members[$newMember->id] = $newMember;
+                $patrolMemberLink = new PatrolMemberLink($patrol, $newMember, '');
+                $newMember->patrolsIdIndexed[$patrol->id] = $patrolMemberLink;
+                $patrol->members[$newMember->id] = $patrolMemberLink;
             }
 
             $scoutGroup->members[$newMember->id] = $newMember;
         }
 
-        // TODO: Check out two way linking.
         // Create branches
         foreach ($this->branchConfigs as $branchConfig) {
             $newBranch = new Branch($branchConfig->getBranchId(), $branchConfig->getBranchName());
@@ -101,8 +101,12 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
                     continue;
                 }
                 $troop = $scoutGroup->troopsIdIndexed[$troopId];
+                if ($troop->branch !== null) {
+                    continue;
+                }
                 $newBranch->troopsIdIndexed[$troopId] = $troop;
                 $newBranch->troopsNameIndexed[$troop->name] = $troop;
+                $troop->branch = $newBranch;
             }
         }
 

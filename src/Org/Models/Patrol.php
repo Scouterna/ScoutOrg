@@ -20,7 +20,7 @@ class Patrol {
     /** @var Troop */
     private $troop;
 
-    /** @var Member[] */
+    /** @var PatrolMemberLink[] */
     private $members;
     
     /**
@@ -64,7 +64,7 @@ class Patrol {
 
     /**
      * Gets the patrol members.
-     * @return Member[]
+     * @return PatrolMemberLink[]
      */ 
     public function getMembers()
     {

@@ -17,6 +17,9 @@ class Troop {
     /** @var string */
     private $name;
 
+    /** @var Branch */
+    private $branch;
+
     /** @var TroopMemberLink[] */
     private $members;
 
@@ -54,6 +57,14 @@ class Troop {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /** 
+     * Gets the branch that the troop is in.
+     * @return Branch
+     */
+    public function getBranch() {
+        return $this->branch;
     }
 
     /**
