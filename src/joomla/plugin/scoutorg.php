@@ -16,6 +16,7 @@ class plgSystemScoutOrg extends JPlugin
     {
         global $scoutOrg;
         JLoader::registerNamespace('Org', JPATH_LIBRARIES . '/scoutorg');
+        JLoader::register('BranchProvider', __DIR__.'BranchProvider.php');
 
         $domain = $this->params->get('domain');
         $groupId = intval($this->params->get('groupId'));
@@ -60,7 +61,10 @@ class plgSystemScoutOrg extends JPlugin
         $scoutnetController->setMemberListApiKey($memberListKey);
         $scoutnetController->setCustomListsApiKey($customListsKey);
 
-        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnetController);
+        // TODO: Start working on branch configs.
+        $branchConfigs = [];
+
+        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnetController, $branchConfigs);
         $waitingListFactory = new \Org\Models\ScoutnetWaitingListFactory($scoutnetController);
 
         $scoutOrg = new \Org\Controllers\ScoutGroupController($scoutGroupfactory, $waitingListFactory);

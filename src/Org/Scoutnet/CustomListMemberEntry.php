@@ -24,6 +24,10 @@ class CustomListMemberEntry {
     /** @var Value The member's last name. */
     public $last_name;
     
+    /**
+     * Creates a new custom list member from a scoutnet entry.
+     * @param object $entry
+     */
     public function __construct($entry) {
         foreach ($entry as $dataFieldName => $dataField) {
             $this->{$dataFieldName} = new Value($dataField);

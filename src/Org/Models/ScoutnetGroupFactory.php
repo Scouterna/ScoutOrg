@@ -13,17 +13,24 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
     /** @var \Org\Scoutnet\ScoutnetController */
     private $scoutnet;
 
+    /** @var BranchConfig[] */
+    private $branchConfigs;
+
     /**
      * Creates a new scout group factory.
      * @param \Org\Scoutnet\ScoutnetController $scoutnet The scoutnet link.
+     * @param BranchConfig[] $branchConfigs
      */
-    public function __construct(Scoutnet\ScoutnetController $scoutnet) {
+    public function __construct(Scoutnet\ScoutnetController $scoutnet,
+                                array $branchConfigs = []) {
         $this->scoutnet = $scoutnet;
+        $this->branchConfigs = $branchConfigs;
     }
     
     /**
      * Creates a scout group.
-     * @return ScoutGroup|false
+     * @return ScoutGroup|false 
+     * A scout group if successfull, <code>false</code> if not.
      */
     public function getScoutGroup() {
         $scoutGroup = new ScoutGroup($this->scoutnet->getGroupId());
@@ -72,6 +79,31 @@ class ScoutnetGroupFactory implements IScoutGroupProvider {
             }
 
             $scoutGroup->members[$newMember->id] = $newMember;
+        }
+
+        // TODO: Check out two way linking.
+        // Create branches
+        foreach ($this->branchConfigs as $branchConfig) {
+            $newBranch = new Branch($branchConfig->getBranchId(), $branchConfig->getBranchName());
+
+            if (isset($scoutGroup->branchesIdIndexed[$branchConfig->getBranchId()])) {
+                $newBranch = $scoutGroup->branchesIdIndexed[$branchConfig->getBranchId()];
+            } else {
+                $scoutGroup->branchesIdIndexed[$branchConfig->getBranchId()] = $newBranch;
+                $scoutGroup->branchesNameIndexed[$branchConfig->getBranchName()] = $newBranch;
+            }
+            
+            foreach ($branchConfig->getTroopIds() as $troopId) {
+                if (isset($newBranch->troopsIdIndexed[$troopId])) {
+                    continue;
+                }
+                if (!isset($scoutGroup->troopsIdIndexed[$troopId])) {
+                    continue;
+                }
+                $troop = $scoutGroup->troopsIdIndexed[$troopId];
+                $newBranch->troopsIdIndexed[$troopId] = $troop;
+                $newBranch->troopsNameIndexed[$troop->name] = $troop;
+            }
         }
 
         // Create custom member lists from scoutnet custom lists.

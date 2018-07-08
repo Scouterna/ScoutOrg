@@ -23,6 +23,12 @@ class ScoutGroup {
     /** @var Troop[] */
     private $troopsNameIndexed;
 
+    /** @var Branch[] */
+    private $branchesIdIndexed;
+
+    /** @var Branch[] */
+    private $branchesNameIndexed;
+
     /** @var RoleGroup[] */
     private $roleGroupsIdIndexed;
 
@@ -45,6 +51,8 @@ class ScoutGroup {
         $this->members = new \ArrayObject();
         $this->troopsIdIndexed = new \ArrayObject();
         $this->troopsNameIndexed = new \ArrayObject();
+        $this->branchesIdIndexed = new \ArrayObject();
+        $this->branchesNameIndexed = new \ArrayObject();
         $this->roleGroupsIdIndexed = new \ArrayObject();
         $this->roleGroupsNameIndexed = new \ArrayObject();
         $this->customListsIdIndexed = new \ArrayObject();
@@ -65,6 +73,19 @@ class ScoutGroup {
      */
     public function getMembers() {
         return $this->members->getArrayCopy();
+    }
+
+    /**
+     * Gets the list of branches.
+     * @param bool $idIndexed Wether to get list indexed by id or name.
+     * @return Branch[]
+     */
+    public function getBranches(bool $idIndexed = false) {
+        if ($idIndexed) {
+            return $this->branchesIdIndexed->getArrayCopy();
+        } else {
+            return $this->branchesNameIndexed->getArrayCopy();
+        }
     }
 
     /**
