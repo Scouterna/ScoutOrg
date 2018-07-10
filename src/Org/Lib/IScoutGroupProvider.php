@@ -3,7 +3,7 @@
  * Contains IScoutGroupProvider interface
  * @author Alexander Krantz
  */
-namespace Org\Models;
+namespace Org\Lib;
 
 /**
  * Contains interface for a scout group provider.

@@ -15,5 +15,5 @@ clean:
 	@rm -rf build
 
 $(phpdoc_target): $(library_source)
-	@phpdoc run -d src/Org -t $(phpdoc_build) \
+	@phpdoc run -d src/Org/Lib -t $(phpdoc_build) \
 		--visibility public --template clean

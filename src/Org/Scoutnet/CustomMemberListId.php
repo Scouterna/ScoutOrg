@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains CustomListIdPair class
+ * Contains CustomMemberListId class
  * @author Alexander Krantz
  */
 namespace Org\Scoutnet;
@@ -8,7 +8,7 @@ namespace Org\Scoutnet;
 /**
  * Contains pair of list id and rule id.
  */
-class CustomListIdPair {
+class CustomMemberListId {
     /** @var int List id */
     public $listId;
     
@@ -20,7 +20,7 @@ class CustomListIdPair {
      * @param int $listId
      * @param int $ruleId
      */
-    public function __construct(int $listId, int $ruleId = -1) {
+    public function __construct(int $listId, int $ruleId = CustomListRuleEntry::NO_RULE_ID) {
         $this->listId = $listId;
         $this->ruleId = $ruleId;
     }

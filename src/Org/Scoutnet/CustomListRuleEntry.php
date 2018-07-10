@@ -4,11 +4,14 @@
  * @author Alexander Krantz
  */
 namespace Org\Scoutnet;
+use Org\Lib;
 
 /**
  * Contains fields that are equivalent to custom list rules from scoutnet.
  */
 class CustomListRuleEntry {
+    const NO_RULE_ID = -1;
+
     /** @var int The rule id. */
     public $id;
 
@@ -26,5 +29,13 @@ class CustomListRuleEntry {
         $this->id = $entry->id;
         $this->title = $entry->title;
         $this->link = $entry->link;
+    }
+
+    /**
+     * Creates a Lib\CustomList instance from this object.
+     * @return Lib\CustomList
+     */
+    public function getCustomList() {
+        return new Lib\CustomList($this->id, $this->title, '');
     }
 }

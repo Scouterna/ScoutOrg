@@ -3,7 +3,7 @@
  * Contains IWaitingListProvider interface
  * @author Alexander Krantz
  */
-namespace Org\Models;
+namespace Org\Lib;
 
 /**
  * Contains interface for a waiting list provider.

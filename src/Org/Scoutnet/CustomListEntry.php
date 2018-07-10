@@ -4,6 +4,7 @@
  * @author Alexander Krantz
  */
 namespace Org\Scoutnet;
+use Org\Lib;
 
 /**
  * Contains fields that are equivalent to custom lists from scoutnet.
@@ -41,5 +42,13 @@ class CustomListEntry {
         foreach ($entry->rules as $rule) {
             $this->rules[] = new CustomListRuleEntry($rule);
         }
+    }
+
+    /**
+     * Creates a Lib\CustomList instance from this object.
+     * @return Lib\CustomList
+     */
+    public function getCustomList() {
+        return new Lib\CustomList($this->id, $this->title, $this->description);
     }
 }

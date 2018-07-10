@@ -3,7 +3,7 @@
  * Contains CustomList class
  * @author Alexander Krantz
  */
-namespace Org\Models;
+namespace Org\Lib;
 
 /**
  * A custom member list with sub lists.
@@ -23,10 +23,10 @@ class CustomList {
     /** @var Member[] */
     private $members;
 
-    /** @var CustomSubList[] */
+    /** @var CustomList[] */
     private $subListsIdIndexed;
 
-    /** @var CustomSubList[] */
+    /** @var CustomList[] */
     private $subListsTitleIndexed;
 
     /**
@@ -43,6 +43,25 @@ class CustomList {
         $this->members = new \ArrayObject();
         $this->subListsIdIndexed = new \ArrayObject();
         $this->subListsTitleIndexed = new \ArrayObject();
+    }
+
+    /** 
+     * Adds a member.
+     * @param Member $member
+     * @return void
+     */
+    private function addMember(Member $member) {
+        $this->members[$member->getId()] = $member;
+    }
+
+    /**
+     * Adds a sub list.
+     * @param CustomList $subList
+     * @return void
+     */
+    private function addSubList(CustomList $subList) {
+        $this->subListsIdIndexed[$subList->getId()] = $subList;
+        $this->subListsTitleIndexed[$subList->getTitle()] = $subList;
     }
 
     /**
@@ -81,7 +100,7 @@ class CustomList {
     /**
      * Gets a list of sublists.
      * @param bool $idIndexed Wether to index the list by id or title.
-     * @return CustomSubList[]
+     * @return CustomList[]
      */ 
     public function getSubLists(bool $idIndexed = false) {
         if ($idIndexed) {

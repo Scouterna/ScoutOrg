@@ -4,6 +4,7 @@
  * @author Alexander Krantz
  */
 namespace Org\Scoutnet;
+use Org\Lib;
 
 /**
  * Contains fields equivalent to an
@@ -151,5 +152,73 @@ class WaitingMemberEntry {
                 $this->{$dataFieldName} = new Value($dataField);
             }
         }
+    }
+
+    /** 
+     * Gets a Lib\WaitingMember instance of this object.
+     * @return Lib\WaitingMember
+     */
+    public function getMember() {
+        $member = new Lib\WaitingMember($this->member_no->value,
+            $this->getPersonInfo(),
+            $this->getContactInfo(),
+            $this->getAccommodation(),
+            $this->getContacts(),
+            $this->waiting_since,
+            $this->note !== null ? $this->note : '');
+        return $member;
+    }
+
+    /** @return Lib\PersonInfo */
+    private function getPersonInfo() {
+        $personInfo = new Lib\PersonInfo($this->first_name,
+            $this->last_name,
+            $this->ssno,
+            $this->sex,
+            $this->date_of_birth);
+        return $personInfo;
+    }
+
+    /** @return Lib\ContactInfo */
+    private function getContactInfo() {
+        $phoneNumbers = [];
+        $emailAddresses = [];
+        if ($this->email !== NULL) {
+            $emailAddresses[] = $this->email;
+        }
+        return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
+    }
+
+    /** @return Lib\Location */
+    private function getAccommodation() {
+        return new Lib\Location($this->address_1, $this->postcode, $this->town);
+    }
+
+    /** @return Lib\Contact[] */
+    private function getContacts() {
+        $contacts = [];
+        // Create contact 1
+        if ($this->contact_mothers_name !== NULL) {
+            $phoneNumbers = [
+                $this->contact_mobile_mum,
+            ];
+            $emails = [
+                $this->contact_email_mum,
+            ];
+            $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
+            $contacts[] = new Lib\Contact($this->contact_mothers_name, $contactInfo);
+        }
+        // Create contact 2
+        if ($this->contact_fathers_name !== NULL) {
+            $phoneNumbers = [
+                $this->contact_mobile_dad,
+            ];
+            $emails = [
+                $this->contact_email_dad,
+            ];
+            $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
+            $contacts[] = new Lib\Contact($this->contact_fathers_name, $contactInfo);
+        }
+        return $contacts;
     }
 }

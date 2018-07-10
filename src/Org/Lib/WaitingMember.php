@@ -3,7 +3,7 @@
  * Contains WaitingMember class
  * @author Alexander Krantz
  */
-namespace Org\Models;
+namespace Org\Lib;
 
 /**
  * A member that's waiting for group placement.
@@ -36,9 +36,27 @@ class WaitingMember {
      * Creates a new waiting member
      * @internal
      * @param int $id
+     * @param PersonInfo $personInfo
+     * @param ContactInfo $contactInfo
+     * @param Location $accommodation
+     * @param Contact[] $contacts
+     * @param string $waitingStartDate
+     * @param string $note
      */
-    public function __construct(int $id) {
+    public function __construct(int $id,
+                                PersonInfo $personInfo,
+                                ContactInfo $contactInfo,
+                                Location $accommodation,
+                                array $contacts,
+                                string $waitingStartDate,
+                                string $note) {
         $this->id = $id;
+        $this->personInfo = $personInfo;
+        $this->contactInfo = $contactInfo;
+        $this->accommodation = $accommodation;
+        $this->contacts = $contacts;
+        $this->waitingStartdate = $waitingStartDate;
+        $this->note = $note;
     }
 
     /**

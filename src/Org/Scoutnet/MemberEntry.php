@@ -4,6 +4,7 @@
  * @author Alexander Krantz
  */
 namespace Org\Scoutnet;
+use Org\Lib;
 
 /**
  * Contains fields equivalent to the data received through
@@ -324,5 +325,134 @@ class MemberEntry {
                 $this->{$classFieldName} = new Value($dataField);
             }
         }
+    }
+
+    /**
+     * Gets the person info of the member.
+     * @return Lib\PersonInfo
+     */
+    private function getPersonInfo() {
+        $personInfo = new Lib\PersonInfo($this->first_name,
+            $this->last_name,
+            $this->ssno,
+            $this->sex,
+            $this->date_of_birth);
+        return $personInfo;
+    }
+
+    /**
+     * Gets the contact info of the member.
+     * @return Lib\ContactInfo
+     */
+    private function getContactInfo() {
+        $phoneNumbers = [];
+        if ($this->contact_mobile_phone !== NULL) {
+            $phoneNumbers[] = $this->contact_mobile_phone;
+        }
+        if ($this->contact_home_phone !== NULL) {
+            $phoneNumbers[] = $this->contact_home_phone;
+        }
+        if ($this->contact_work_phone !== NULL) {
+            $phoneNumbers[] = $this->contact_work_phone;
+        }
+        $emailAddresses = [];
+        if ($this->contact_email !== NULL) {
+            $emailAddresses[] = $this->contact_email;
+        }
+        if ($this->contact_alt_email !== NULL) {
+            $emailAddresses[] = $this->contact_alt_email;
+        }
+        return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
+    }
+
+    /**
+     * Gets the accommodation info from the member.
+     * @return Lib\Location
+     */
+    private function getAccommodation() {
+        return new Lib\Location($this->address_1, $this->postcode, $this->town);
+    }
+
+    /**
+     * Gets the contacts of the member.
+     * @return Lib\Contact[]
+     */
+    private function getContacts() {
+        $contacts = [];
+        // Create contact 1
+        if ($this->contact_mothers_name !== NULL) {
+            $phoneNumbers = [
+                $this->contact_mobile_mum,
+            ];
+            $emails = [
+                $this->contact_email_mum,
+            ];
+            $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
+            $contacts[] = new Lib\Contact($this->contact_mothers_name, $contactInfo);
+        }
+        // Create contact 2
+        if ($this->contact_fathers_name !== NULL) {
+            $phoneNumbers = [
+                $this->contact_mobile_dad,
+            ];
+            $emails = [
+                $this->contact_email_dad,
+            ];
+            $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
+            $contacts[] = new Lib\Contact($this->contact_fathers_name, $contactInfo);
+        }
+        return $contacts;
+    }
+
+    /**
+     * Gets the member.
+     * @return Lib\Member
+     */
+    public function getMember() {
+        $member = new Lib\Member($this->member_no->value,
+            $this->getPersonInfo(),
+            $this->getContactInfo(),
+            $this->getAccommodation(),
+            $this->getContacts(),
+            $this->confirmed_at->value);
+        return $member;
+    }
+
+    /** 
+     * Gets the troop from the member.
+     * @return Lib\Troop|null
+     */
+    public function getTroop() {
+        if ($this->unit === null) {
+            return null;
+        }
+        return new Lib\Troop($this->unit->rawValue, $this->unit->value);
+    }
+
+    /**
+     * Gets the patrol from the member.
+     * @return Lib\Patrol|null
+     */
+    public function getPatrol() {
+        if ($this->patrol === null) {
+            return null;
+        }
+        return new Lib\Patrol($this->patrol->rawValue, $this->patrol->value);
+    }
+
+    /**
+     * Gets the role groups from the member.
+     * @return Lib\RoleGroup[]|null
+     */
+    public function getRoleGroups() {
+        if ($this->group_role === null) {
+            return null;
+        }
+        $roleGroups = [];
+        $roleGroupNames = explode(', ', $this->group_role->value);
+        foreach (explode(',', $this->group_role->rawValue) as $index => $roleGroupId) {
+            $roleGroups[$roleGroupId] = new Lib\RoleGroup($roleGroupId, $roleGroupNames[$index]);
+        }
+        return $roleGroups;
     }
 }

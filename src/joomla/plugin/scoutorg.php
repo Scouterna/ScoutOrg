@@ -64,9 +64,9 @@ class plgSystemScoutOrg extends JPlugin
         // TODO: Start working on branch configs.
         $branchConfigs = [];
 
-        $scoutGroupfactory = new \Org\Models\ScoutnetGroupFactory($scoutnetController, $branchConfigs);
-        $waitingListFactory = new \Org\Models\ScoutnetWaitingListFactory($scoutnetController);
+        $scoutGroupfactory = new \Org\Scoutnet\ScoutGroupFactory($scoutnetController, $branchConfigs);
+        $waitingListFactory = new \Org\Scoutnet\WaitingListFactory($scoutnetController);
 
-        $scoutOrg = new \Org\Controllers\ScoutGroupController($scoutGroupfactory, $waitingListFactory);
+        $scoutOrg = new \Org\Lib\ScoutOrg($scoutGroupfactory, $waitingListFactory);
     }
 }

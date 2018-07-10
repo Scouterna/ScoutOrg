@@ -10,6 +10,14 @@ namespace Org\Scoutnet;
  */
 class ScoutnetController {
     /** @var string */
+    const API_CUSTOMLISTS_PATH = 'api/group/customlists';
+
+    /** @var string */
+    const API_MEMBERLIST_PATH = 'api/group/memberlist';
+
+    const API_MEMBERLIST_WAITING_URLVARS = 'waiting=1';
+
+    /** @var string */
     private static $domain = 'www.scoutnet.se';
 
     /** @var int */
@@ -119,7 +127,7 @@ class ScoutnetController {
             return $this->loadedWaitingList;
         }
 
-        if (($waitingList = $this->fetchMemberListApi('waiting=1')) === false) {
+        if (($waitingList = $this->fetchMemberListApi(self::API_MEMBERLIST_WAITING_URLVARS)) === false) {
             return false;
         }
 
@@ -158,16 +166,16 @@ class ScoutnetController {
      * Gets all members in a custom mailinng list or one of its rules.
      * @param int $listId The custom mailing list id.
      * @param int $ruleId The rule id.
-     * Leave to default (-1) if the whole mailing list is wanted.
+     * Leave to default (CustomListRuleEntry::NO_RULE_ID) if the whole mailing list is wanted.
      * @return CustomListMemberEntry[]|false
      */
-    public function getCustomListMembers(int $listId, int $ruleId = -1) {
+    public function getCustomListMembers(int $listId, int $ruleId = CustomListRuleEntry::NO_RULE_ID) {
         $listKey = "{$listId},{$ruleId}";
         if (isset($this->loadedCustomMemberLists[$listKey])) {
             return $this->loadedCustomMemberLists[$listKey];
         }
 
-        $urlVars = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
+        $urlVars = self::getCustomListVars($listId, $ruleId);
         if (($customMemberList = $this->fetchCustomListsApi($urlVars)) === false) {
             return false;
         }
@@ -183,18 +191,18 @@ class ScoutnetController {
 
     /**
      * Gets all members in all specified custom lists and their rules.
-     * @param CustomListIdPair[] $idPairs
-     * Set rule id to -1 if the whole list is wanted.
+     * @param CustomMemberListId[] $memberListIds
+     * Set rule id to CustomListRuleEntry::NO_RULE_ID if the whole list is wanted.
      * @return CustomListMemberEntry[][][]|false
      * List of entrys indexed firstly by list id and secondly by rule id.
      */
-    public function getMultiCustomListMembers(array $idPairs) {
+    public function getMultiCustomListMembers(array $memberListIds) {
         $returnList = [];
 
         $urlVarsList = [];
-        foreach ($idPairs as $idPair) {
-            $listId = $idPair->listId;
-            $ruleId = $idPair->ruleId;
+        foreach ($memberListIds as $memberListId) {
+            $listId = $memberListId->listId;
+            $ruleId = $memberListId->ruleId;
 
             if (!isset($returnList[$listId])) {
                 $returnList[$listId] = [];
@@ -206,15 +214,15 @@ class ScoutnetController {
                 continue;
             }
             
-            $urlVarsList[$listKey] = "list_id={$listId}" . ($ruleId >= 0 ? "&rule_id={$ruleId}" : '');
+            $urlVarsList[$listKey] = self::getCustomListVars($listId, $ruleId);
         }
         if (($customMemberLists = $this->fetchMultiCustomListsApi($urlVarsList)) === false) {
             return false;
         }
 
-        foreach ($idPairs as $idPair) {
-            $listId = $idPair->listId;
-            $ruleId = $idPair->ruleId;
+        foreach ($memberListIds as $memberListId) {
+            $listId = $memberListId->listId;
+            $ruleId = $memberListId->ruleId;
 
             if (isset($returnList[$listId][$ruleId])) {
                 continue;
@@ -239,9 +247,8 @@ class ScoutnetController {
 
     /** @return object|false */
     private function fetchMemberListApi(string $urlVars) {
-        $domain = ScoutnetController::$domain;
-        $url = "https://{$this->groupId}:{$this->memberListApiKey}@{$domain}/api/group/memberlist?{$urlVars}&format=json";
-        $memberList = $this->fetchWebPage($url);
+        $url = $this->getMemberListApiUrl($urlVars);
+        $memberList = ScoutnetHelper::fetchWebPage($url);
 
         if ($memberList === false || strlen($memberList) === 0) {
             return false;
@@ -252,9 +259,8 @@ class ScoutnetController {
 
     /** @return object|false */
     private function fetchCustomListsApi(string $urlVars) {
-        $domain = ScoutnetController::$domain;
-        $url = "https://{$this->groupId}:{$this->customListsApiKey}@{$domain}/api/group/customlists?{$urlVars}&format=json";
-        $customList = $this->fetchWebPage($url);
+        $url = $this->getCustomListsApiUrl($urlVars);
+        $customList =  ScoutnetHelper::fetchWebPage($url);
 
         if ($customList === false || strlen($customList) === 0) {
             return false;
@@ -265,12 +271,11 @@ class ScoutnetController {
 
     /** @return object[]|false */
     private function fetchMultiCustomListsApi(array $urlVarsList) {
-        $domain = ScoutnetController::$domain;
         $urls = [];
         foreach ($urlVarsList as $key => $urlVars) {
-            $urls[$key] = "https://{$this->groupId}:{$this->customListsApiKey}@{$domain}/api/group/customlists?{$urlVars}&format=json";
+            $urls[$key] = $this->getCustomListsApiUrl($urlVars);
         }
-        $customLists = $this->fetchWebPages($urls);
+        $customLists = ScoutnetHelper::fetchWebPages($urls);
 
         if ($customLists === false) {
             return false;
@@ -290,52 +295,29 @@ class ScoutnetController {
         return $decodes;
     }
 
-    /** @return string|false */
-    private function fetchWebPage(string $url) {
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_URL => $url,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
-        ]);
-        $result = curl_exec($curl);
-        curl_close($curl);
-        return $result;
+    /** @return string */
+    private static function getCustomListVars(int $listId, int $ruleId) {
+        $retVal = "list_id=$listId";
+        if ($ruleId !== CustomListRuleEntry::NO_RULE_ID) {
+            $retVal .= "&rule_id=$ruleId";
+        }
+        return $retVal;
     }
 
-    /** @return string[]|false */
-    private function fetchWebPages(array $urls) {
-        $multiCurl = curl_multi_init();
-        $handles = [];
-        foreach ($urls as $key => $url) {
-            $curl = curl_init();
-            curl_setopt_array($curl, [
-                CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_URL => $url,
-                CURLOPT_SSL_VERIFYPEER => FALSE,
-                CURLOPT_SSL_VERIFYHOST => FALSE,
-                CURLOPT_RETURNTRANSFER => TRUE,
-            ]);
-            curl_multi_add_handle($multiCurl, $curl);
-            $handles[$key] = $curl;
-        }
+    /** @return string */
+    private function getMemberListApiUrl(string $urlVars) {
+        return $this->getApiUrl($this->memberListApiKey, self::API_MEMBERLIST_PATH, $urlVars);
+    }
 
-        $running = null;
-        do {
-            curl_multi_exec($multiCurl, $running);
-        } while ($running);
-        
-        $results = [];
-        $success = true;
-        foreach ($handles as $key => $handle) {
-            $result = curl_multi_getcontent($handle);
-            curl_multi_remove_handle($multiCurl, $handle);
-            $results[$key] = $result;
-        }
-        curl_multi_close($multiCurl);
-        return $results;
+    /** @return string */
+    private function getCustomListsApiUrl(string $urlVars) {
+        return $this->getApiUrl($this->customListsApiKey, self::API_CUSTOMLISTS_PATH, $urlVars);
+    }
+
+    /** @return string */
+    private function getApiUrl(string $apiKey, string $apiPath, string $urlVars) {
+        $domain = ScoutnetController::$domain;
+        return "https://{$this->groupId}:{$apiKey}@{$domain}/{$apiPath}?{$urlVars}&format=json";
     }
 
     /**

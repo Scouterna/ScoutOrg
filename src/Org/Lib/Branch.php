@@ -3,7 +3,7 @@
  * Contains Branch class
  * @author Alexander Krantz
  */
-namespace Org\Models;
+namespace Org\Lib;
 
 /**
  * A branch (gren) that contains troops
@@ -34,6 +34,16 @@ class Branch {
         $this->name = $name;
         $this->troopsIdIndexed = new \ArrayObject();
         $this->troopsNameIndexed = new \ArrayObject();
+    }
+
+    /**
+     * Adds a troop.
+     * @param Troop $troop
+     * @return void
+     */
+    private function addTroop(Troop $troop) {
+        $this->troopsIdIndexed[$troop->getId()] = $troop;
+        $this->troopsNameIndexed[$troop->getName()] = $troop;
     }
 
     /**

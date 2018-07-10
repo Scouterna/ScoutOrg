@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade" version="3.0">
+    <name>ScoutOrg Component</name>
+    <element>com_scoutorg</element>
+    <author>Alexander Krantz</author>
+    <creationDate>[[current_date]]</creationDate>
+    <license>GNU General Public License version 2 or later</license>
+    <url>https://github.com/scouternasetjanster/ScoutOrg</url>
+    <version>0.1.2</version>
+    <description>Component for advanced configuring of the ScoutOrg plugin.</description>
+    <administration>
+        <menu>ScoutOrg</menu>
+        <files folder="admin">
+            <filename>scoutorg.php</filename>
+            <filename>controller.php</filename>
+            <folder>views</folder>
+        </files>
+    </administration>
+</extension>
