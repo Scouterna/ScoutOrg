@@ -35,7 +35,6 @@ class ScoutnetHelper {
      * @param string[] $urls
      * @return string[]|false
      */
-    /** @return string[]|false */
     public static function fetchWebPages(array $urls) {
         $multiCurl = curl_multi_init();
         $handles = [];

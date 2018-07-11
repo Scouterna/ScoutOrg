@@ -9,20 +9,21 @@ namespace Org\Lib;
  * Is used for getting structured information about scout groups.
  */
 class ScoutOrg {
-    /** @var IScoutGroupProvider */
+    /** @var IScoutGroupProvider The object that provides a scout group object. */
     private $scoutGroupProvider;
 
-    /** @var ScoutGroup */
+    /** @var ScoutGroup The cached scout group that will be returned each time one is requested. */
     private $loadedScoutGroup;
 
-    /** @var IWaitingListProvider */
+    /** @var IWaitingListProvider The object that provides a waiting member list. */
     private $waitingListProvider;
 
-    /** @var WaitingMember[] */
+    /** @var WaitingMember[] The cached list of members that will be returned each time the list is requested. */
     private $loadedWaitingList;
 
     /**
      * Creates a new controller from providers.
+     * @internal
      * @param IScoutGroupProvider $scoutGroupProvider
      * @param IWaitingListProvider $waitingListProvider
      */

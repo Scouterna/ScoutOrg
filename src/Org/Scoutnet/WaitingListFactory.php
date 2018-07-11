@@ -10,7 +10,7 @@ use Org\Lib;
  * A factory for generating a list of members waiting for placement.
  */
 class WaitingListFactory implements Lib\IWaitingListProvider {
-    /** @var ScoutnetController */
+    /** @var ScoutnetController The source of data of which to create the waiting list. */
     private $scoutnet;
 
     /**

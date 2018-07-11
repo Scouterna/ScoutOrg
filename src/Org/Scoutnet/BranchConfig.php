@@ -9,13 +9,13 @@ namespace Org\Scoutnet;
  * Configuration for a branch with troops.
  */
 class BranchConfig {
-    /** @var int */
+    /** @var int The branch id. */
     private $branchId;
 
-    /** @var string */
+    /** @var string The branch name. */
     private $branchName;
 
-    /** @var int[] */
+    /** @var int[] The list of id:s of the troops that belong to the branch. */
     private $troopIds;
 
     /**
@@ -48,7 +48,7 @@ class BranchConfig {
     }
 
     /**
-     * Gets the list of troops in the branch.
+     * Gets the list of id:s of the troops.
      * @return int[]
      */ 
     public function getTroopIds() {

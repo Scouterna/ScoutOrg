@@ -11,34 +11,34 @@ namespace Org\Lib;
 class ScoutGroup {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The scout group id. */
     private $id;
 
-    /** @var Member[] */
+    /** @var Member[] The members in the scout group indexed by their id. */
     private $members;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops of the scout group indexed by their id. */
     private $troopsIdIndexed;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops of the scout group indexed by their name. */
     private $troopsNameIndexed;
 
-    /** @var Branch[] */
+    /** @var Branch[] The branches of the scout group indexed by their id. */
     private $branchesIdIndexed;
 
-    /** @var Branch[] */
+    /** @var Branch[] The branches of the scout group indexed by their name. */
     private $branchesNameIndexed;
 
-    /** @var RoleGroup[] */
+    /** @var RoleGroup[] The scout group roles indexed by their id. */
     private $roleGroupsIdIndexed;
 
-    /** @var RoleGroup[] */
+    /** @var RoleGroup[] The scout group roles indexed by their name. */
     private $roleGroupsNameIndexed;
 
-    /** @var CustomList[] */
+    /** @var CustomList[] The custom lists of the scout group indexed by their id. */
     private $customListsIdIndexed;
 
-    /** @var CustomList[] */
+    /** @var CustomList[] The custom lists of the scout group indexed by their name. */
     private $customListsTitleIndexed;
 
     /**

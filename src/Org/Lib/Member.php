@@ -11,37 +11,37 @@ namespace Org\Lib;
 class Member {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The member id. */
     private $id;
 
-    /** @var PersonInfo */
+    /** @var PersonInfo The member's personal information. */
     private $personInfo;
 
-    /** @var ContactInfo */
+    /** @var ContactInfo Contact info of the member. */
     private $contactInfo;
 
-    /** @var Location */
+    /** @var Location The location where the member lives. */
     private $accommodation;
 
-    /** @var Contact[] */
+    /** @var Contact[] All contacts of the member. */
     private $contacts;
 
-    /** @var string */
+    /** @var string The date that the member's membership was confirmed. */
     private $startdate;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops that the member is in indexed by their id. */
     private $troopsIdIndexed;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops that the member is in indexed by their name. */
     private $troopsNameIndexed;
 
-    /** @var Patrol[] */
+    /** @var Patrol[] The patrols that the member is in indexed by their id. */
     private $patrolsIdIndexed;
 
-    /** @var RoleGroup[] */
+    /** @var RoleGroup[] The roles that the person has in the scout group indexed by their id. */
     private $roleGroupsIdIndexed;
 
-    /** @var RoleGroup[] */
+    /** @var RoleGroup[] The roles that the perosn has in the scout group indexed by their name. */
     private $roleGroupsNameIndexed;
 
     /**

@@ -11,13 +11,13 @@ namespace Org\Lib;
 class RoleGroup {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The role id. */
     private $id;
 
-    /** @var string */
+    /** @var string The role name. */
     private $roleName;
 
-    /** @var Member[] */
+    /** @var Member[] The list of members with the role indexed by their id. */
     private $members;
 
     /**

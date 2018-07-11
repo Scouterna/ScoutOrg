@@ -9,10 +9,19 @@ namespace Org\Lib;
  * Personal info about a member.
  */
 class PersonInfo {
+    /** @var string The person's first name. */
     private $firstname;
+
+    /** @var string The person's last name. */
     private $lastname;
+
+    /** @var string The person's personal number (personnummer) */
     private $ssno;
+
+    /** @var string The person's gender. */
     private $gender;
+
+    /** @var string The person's date of birth. */
     private $dateOfBirth;
 
     /**

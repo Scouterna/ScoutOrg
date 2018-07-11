@@ -11,19 +11,19 @@ namespace Org\Lib;
 class Patrol {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The patrol id. */
     private $id;
 
-    /** @var string */
+    /** @var string The patrol name. */
     private $name;
 
-    /** @var Troop */
+    /** @var Troop The troop that the patrol belongs to. */
     private $troop;
 
-    /** @var Member[] */
+    /** @var Member[] The list of members who are in the patrol. */
     private $members;
 
-    /** @var string[] */
+    /** @var string[] The list of member roles indexed by the member id. */
     private $memberRoles;
     
     /**

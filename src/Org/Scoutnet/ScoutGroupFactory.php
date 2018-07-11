@@ -10,15 +10,15 @@ use Org\Lib;
  * Builds a scout group from scoutnet.
  */
 class ScoutGroupFactory implements Lib\IScoutGroupProvider {
-    /** @var ScoutnetController */
+    /** @var ScoutnetController The source of data of which a scout group is built. */
     private $scoutnet;
 
-    /** @var BranchConfig[] */
+    /** @var BranchConfig[] The list of configurations for which branches to create. */
     private $branchConfigs;
 
     /**
      * Creates a new scout group factory.
-     * @param ScoutnetController $scoutnet The scoutnet link.
+     * @param ScoutnetController $scoutnet
      * @param BranchConfig[] $branchConfigs
      */
     public function __construct(ScoutnetController $scoutnet,

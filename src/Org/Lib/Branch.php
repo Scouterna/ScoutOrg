@@ -11,16 +11,16 @@ namespace Org\Lib;
 class Branch {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The branch id. */
     private $id;
 
-    /** @var string */
+    /** @var string The branch name. */
     private $name;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops of the branch indexed by their id. */
     private $troopsIdIndexed;
 
-    /** @var Troop[] */
+    /** @var Troop[] The troops of the branch indexed by their name. */
     private $troopsNameIndexed;
     
     /**

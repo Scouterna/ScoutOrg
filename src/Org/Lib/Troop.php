@@ -11,25 +11,25 @@ namespace Org\Lib;
 class Troop {
     use InternalTrait;
     
-    /** @var int */
+    /** @var int The troop id. */
     private $id;
 
-    /** @var string */
+    /** @var string The troop name. */
     private $name;
 
-    /** @var Branch */
+    /** @var Branch|null The branch that the troop belongs to. */
     private $branch;
 
-    /** @var Member[] */
+    /** @var Member[] The list of members in the troop indexed by their id. */
     private $members;
 
-    /** @var string[] */
+    /** @var string[] The member troop roles indexed by the member id. */
     private $memberRoles;
 
-    /** @var Patrol[] */
+    /** @var Patrol[] The patrols that belong to the troop indexed by their id. */
     private $patrolsIdIndexed;
 
-    /** @var Patrol[] */
+    /** @var Patrol[] The patrol that belong to the troop indexed by their name. */
     private $patrolsNameIndexed;
     
     /**

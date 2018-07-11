@@ -9,42 +9,43 @@ namespace Org\Scoutnet;
  * Contains methods for getting data from scoutnet.
  */
 class ScoutnetController {
-    /** @var string */
+    /** @var string The api path for the custom lists */
     const API_CUSTOMLISTS_PATH = 'api/group/customlists';
 
-    /** @var string */
+    /** @var string The api path for the member lists */
     const API_MEMBERLIST_PATH = 'api/group/memberlist';
 
+    /** @var string The url variables for fetching the waiting list. */
     const API_MEMBERLIST_WAITING_URLVARS = 'waiting=1';
 
-    /** @var string */
+    /** @var string The domain/address of the server with the scoutnet api. */
     private static $domain = 'www.scoutnet.se';
 
-    /** @var int */
+    /** @var int The ttl of the long lived cache in seconds. zero = disabled. */
     private static $cacheLifeTime = 0;
 
-    /** @var Scoutnet[] */
+    /** @var Scoutnet[] The list of multitons for each scout group. */
     private static $multitons = [];
 
-    /** @var int */
+    /** @var int The scout group id to use on the scoutnet api. */
     private $groupId;
 
-    /** @var MemberEntry[] */
+    /** @var MemberEntry[] The short lived cache of members. */
     private $loadedMemberList = null;
 
-    /** @var WaitingMemberEntry[] */
+    /** @var WaitingMemberEntry[] The short lived cache of waiting members. */
     private $loadedWaitingList = null;
 
-    /** @var CustomListEntry[] */
+    /** @var CustomListEntry[] The short lived cache of custom lists. */
     private $loadedCustomLists = null;
 
-    /** @var CustomListMemberEntry[][] */
+    /** @var CustomListMemberEntry[][] The short lived cache of custom lists' members. */
     private $loadedCustomMemberLists = null;
 
-    /** @var string */
+    /** @var string The api key for the member list api path. */
     private $memberListApiKey = null;
 
-    /** @var string */
+    /** @var string The api key for the custom lists api path. */
     private $customListsApiKey = null;
 
     /**
@@ -245,7 +246,12 @@ class ScoutnetController {
         return $returnList;
     }
 
-    /** @return object|false */
+    /**
+     * Fetches the resulting json object using
+     * the scoutnet server's member list api.
+     * @param string $urlVars The url variables to apply.
+     * @return object|false
+     */
     private function fetchMemberListApi(string $urlVars) {
         $url = $this->getMemberListApiUrl($urlVars);
         $memberList = ScoutnetHelper::fetchWebPage($url);
@@ -257,7 +263,12 @@ class ScoutnetController {
         return json_decode($memberList);
     }
 
-    /** @return object|false */
+    /**
+     * Fetches the resulting json object using
+     * the scoutnet server's custom list api.
+     * @param string $urlVars The url variables to apply.
+     * @return object|false
+     */
     private function fetchCustomListsApi(string $urlVars) {
         $url = $this->getCustomListsApiUrl($urlVars);
         $customList =  ScoutnetHelper::fetchWebPage($url);
@@ -269,7 +280,13 @@ class ScoutnetController {
         return json_decode($customList);
     }
 
-    /** @return object[]|false */
+    /**
+     * Fetches several json objects from a list of requests using
+     * the scoutnet server's custom list api.
+     * The objects will be indexed by the same keys as the input array.
+     * @param string[] $urlVarsList The list of url variables to apply.
+     * @return object[]|false
+     */
     private function fetchMultiCustomListsApi(array $urlVarsList) {
         $urls = [];
         foreach ($urlVarsList as $key => $urlVars) {
@@ -295,7 +312,14 @@ class ScoutnetController {
         return $decodes;
     }
 
-    /** @return string */
+    /**
+     * Builds a string from the list id and rule id for
+     * using when fetching a custom member list with the
+     * custom list api.
+     * @param int $listId
+     * @param int $ruleId
+     * @return string
+     */
     private static function getCustomListVars(int $listId, int $ruleId) {
         $retVal = "list_id=$listId";
         if ($ruleId !== CustomListRuleEntry::NO_RULE_ID) {
@@ -304,17 +328,33 @@ class ScoutnetController {
         return $retVal;
     }
 
-    /** @return string */
+    /**
+     * Builds a url for fetching a webpage using the
+     * member list api and the specified url variables.
+     * @param string $urlVars
+     * @return string
+     */
     private function getMemberListApiUrl(string $urlVars) {
         return $this->getApiUrl($this->memberListApiKey, self::API_MEMBERLIST_PATH, $urlVars);
     }
 
-    /** @return string */
+    /**
+     * Build a url for fetching a webpage using the
+     * custom lists api and the specified url variables.
+     * @param string $urlVars
+     * @return string
+     */
     private function getCustomListsApiUrl(string $urlVars) {
         return $this->getApiUrl($this->customListsApiKey, self::API_CUSTOMLISTS_PATH, $urlVars);
     }
 
-    /** @return string */
+    /**
+     * Builds a url for fetching a page from the scoutnet api.
+     * @param string $apiKey
+     * @param string $apiPath
+     * @param string $urlVars
+     * @return string
+     */
     private function getApiUrl(string $apiKey, string $apiPath, string $urlVars) {
         $domain = ScoutnetController::$domain;
         return "https://{$this->groupId}:{$apiKey}@{$domain}/{$apiPath}?{$urlVars}&format=json";

@@ -6,16 +6,16 @@
 namespace Org\Lib;
 
 /**
- * Contains accommodation info about a member.
+ * Contains address and postal info for a location.
  */
 class Location {
-    /** @var string */
+    /** @var string The street address. */
     private $address;
 
-    /** @var string */
+    /** @var string The swedish post code. */
     private $postCode;
     
-    /** @var string */
+    /** @var string The town (postort). */
     private $postTown;
 
     /**

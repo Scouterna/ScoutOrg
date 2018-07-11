@@ -169,7 +169,10 @@ class WaitingMemberEntry {
         return $member;
     }
 
-    /** @return Lib\PersonInfo */
+    /**
+     * Gets the person info of the waiting member as a new instance.
+     * @return Lib\PersonInfo
+     */
     private function getPersonInfo() {
         $personInfo = new Lib\PersonInfo($this->first_name,
             $this->last_name,
@@ -179,7 +182,10 @@ class WaitingMemberEntry {
         return $personInfo;
     }
 
-    /** @return Lib\ContactInfo */
+    /**
+     * Gets the contact info of the waiting member as a new instance.
+     * @return Lib\ContactInfo
+     */
     private function getContactInfo() {
         $phoneNumbers = [];
         $emailAddresses = [];
@@ -189,12 +195,20 @@ class WaitingMemberEntry {
         return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
     }
 
-    /** @return Lib\Location */
+    /**
+     * Gets the living address and postal info of the waiting
+     * member as a new instance.
+     * @return Lib\Location
+     */
     private function getAccommodation() {
         return new Lib\Location($this->address_1, $this->postcode, $this->town);
     }
 
-    /** @return Lib\Contact[] */
+    /**
+     * Gets the list of contacts of the waiting member
+     * as new instances.
+     * @return Lib\Contact[]
+     */
     private function getContacts() {
         $contacts = [];
         // Create contact 1

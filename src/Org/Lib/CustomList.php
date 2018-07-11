@@ -11,22 +11,22 @@ namespace Org\Lib;
 class CustomList {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The list id. */
     private $id;
 
-    /** @var string */
+    /** @var string The list name. */
     private $title;
 
-    /** @var string */
+    /** @var string The description of the list. */
     private $description;
 
-    /** @var Member[] */
+    /** @var Member[] The members of the list indexed by their id. */
     private $members;
 
-    /** @var CustomList[] */
+    /** @var CustomList[] The sub lists of the list indexed by their id. */
     private $subListsIdIndexed;
 
-    /** @var CustomList[] */
+    /** @var CustomList[] The sub lists of the list indexed by their name. */
     private $subListsTitleIndexed;
 
     /**

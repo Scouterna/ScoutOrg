@@ -11,25 +11,25 @@ namespace Org\Lib;
 class WaitingMember {
     use InternalTrait;
 
-    /** @var int */
+    /** @var int The member id. */
     private $id;
 
-    /** @var PersonInfo */
+    /** @var PersonInfo The member's personal information. */
     private $personInfo;
 
-    /** @var ContactInfo */
+    /** @var ContactInfo Contact info of the member. */
     private $contactInfo;
 
-    /** @var Location */
+    /** @var Location The location where the member lives. */
     private $accommodation;
 
-    /** @var Contact[] */
+    /** @var Contact[] All contacts of the member. */
     private $contacts;
 
-    /** @var string */
+    /** @var string The date the member started waiting. */
     private $waitingStartdate;
 
-    /** @var string */
+    /** @var string The note attached to the waiting member. */
     private $note;
 
     /**
@@ -108,7 +108,7 @@ class WaitingMember {
     }
 
     /**
-     * Gets a note attached to the waiting member.
+     * Gets the note attached to the waiting member.
      * @return string
      */ 
     public function getNote() {

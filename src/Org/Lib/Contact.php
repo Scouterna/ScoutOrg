@@ -9,10 +9,10 @@ namespace Org\Lib;
  * Contains a contact or guardian of a member.
  */
 class Contact {
-    /** @var string */
+    /** @var string The name of the contact person. */
     private $name;
 
-    /** @var ContactInfo */
+    /** @var ContactInfo The contact info of the contact. */
     private $contactInfo;
 
     /**

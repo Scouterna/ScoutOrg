@@ -9,10 +9,10 @@ namespace Org\Lib;
  * Contains contact info for a member or guardian.
  */
 class ContactInfo {
-    /** @var string[] */
+    /** @var string[] The phone numbers of the person. */
     private $phoneNumbers;
 
-    /** @var string[] */
+    /** @var string[] The email addresses of the person. */
     private $emailAddresses;
 
     /**
