@@ -4,7 +4,7 @@
 		<name>ScoutOrg 1.0</name>
 		<description>ScoutOrg extension package 1.0</description>
 		<element>pkg_scoutorg</element>
-		<type>file</type>
+		<type>package</type>
 		<version>1.0.0</version>
 		<infourl title="ScoutOrg">https://github.com/scouternasetjanster/ScoutOrg</infourl>
 		<downloads>
@@ -13,14 +13,13 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<targetplatform name="joomla" version="3.[234567]" />
-		<php_minimum>5.3.10</php_minimum>
+		<targetplatform name="joomla" version="3" />
 	</update>
 	<update>
 		<name>ScoutOrg 1.1</name>
 		<description>ScoutOrg extension package 1.1</description>
 		<element>pkg_scoutorg</element>
-		<type>file</type>
+		<type>package</type>
 		<version>1.1.0</version>
 		<infourl title="ScoutOrg">https://github.com/scouternasetjanster/ScoutOrg</infourl>
 		<downloads>
@@ -29,7 +28,6 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<targetplatform name="joomla" version=".*" />
-		<php_minimum>5.3.10</php_minimum>
+		<targetplatform name="joomla" version="3" />
 	</update>
 </updates>
