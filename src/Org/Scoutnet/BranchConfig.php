@@ -25,10 +25,10 @@ class BranchConfig {
      * @param string $name The branch name.
      * @param int[] $troops The list of troop id:s.
      */
-    public function __construct(int $id, string $name, array $troops) {
+    public function __construct(int $id, string $name, array $troopIds) {
         $this->branchId = $id;
         $this->branchName = $name;
-        $this->troops = $troops;
+        $this->troopIds = $troopIds;
     }
 
     /**

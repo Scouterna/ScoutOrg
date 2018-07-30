@@ -6,9 +6,10 @@
     <creationDate>[[current_date]]</creationDate>
     <license>GNU General Public License version 2 or later</license>
     <url>https://github.com/scouternasetjanster/ScoutOrg</url>
-    <version>0.1.0</version>
+    <version>1.1.2</version>
     <description>Library for getting structured organisation data of a scout group.</description>
     <files>
+        <filename>loader.php</filename>
         <folder>Org</folder>
     </files>
 </extension>

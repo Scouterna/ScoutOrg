@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="troop" label="COM_SCOUTORG_TROOP">
+        <field
+            name="id"
+            type="hidden"
+        />
+        <field
+            name="troop"
+            type="troops"
+            label="COM_SCOUTORG_TROOP_TROOP_LABEL"
+            description="COM_SCOUTORG_TROOP_TROOP_DESC"
+            required="true"
+        />
+        <field
+            name="branch"
+            type="branches"
+            label="COM_SCOUTORG_TROOP_BRANCH_LABEL"
+            description="COM_SCOUTORG_TROOP_BRANCH_DESC"
+            required="true"
+        />
+    </fieldset>
+</form>

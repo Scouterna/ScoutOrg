@@ -129,7 +129,7 @@ class ScoutGroupFactory implements Lib\IScoutGroupProvider {
             $scoutGroup->addBranch($branch);
             foreach ($config->getTroopIds() as $troopId) {
                 $troop = $scoutGroup->getTroops(true)[$troopId];
-                if ($troop->getBranch() !== null) {
+                if ($troop->getBranch() === null) {
                     $branch->addTroop($troop);
                     $troop->setBranch($branch);
                 }

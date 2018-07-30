@@ -30,8 +30,9 @@ class ScoutnetHelper {
 
     /**
      * Fetches multiple webpages concurrently.
-     * Returns array where results are stored at each respective key.
-     * Fails if any fetch fails.
+     * Returns array where each result is stored on
+     * the same key as in the input array.
+     * Fails if any page request fails.
      * @param string[] $urls
      * @return string[]|false
      */

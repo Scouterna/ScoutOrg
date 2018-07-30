@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="params"
+		label="COM_SCOUTORG_PARAMS_LABEL"
+		description="COM_SCOUTORG_PARAMS_DESC"
+	>
+        <field name="domain" type="text"
+			default="www.scoutnet.se"
+			description="COM_SCOUTORG_PARAMS_DOMAIN_DESC"
+			label="COM_SCOUTORG_PARAMS_DOMAIN_LABEL"
+		/>
+        <field name="groupId" type="text"
+            default="0"
+            description="COM_SCOUTORG_PARAMS_GROUPID_DESC"
+            label="COM_SCOUTORG_PARAMS_GROUPID_LABEL"
+        />
+        <field name="memberListApiKey" type="text"
+            default="S0M3TH1N653CUR3"
+            description="COM_SCOUTORG_PARAMS_MEMBERLISTAPIKEY_DESC"
+            label="COM_SCOUTORG_PARAMS_MEMBERLISTAPIKEY_LABEL"
+        />
+        <field name="customListsApiKey" type="text"
+            default="S0M3TH1N653CUR3"
+            description="COM_SCOUTORG_PARAMS_CUSTOMLISTSAPIKEY_DESC"
+            label="COM_SCOUTORG_PARAMS_CUSTOMLISTSAPIKEY_LABEL"
+        />
+        <field name="scoutnetCacheLifeTime" type="text"
+            default="0"
+            description="COM_SCOUTORG_PARAMS_CACHETTL_DESC"
+            label="COM_SCOUTORG_PARAMS_CACHETTL_LABEL"
+        />
+	</fieldset>
+    <fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+	>
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_scoutorg"
+			section="component"
+		/>
+	</fieldset>
+</config>
