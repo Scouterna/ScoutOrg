@@ -31,7 +31,7 @@ När biblioteket ska användas av en annan extension behöver man två rader kod
 jimport('scoutorg.loader');
 $scoutOrg = ScoutOrgLoader::load();
 ```
-Då kommer $scoutOrg att sättas till en singleton-instans av typen [Org\Lib\ScoutOrg](https://github.com/scouternasetjanster/ScoutOrg/blob/master/src/Org/Lib/ScoutOrg.php) som lever tills http-förfrågan är över. Använder flera olika extensions sig av den laddaren kommer de alltså få ut samma instans för att förhindra redundant dataprocessering. I den senaste [dokumentationen](#) kan man hitta samtliga metoder för att hämta de olika objekten i datastrukturerna.
+Då kommer $scoutOrg att sättas till en singleton-instans av typen [Org\Lib\ScoutOrg](https://github.com/scouternasetjanster/ScoutOrg/blob/master/src/Org/Lib/ScoutOrg.php) som lever tills http-förfrågan är över. Använder flera olika extensions sig av den laddaren kommer de alltså få ut samma instans för att förhindra redundant dataprocessering. I den senaste [dokumentationen](https://github.com/scouternasetjanster/ScoutOrg/releases/download/v1.0/doc_exdev.zip) kan man hitta samtliga metoder för att hämta de olika objekten i datastrukturerna.
 
 ## Att bygga projektet och generera dokumentation
 Om man vill bygga installationsfiler eller generera dokumentationen för biblioteket krävs att kunna köra 'make' samt några program beroende på vad man bygger.
