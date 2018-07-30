@@ -9,12 +9,34 @@ namespace Org\Scoutnet;
  * Helper class for use in scoutnet implementation.
  */
 class ScoutnetHelper {
+    private static $sem = null;
+
     /**
      * Fetches a webpage from the url.
      * @param string $url
      * @return string|false
      */
     public static function fetchWebPage(string $url) {
+        if (ScoutnetController::getCacheLifeTime() == 0) {
+            return self::performPageRequest($url);
+        } else {
+            self::lock();
+            $result = self::getCacheResource($url);
+            if (!$result) {
+                $result = self::performPageRequest($url);
+                self::setCacheResource($url, $result);
+            }
+            self::unlock();
+            return $result;
+        }
+    }
+
+    /**
+     * Performs one page request.
+     * @param string $url
+     * @return string|false
+     */
+    private static function performPageRequest(string $url) {
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_CUSTOMREQUEST => 'GET',
@@ -37,6 +59,43 @@ class ScoutnetHelper {
      * @return string[]|false
      */
     public static function fetchWebPages(array $urls) {
+        if (ScoutnetController::getCacheLifeTime() == 0) {
+            return self::performPageRequests($urls);
+        } else {
+            self::lock();
+            $results = array();
+            $subsetToFetch = array();
+            foreach ($urls as $key => $url) {
+                $result = self::getCacheResource($url);
+                if (!$result) {
+                    $subsetToFetch[$key] = $url;
+                } else {
+                    $results[$key] = $result;
+                }
+            }
+            if (!empty($subsetToFetch)) {
+                $subsetResults = self::performPageRequests($subsetToFetch);
+                if (!$subsetResults) {
+                    self::unlock();
+                    return false;
+                } else {
+                    foreach ($subsetToFetch as $key => $url) {
+                        self::setCacheResource($url, $subsetResults[$key]);
+                    }
+                    $results = array_merge($results, $subsetResults);
+                }
+            }
+            self::unlock();
+            return $results;
+        }
+    }
+
+    /**
+     * Performs several page requests concurrently.
+     * @param string[] $urls
+     * @return string[]|false
+     */
+    private static function performPageRequests($urls) {
         $multiCurl = curl_multi_init();
         $handles = [];
         foreach ($urls as $key => $url) {
@@ -72,5 +131,25 @@ class ScoutnetHelper {
             return false;
         }
         return $results;
+    }
+
+    private static function lock() {
+        if (!self::$sem) {
+            $sem_id = ftok(__FILE__, 's');
+            self::$sem = sem_get($sem_id);
+        }
+        sem_acquire(self::$sem);
+    }
+
+    private static function unlock() {
+        sem_release(self::$sem);
+    }
+
+    private static function getCacheResource($url) {
+        return apcu_fetch($url);
+    }
+
+    private static function setCacheResource($url, $data) {
+        return apcu_store($url, $data, ScoutnetController::getCacheLifeTime());
     }
 }

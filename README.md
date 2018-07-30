@@ -6,11 +6,31 @@ Just nu finns endast support för joomla men utrymme finns att skapa en plugin f
 ## Installation och användning
 Just nu finns endast installation för joomla och detta görs just nu manuellt.
 
-Biblioteket använder ett paket som inte är inkluderat i php.
-Om du har en annan version av php så bör du kolla upp rätt kommando för den.
+Biblioteket använder som inte är inkluderade i php:
+
+* cURL
+* APCu
+* Semaphores
+
+Nedan visas installationsexempel för vanliga versioner.
+
 * cURL
     * php 5: ``` sudo apt install php5-curl ```
     * php 7.0: ``` sudo apt install php7.0-curl ```
+* APCu
+    * php 5: ``` sudo apt install php5-apcu ```
+    * php 7.0: ``` sudo apt install php7.0-apcu ```
+
+Cache-funktionen stöds inte av windows implicit. Antingen kan den inaktiveras genom att sätta livstiden till noll eller så kan man installera eller implementera följande funktioner:
+
+* sem_get
+* sem_acquire
+* sem_release
+* apcu_fetch
+* apcu_store
+
+Har du hemsidan på linux ska det inte vara något problem om den har php 7.
+Har den php 5 kan du behöva installera APCu och Semaphores.
 
 ### Joomla
 
