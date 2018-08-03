@@ -17,7 +17,7 @@ class ScoutnetHelper {
      * @return string|false
      */
     public static function fetchWebPage(string $url) {
-        if (ScoutnetController::getCacheLifeTime() == 0) {
+        if (ScoutnetController::getCacheLifeTime() == ScoutnetController::CACHE_DISABLE) {
             return self::performPageRequest($url);
         } else {
             self::lock();
@@ -32,6 +32,22 @@ class ScoutnetHelper {
     }
 
     /**
+     * Forces a webpage request and caches it if cache is enabled.
+     * @param string $url
+     * @return string|false
+     */
+    public static function forceFetchWebPage(string $url) {
+        $result = self::performPageRequest($url);
+        if (!$result) {
+            return false;
+        }
+        if (ScoutnetController::getCacheLifeTime() != ScoutnetController::CACHE_DISABLE) {
+            self::setCacheResource($url, $result);
+        }
+        return $result;
+    }
+
+    /**
      * Performs one page request.
      * @param string $url
      * @return string|false
@@ -41,9 +57,9 @@ class ScoutnetHelper {
         curl_setopt_array($curl, [
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_URL => $url,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_RETURNTRANSFER => true,
         ]);
         $result = curl_exec($curl);
         curl_close($curl);
@@ -59,7 +75,7 @@ class ScoutnetHelper {
      * @return string[]|false
      */
     public static function fetchWebPages(array $urls) {
-        if (ScoutnetController::getCacheLifeTime() == 0) {
+        if (ScoutnetController::getCacheLifeTime() == ScoutnetController::CACHE_DISABLE) {
             return self::performPageRequests($urls);
         } else {
             self::lock();
@@ -103,9 +119,9 @@ class ScoutnetHelper {
             curl_setopt_array($curl, [
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_URL => $url,
-                CURLOPT_SSL_VERIFYPEER => FALSE,
-                CURLOPT_SSL_VERIFYHOST => FALSE,
-                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_RETURNTRANSFER => true,
             ]);
             curl_multi_add_handle($multiCurl, $curl);
             $handles[$key] = $curl;

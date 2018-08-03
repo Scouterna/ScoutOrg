@@ -5,7 +5,7 @@
 		<description>ScoutOrg extension package</description>
 		<element>pkg_scoutorg</element>
 		<type>package</type>
-		<version>1.1.0</version>
+		<version>1.1.1</version>
 		<client_id>0</client_id>
 		<client>site</client>
 		<infourl title="ScoutOrg">https://github.com/scouternasetjanster/ScoutOrg</infourl>

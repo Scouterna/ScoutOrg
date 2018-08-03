@@ -24,6 +24,8 @@ class ScoutnetController {
     /** @var int The ttl of the long lived cache in seconds. zero = disabled. */
     private static $cacheLifeTime = 0;
 
+    const CACHE_DISABLE = 0;
+
     /** @var Scoutnet[] The list of multitons for each scout group. */
     private static $multitons = [];
 
@@ -396,7 +398,7 @@ class ScoutnetController {
      * @return bool True if integer is positive and false if not.
      */ 
     public static function setCacheLifeTime(int $cacheLifeTime) {
-        if ($cacheLifeTime >= 0) {
+        if ($cacheLifeTime >= 0 || $cacheLifeTime == self::CACHE_DISABLE) {
             ScoutnetController::$cacheLifeTime = $cacheLifeTime;
             return true;
         } else {
