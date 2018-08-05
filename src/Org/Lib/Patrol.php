@@ -74,7 +74,7 @@ class Patrol {
 
     /**
      * Gets the patrol members.
-     * @return PatrolMemberLink[]
+     * @return Member[]
      */ 
     public function getMembers() {
         return $this->members->getArrayCopy();
