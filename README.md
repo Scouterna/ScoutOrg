@@ -38,7 +38,7 @@ Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
 #### Advancerad konfiguration
 Eftersom scoutnet inte ger ut grenarna som varje avdelning är i så ges istället lösningen i komponenten som konfiguerades i steg 4. Klickar man på Components->ScoutOrg så får man upp listor över grenar och avdelningar där man kan skapa grenar och sätta avdelningarnas grentillhörighet.
 
-Om man inte vill att användarna ska behöva vänta i 20 sekunder ibland när cachen laddar in så kan man sätta upp ett cronjob efter instruktionerna i /src/cronjob/
+Om man inte vill att användarna ska behöva vänta i 20 sekunder ibland när cachen laddar in så kan man sätta upp ett cronjob efter instruktionerna i [/src/cronjob/](https://github.com/scouternasetjanster/ScoutOrg/tree/master/src/cronjob)
 
 #### Användning (Utveckling utav extensions)
 När biblioteket ska användas av en annan extension behöver man två rader kod:
