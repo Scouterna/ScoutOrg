@@ -39,12 +39,10 @@ class ScoutOrgLoader {
             return false;
         }
 
-        \Org\Scoutnet\ScoutnetController::setDomain($domain);
-        \Org\Scoutnet\ScoutnetController::setCacheLifeTime($scoutnetCacheLifeTime);
-
-        $scoutnetController = \Org\Scoutnet\ScoutnetController::getMultiton($groupId);
-        $scoutnetController->setMemberListApiKey($memberListKey);
-        $scoutnetController->setCustomListsApiKey($customListsKey);
+        $groupConfig = new \Org\Scoutnet\ScoutGroupConfig($groupId,
+            $memberListKey, $customListsKey);
+        $scoutnetConnection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $scoutnetCacheLifeTime);
+        $scoutnetController = new \Org\Scoutnet\ScoutnetController($scoutnetConnection);
 
         $branchConfigs = self::getBranchConfigs();
         $scoutGroupfactory = new \Org\Scoutnet\ScoutGroupFactory($scoutnetController, $branchConfigs);

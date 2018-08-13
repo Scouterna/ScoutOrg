@@ -6,20 +6,13 @@ Just nu finns endast support för joomla men utrymme finns att skapa en plugin f
 ## Installation och användning
 Just nu finns endast installation för joomla och detta görs just nu manuellt.
 
-Biblioteket använder som inte är inkluderade i php:
+Biblioteket använder några paket som inte är inkluderade i php:
 
-* cURL
-* APCu
+* cURL: ``` sudo apt install php-curl ```
+* APCu: ``` sudo apt insall php-apcu ```
 * Semaphores
 
-Nedan visas installationsexempel för vanliga versioner.
-
-* cURL
-    * php 5: ``` sudo apt install php5-curl ```
-    * php 7.0: ``` sudo apt install php7.0-curl ```
-* APCu
-    * php 5: ``` sudo apt install php5-apcu ```
-    * php 7.0: ``` sudo apt install php7.0-apcu ```
+Nedan visas installationsexempel.
 
 Cache-funktionen stöds inte av windows implicit. Antingen kan den inaktiveras genom att sätta livstiden till noll eller så kan man installera eller implementera följande funktioner:
 
@@ -44,6 +37,8 @@ Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
 
 #### Advancerad konfiguration
 Eftersom scoutnet inte ger ut grenarna som varje avdelning är i så ges istället lösningen i komponenten som konfiguerades i steg 4. Klickar man på Components->ScoutOrg så får man upp listor över grenar och avdelningar där man kan skapa grenar och sätta avdelningarnas grentillhörighet.
+
+Om man inte vill att användarna ska behöva vänta i 20 sekunder ibland när cachen laddar in så kan man sätta upp ett cronjob efter instruktionerna i /src/cronjob/
 
 #### Användning (Utveckling utav extensions)
 När biblioteket ska användas av en annan extension behöver man två rader kod:

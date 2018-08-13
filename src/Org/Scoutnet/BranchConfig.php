@@ -23,7 +23,7 @@ class BranchConfig {
      * @see ScoutnetGroupFactory
      * @param int $id The branch id.
      * @param string $name The branch name.
-     * @param int[] $troops The list of troop id:s.
+     * @param int[] $troopIds The list of troop id:s.
      */
     public function __construct(int $id, string $name, array $troopIds) {
         $this->branchId = $id;

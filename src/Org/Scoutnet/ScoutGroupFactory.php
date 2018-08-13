@@ -139,29 +139,25 @@ class ScoutGroupFactory implements Lib\IScoutGroupProvider {
         // Create custom member lists from scoutnet custom lists.
         // Will do nothing if fetching fails.
         $customListEntrys = $this->scoutnet->getCustomLists();
-        if ($customListEntrys !== false) {
+        if ($customListEntrys) {
             // Create lists and generate member list ids for concurrent fetching.
             $customMemberListIds = [];
             foreach ($customListEntrys as $customListEntry) {
                 $customList = $customListEntry->getCustomList();
                 $scoutGroup->addCustomList($customList);
-                $customMemberListIds[] = new CustomMemberListId($customList->getId());
+                $customListMembers = $this->scoutnet->getCustomListMembers($customList->getId());
+                if ($customListMembers) {
+                    foreach ($customListMembers as $entry) {
+                        $customList->addMember($scoutGroup->getMembers()[$entry->member_no->value]);
+                    }
+                }
                 foreach ($customListEntry->rules as $customListRuleEntry) {
                     $customSubList = $customListRuleEntry->getCustomList();
                     $customList->addSubList($customSubList);
-                    $customMemberListIds[] = new CustomMemberListId($customList->getId(), $customSubList->getId());
-                }
-            }
-
-            // Get and add members to custom lists.
-            $customListMembersTable = $this->scoutnet->getMultiCustomListMembers($customMemberListIds);
-            if ($customListMembersTable !== false) {
-                foreach ($scoutGroup->getCustomLists(true) as $listId => $customList) {
-                    foreach ($customListMembersTable[$listId][CustomListRuleEntry::NO_RULE_ID] as $entry) {
-                        $customList->addMember($scoutGroup->getMembers()[$entry->member_no->value]);
-                    }
-                    foreach ($customList->getSubLists(true) as $ruleId => $customSubList) {
-                        foreach ($customListMembersTable[$listId][$ruleId] as $entry) {
+                    $customSubListMembers = $this->scoutnet->getCustomListMembers(
+                        $customList->getId(), $customSubList->getId());
+                    if ($customSubListMembers) {
+                        foreach ($customSubListMembers as $entry) {
                             $customSubList->addMember($scoutGroup->getMembers()[$entry->member_no->value]);
                         }
                     }

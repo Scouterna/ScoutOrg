@@ -26,4 +26,4 @@ $(phpdoc_target_exdev): $(library_source_exdev)
 
 $(phpdoc_target_indev): $(library_source_indev)
 	@phpdoc run -d src/Org -t $(phpdoc_build_indev) \
-		--template clean
+		--template clean --parseprivate
