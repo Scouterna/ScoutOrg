@@ -9,10 +9,8 @@ Just nu finns endast installation för joomla och detta görs just nu manuellt.
 Biblioteket använder några paket som inte är inkluderade i php:
 
 * cURL: ``` sudo apt install php-curl ```
-* APCu: ``` sudo apt insall php-apcu ```
+* APCu: ``` sudo apt install php-apcu ```
 * Semaphores
-
-Nedan visas installationsexempel.
 
 Cache-funktionen stöds inte av windows implicit. Antingen kan den inaktiveras genom att sätta livstiden till noll eller så kan man installera eller implementera följande funktioner:
 
