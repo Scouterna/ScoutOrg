@@ -119,6 +119,7 @@ class ScoutGroupFactory implements Lib\IScoutGroupProvider {
 
         // Create branches from config.
         // Will ignore troops that already have a branch.
+        // Will ignore invalid troops.
         // Will not ignore two configs with same branch id.
         foreach ($this->branchConfigs as $config) {
             $branch = new Lib\Branch($config->getBranchId(), $config->getBranchName());
@@ -129,6 +130,9 @@ class ScoutGroupFactory implements Lib\IScoutGroupProvider {
             $scoutGroup->addBranch($branch);
             foreach ($config->getTroopIds() as $troopId) {
                 $troop = $scoutGroup->getTroops(true)[$troopId];
+                if ($troop == null) {
+                    continue;
+                }
                 if ($troop->getBranch() === null) {
                     $branch->addTroop($troop);
                     $troop->setBranch($branch);
