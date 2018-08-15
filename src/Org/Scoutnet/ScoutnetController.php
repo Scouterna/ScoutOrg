@@ -24,6 +24,14 @@ class ScoutnetController {
     }
 
     /**
+     * Gets the group scoutnet id.
+     * @return int
+     */
+    public function getGroupId() {
+        return $this->connection->getGroupConfig()->getGroupId();
+    }
+
+    /**
      * Gets the group member list.
      * @return MemberEntry[]|false
      */
