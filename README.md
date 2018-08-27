@@ -57,7 +57,7 @@ Om projektet skulle expandera och börjar ge stöd för att bygga en plugin för
 ``` make joomla ``` kräver programmet zip: ``` sudo apt install zip ```
 
 ### Generera dokumentation
-För att generera dokumentationen kör man ``` make doc ```. Detta kräver att man har php och phpdoc (som /bin/phpdoc).
+För att generera dokumentationen kör man ``` make doc_exdev ``` för bibliotekets publika interface (för användning vid utveckling utav extensions) och ``` make doc_indev ``` för samtlig dokumentation från alla filer, deras privata, publika, och internmarkerade klasser och klassmedlemmar. Detta kräver att man har php och phpdoc (som /bin/phpdoc).
 
 1. php 7.0 +
 2. [phpdoc](https://github.com/phpDocumentor/phpDocumentor2)

@@ -6,7 +6,7 @@
     <creationDate>[[current_date]]</creationDate>
     <license>GNU General Public License version 2 or later</license>
     <url>https://github.com/scouternasetjanster/ScoutOrg</url>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>COM_SCOUTORG_DESCRIPTION</description>
     <install>
 		<sql>

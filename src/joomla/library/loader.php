@@ -4,6 +4,10 @@
  * @author Alexander Krantz
  */
 
+defined('_JEXEC') or die('Restricted access');
+
+JLoader::registerNamespace('Org', __DIR__);
+
 class ScoutOrgLoader {
     /** @var \Org\Lib\ScoutOrg Scout organisation instance */
     private static $scoutOrg;
@@ -17,8 +21,6 @@ class ScoutOrgLoader {
         if (self::$scoutOrg) {
             return self::$scoutOrg;
         }
-
-        JLoader::registerNamespace('Org', __DIR__);
         
         $params = self::getParams();
 
