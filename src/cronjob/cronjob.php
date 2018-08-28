@@ -9,8 +9,10 @@ $customListsKey = ''; // Set to the custom lists api key.
 
 spl_autoload_register(function ($class_name) {
     global $orgLib;
-    $class_name = str_replace('\\', '/', $class_name);
-    include $orgLib . $class_name . '.php';
+    $file = $orgLib.str_replace('\\', '/', $class_name).'.php';
+    if (file_exists($file)) {
+        include $file;
+    }
 });
 
 $groupConfig = new \Org\Scoutnet\ScoutGroupConfig($groupId, $memberListKey, $customListsKey);
