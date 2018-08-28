@@ -32,6 +32,9 @@ class WaitingMember {
     /** @var string The note attached to the waiting member. */
     private $note;
 
+    /** @var bool Wether the member's parent or close relative wants to be a leader. */
+    private $leaderInterest;
+
     /**
      * Creates a new waiting member
      * @internal
@@ -42,6 +45,7 @@ class WaitingMember {
      * @param Contact[] $contacts
      * @param string $waitingStartDate
      * @param string $note
+     * @param bool $leaderInterest
      */
     public function __construct(int $id,
                                 PersonInfo $personInfo,
@@ -49,7 +53,8 @@ class WaitingMember {
                                 Location $accommodation,
                                 array $contacts,
                                 string $waitingStartDate,
-                                string $note) {
+                                string $note,
+                                bool $leaderInterest) {
         $this->id = $id;
         $this->personInfo = $personInfo;
         $this->contactInfo = $contactInfo;
@@ -57,6 +62,7 @@ class WaitingMember {
         $this->contacts = $contacts;
         $this->waitingStartdate = $waitingStartDate;
         $this->note = $note;
+        $this->leaderInterest = $leaderInterest;
     }
 
     /**
@@ -113,5 +119,14 @@ class WaitingMember {
      */ 
     public function getNote() {
         return $this->note;
+    }
+
+    /**
+     * Gets wether the member's parent or a close relative
+     * is interested in becoming a leader.
+     * @return bool
+     */
+    public function hasLeaderInterest() {
+        return $this->leaderInterest;
     }
 }

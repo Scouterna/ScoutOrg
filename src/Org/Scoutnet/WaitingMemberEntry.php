@@ -136,6 +136,11 @@ class WaitingMemberEntry {
     public $contact_telephone_dad;
 
     /**
+     * @var Value Wether the person's parent or relative has a leader interest.
+     */
+    public $contact_leader_interest;
+
+    /**
      * @var Value Unknown. May be wether instant messaging is enabled.
      */
     public $contact_instant_messaging;
@@ -165,7 +170,8 @@ class WaitingMemberEntry {
             $this->getAccommodation(),
             $this->getContacts(),
             $this->waiting_since,
-            $this->note !== null ? $this->note : '');
+            $this->note !== null ? $this->note : '',
+            $this->contact_leader_interest == "Ja");
         return $member;
     }
 
