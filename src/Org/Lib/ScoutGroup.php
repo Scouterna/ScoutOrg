@@ -41,6 +41,9 @@ class ScoutGroup {
     /** @var CustomList[] The custom lists of the scout group indexed by their name. */
     private $customListsTitleIndexed;
 
+    /** @var callable The function that gets the custom list until custom lists are phased out of here. */
+    private $customListFetcher;
+
     /**
      * Creates a new ScoutGroup with the specified id.
      * @internal
@@ -157,19 +160,18 @@ class ScoutGroup {
      * Gets the list of custom lists of the group.
      * @param bool $idIndexed Wether to get the list indexed by id or title.
      * @return CustomList[]
+     * @deprecated 1.2.1 Custom lists are moved to the the ScoutOrg class.
      */
     public function getCustomLists(bool $idIndexed = false) {
-        if ($idIndexed) {
-            return $this->customListsIdIndexed->getArrayCopy();
-        } else {
-            return $this->customListsTitleIndexed->getArrayCopy();
-        }
+        $customListFetcher = $this->customListFetcher;
+        return $customListFetcher($idIndexed);
     }
 
     /**
      * Adds a custom list.
      * @param CustomList $customList
      * @return void
+     * @deprecated 1.2.1 Custom lists are moved to the the ScoutOrg class.
      */
     private function addCustomList(CustomList $customList) {
         $this->customListsIdIndexed[$customList->getId()] = $customList;

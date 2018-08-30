@@ -140,35 +140,6 @@ class ScoutGroupFactory implements Lib\IScoutGroupProvider {
             }
         }
 
-        // Create custom member lists from scoutnet custom lists.
-        // Will do nothing if fetching fails.
-        $customListEntrys = $this->scoutnet->getCustomLists();
-        if ($customListEntrys) {
-            // Create lists and generate member list ids for concurrent fetching.
-            $customMemberListIds = [];
-            foreach ($customListEntrys as $customListEntry) {
-                $customList = $customListEntry->getCustomList();
-                $scoutGroup->addCustomList($customList);
-                $customListMembers = $this->scoutnet->getCustomListMembers($customList->getId());
-                if ($customListMembers) {
-                    foreach ($customListMembers as $entry) {
-                        $customList->addMember($scoutGroup->getMembers()[$entry->member_no->value]);
-                    }
-                }
-                foreach ($customListEntry->rules as $customListRuleEntry) {
-                    $customSubList = $customListRuleEntry->getCustomList();
-                    $customList->addSubList($customSubList);
-                    $customSubListMembers = $this->scoutnet->getCustomListMembers(
-                        $customList->getId(), $customSubList->getId());
-                    if ($customSubListMembers) {
-                        foreach ($customSubListMembers as $entry) {
-                            $customSubList->addMember($scoutGroup->getMembers()[$entry->member_no->value]);
-                        }
-                    }
-                }
-            }
-        }
-
         return $scoutGroup;
     }
 }

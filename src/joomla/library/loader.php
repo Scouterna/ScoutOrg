@@ -24,20 +24,20 @@ class ScoutOrgLoader {
         
         $params = self::getParams();
 
-        $domain = $params->get('domain', 'www.scoutnet.se');
-        $groupId = $params->get('groupId', -1);
-        $memberListKey = $params->get('memberListApiKey', '');
-        $customListsKey = $params->get('customListsApiKey', '');
-        $scoutnetCacheLifeTime = $params->get('scoutnetCacheLifeTime');
+        $scoutGroupDataSource = $params->get('datasources_scoutGroupDataSource', 'scoutnet');
+        $customListsDataSource = $params->get('datasources_customListsDataSource', 'scoutnet');
+        $waitingListDataSource = $params->get('datasources_waitingListDataSource', 'scoutnet');
 
-        $error = false;
-        if ($groupId == -1) {
-            $error = true;
-        }
-        if ($memberListKey == '' || $customListsKey == '') {
-            $error = true;
-        }
-        if ($error) {
+        $domain = $params->get('scoutnet_domain', 'www.scoutnet.se');
+        $groupId = $params->get('scoutnet_groupId', -1);
+        $memberListKey = $params->get('scoutnet_memberListApiKey', '');
+        $customListsKey = $params->get('scoutnet_customListsApiKey', '');
+        $scoutnetCacheLifeTime = $params->get('scoutnet_cacheLifeTime');
+
+        if ($groupId == -1 ||
+            $memberListKey == '' ||
+            $customListsKey == ''
+        ) {
             return false;
         }
 
@@ -46,11 +46,22 @@ class ScoutOrgLoader {
         $scoutnetConnection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $scoutnetCacheLifeTime);
         $scoutnetController = new \Org\Scoutnet\ScoutnetController($scoutnetConnection);
 
-        $branchConfigs = self::getBranchConfigs();
-        $scoutGroupfactory = new \Org\Scoutnet\ScoutGroupFactory($scoutnetController, $branchConfigs);
-        $waitingListFactory = new \Org\Scoutnet\WaitingListFactory($scoutnetController);
+        if ($scoutGroupDataSource == 'scoutnet') {
+            $branchConfigs = self::getBranchConfigs();
+            $scoutGroupFactory = new \Org\Scoutnet\ScoutGroupFactory($scoutnetController, $branchConfigs);
+        } else if ($scoutGroupDataSource == 'composite') {
+            return false; // TODO: Implement.
+        }
 
-        self::$scoutOrg = new \Org\Lib\ScoutOrg($scoutGroupfactory, $waitingListFactory);
+        if ($customListsDataSource == 'scoutnet') {
+            $customListsFactory = new \Org\Scoutnet\CustomListsFactory($scoutnetController);
+        }
+
+        if ($waitingListDataSource == 'scoutnet') {
+            $waitingListFactory = new \Org\Scoutnet\WaitingListFactory($scoutnetController);
+        }
+
+        self::$scoutOrg = new \Org\Lib\ScoutOrg($scoutGroupFactory, $customListsFactory, $waitingListFactory);
 
         return self::$scoutOrg;
     }

@@ -20,9 +20,6 @@ Cache-funktionen stöds inte av windows implicit. Antingen kan den inaktiveras g
 * apcu_fetch
 * apcu_store
 
-Har du hemsidan på linux ska det inte vara något problem om den har php 7.
-Har den php 5 kan du behöva installera APCu och Semaphores.
-
 ### Joomla
 
 #### Installation
@@ -32,6 +29,8 @@ Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
 3. Välj Upload Package File och dra in zipfilen.
 4. Konfigurera komponenten 'ScoutOrg Component' i System->'Global Configuration' att använda rätt kår och api-nycklar. (Måste göras innan den används av andra extensions)
     * Konfiguera alternativt access till komponentens adminsida.
+    * Det går även att konfigurera var datan ska komma från. Standard är från scoutnet, men det går att implementera andra datakällor. (kommer snart till joomla)
+        * OBS: det går i scoutorg_joomla_1.3.0 att välja 'composite' som datakälla för scoutkåren, men den fungerar inte än.
 
 #### Advancerad konfiguration
 Eftersom scoutnet inte ger ut grenarna som varje avdelning är i så ges istället lösningen i komponenten som konfiguerades i steg 4. Klickar man på Components->ScoutOrg så får man upp listor över grenar och avdelningar där man kan skapa grenar och sätta avdelningarnas grentillhörighet.

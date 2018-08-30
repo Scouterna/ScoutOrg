@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset
-		name="params"
-		label="COM_SCOUTORG_PARAMS_LABEL"
-		description="COM_SCOUTORG_PARAMS_DESC"
+		name="datasources"
+		label="COM_SCOUTORG_CONFIG_DATASOURCES_LABEL"
+		description="COM_SCOUTORG_CONFIG_DATASOURCES_DESC"
 	>
-        <field name="domain" type="text"
+		<field name="datasources_scoutGroupSource" type="radio"
+			default="scoutnet"
+			description="COM_SCOUTORG_CONFIG_DATASOURCES_SCOUTGROUPSOURCE_DESC"
+			label="COM_SCOUTORG_CONFIG_DATASOURCES_SCOUTGROUPSOURCE_LABEL"
+		>
+			<option value="scoutnet">Scoutnet</option>
+			<option value="composite">Composite</option>
+		</field>
+		<field name="datasources_customListsSource" type="radio"
+			default="scoutnet"
+			description="COM_SCOUTORG_CONFIG_DATASOURCES_CUSTOMLISTSSOURCE_DESC"
+			label="COM_SCOUTORG_CONFIG_DATASOURCES_CUSTOMLISTSSOURCE_LABEL"
+		>
+			<option value="scoutnet">Scoutnet</option>
+		</field>
+		<field name="datasources_waitingListSource" type="radio"
+			default="scoutnet"
+			description="COM_SCOUTORG_CONFIG_DATASOURCES_WAITINGLISTSOURCE_DESC"
+			label="COM_SCOUTORG_CONFIG_DATASOURCES_WAITINGLISTSOURCE_LABEL"
+		>
+			<option value="scoutnet">Scoutnet</option>
+		</field>
+	</fieldset>
+	<fieldset
+		name="scoutnet"
+		label="COM_SCOUTORG_CONFIG_SCOUTNET_LABEL"
+		description="COM_SCOUTORG_CONFIG_SCOUTNET_DESC"
+	>
+        <field name="scoutnet_domain" type="text"
 			default="www.scoutnet.se"
-			description="COM_SCOUTORG_PARAMS_DOMAIN_DESC"
-			label="COM_SCOUTORG_PARAMS_DOMAIN_LABEL"
+			description="COM_SCOUTORG_CONFIG_SCOUTNET_DOMAIN_DESC"
+			label="COM_SCOUTORG_CONFIG_SCOUTNET_DOMAIN_LABEL"
 		/>
-        <field name="groupId" type="text"
+        <field name="scoutnet_groupId" type="text"
             default="0"
-            description="COM_SCOUTORG_PARAMS_GROUPID_DESC"
-            label="COM_SCOUTORG_PARAMS_GROUPID_LABEL"
+            description="COM_SCOUTORG_CONFIG_SCOUTNET_GROUPID_DESC"
+            label="COM_SCOUTORG_CONFIG_SCOUTNET_GROUPID_LABEL"
         />
-        <field name="memberListApiKey" type="text"
+        <field name="scoutnet_memberListApiKey" type="text"
             default="S0M3TH1N653CUR3"
-            description="COM_SCOUTORG_PARAMS_MEMBERLISTAPIKEY_DESC"
-            label="COM_SCOUTORG_PARAMS_MEMBERLISTAPIKEY_LABEL"
+            description="COM_SCOUTORG_CONFIG_SCOUTNET_MEMBERLISTAPIKEY_DESC"
+            label="COM_SCOUTORG_CONFIG_SCOUTNET_MEMBERLISTAPIKEY_LABEL"
         />
-        <field name="customListsApiKey" type="text"
+        <field name="scoutnet_customListsApiKey" type="text"
             default="S0M3TH1N653CUR3"
-            description="COM_SCOUTORG_PARAMS_CUSTOMLISTSAPIKEY_DESC"
-            label="COM_SCOUTORG_PARAMS_CUSTOMLISTSAPIKEY_LABEL"
+            description="COM_SCOUTORG_CONFIG_SCOUTNET_CUSTOMLISTSAPIKEY_DESC"
+            label="COM_SCOUTORG_CONFIG_SCOUTNET_CUSTOMLISTSAPIKEY_LABEL"
         />
-        <field name="scoutnetCacheLifeTime" type="text"
+        <field name="scoutnet_cacheLifeTime" type="text"
             default="0"
-            description="COM_SCOUTORG_PARAMS_CACHETTL_DESC"
-            label="COM_SCOUTORG_PARAMS_CACHETTL_LABEL"
+            description="COM_SCOUTORG_CONFIG_SCOUTNET_CACHETTL_DESC"
+            label="COM_SCOUTORG_CONFIG_SCOUTNET_CACHETTL_LABEL"
         />
 	</fieldset>
     <fieldset
