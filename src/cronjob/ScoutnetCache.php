@@ -22,7 +22,7 @@ $connection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $cache
 {
     $uriVars = '';
     $result = $connection->fetchMemberListApi($uriVars, true);
-    if ($result) {
+    if ($result !== false) {
         echo "<p>Fetched member list</p>\n";
     } else {
         echo "<p>Failed fetching member list</p>\n";
@@ -33,7 +33,7 @@ $connection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $cache
 {
     $uriVars = 'waiting=1';
     $result = $connection->fetchMemberListApi($uriVars, true);
-    if ($result) {
+    if ($result !== false) {
         echo "<p>Fetched waiting list</p>\n";
     } else {
         echo "<p>Failed fetching waiting list</p>\n";
@@ -44,12 +44,12 @@ $connection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $cache
 {
     $uriVars = '';
     $customLists = $connection->fetchCustomListsApi($uriVars, true);
-    if ($result) {
+    if ($customLists !== false) {
         echo "<p>Fetched custom lists</p>\n";
         foreach ($customLists as $customList) {
             $uriVars = "list_id={$customList->id}";
             $customListMembers = $connection->fetchCustomListsApi($uriVars, true);
-            if ($customListMembers) {
+            if ($customListMembers !== false) {
                 echo "<p>Fetched members of list {$customList->id}</p>\n";
             } else {
                 echo "<p>Failed fetching members of list {$customList->id}</p>\n";
@@ -57,7 +57,7 @@ $connection = new \Org\Scoutnet\ScoutnetConnection($groupConfig, $domain, $cache
             foreach ($customList->rules as $rule) {
                 $uriVars = "list_id={$customList->id}&rule_id={$rule->id}";
                 $ruleMembers = $connection->fetchCustomListsApi($uriVars, true);
-                if ($customListMembers) {
+                if ($ruleMembers !== false) {
                     echo "<p>Fetched members of list {$customList->id} rule {$rule->id}</p>\n";
                 } else {
                     echo "<p>Failed fetching members of list {$customList->id} rule {$rule->id}</p>\n";
