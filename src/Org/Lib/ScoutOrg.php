@@ -61,10 +61,6 @@ class ScoutOrg {
         if ($scoutGroup === false) {
             return false;
         }
-
-        $scoutGroup->customListFetcher = function($idIndexed) {
-            return $this->getCustomLists($idIndexed);
-        };
         
         $this->loadedScoutGroup = $scoutGroup;
         return $scoutGroup;

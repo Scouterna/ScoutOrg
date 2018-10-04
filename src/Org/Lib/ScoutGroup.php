@@ -35,15 +35,6 @@ class ScoutGroup {
     /** @var RoleGroup[] The scout group roles indexed by their name. */
     private $roleGroupsNameIndexed;
 
-    /** @var CustomList[] The custom lists of the scout group indexed by their id. */
-    private $customListsIdIndexed;
-
-    /** @var CustomList[] The custom lists of the scout group indexed by their name. */
-    private $customListsTitleIndexed;
-
-    /** @var callable The function that gets the custom list until custom lists are phased out of here. */
-    private $customListFetcher;
-
     /**
      * Creates a new ScoutGroup with the specified id.
      * @internal
@@ -58,8 +49,6 @@ class ScoutGroup {
         $this->branchesNameIndexed = new \ArrayObject();
         $this->roleGroupsIdIndexed = new \ArrayObject();
         $this->roleGroupsNameIndexed = new \ArrayObject();
-        $this->customListsIdIndexed = new \ArrayObject();
-        $this->customListsTitleIndexed = new \ArrayObject();
     }
 
     /**
@@ -154,27 +143,5 @@ class ScoutGroup {
     private function addRoleGroup(RoleGroup $roleGroup) {
         $this->roleGroupsIdIndexed[$roleGroup->getId()] = $roleGroup;
         $this->roleGroupsNameIndexed[$roleGroup->getRoleName()] = $roleGroup;
-    }
-
-    /**
-     * Gets the list of custom lists of the group.
-     * @param bool $idIndexed Wether to get the list indexed by id or title.
-     * @return CustomList[]
-     * @deprecated 1.2.1 Custom lists are moved to the the ScoutOrg class.
-     */
-    public function getCustomLists(bool $idIndexed = false) {
-        $customListFetcher = $this->customListFetcher;
-        return $customListFetcher($idIndexed);
-    }
-
-    /**
-     * Adds a custom list.
-     * @param CustomList $customList
-     * @return void
-     * @deprecated 1.2.1 Custom lists are moved to the the ScoutOrg class.
-     */
-    private function addCustomList(CustomList $customList) {
-        $this->customListsIdIndexed[$customList->getId()] = $customList;
-        $this->customListsTitleIndexed[$customList->getTitle()] = $customList;
     }
 }
