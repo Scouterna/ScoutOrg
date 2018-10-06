@@ -21,6 +21,9 @@ class ScoutOrgLoader {
         if (self::$scoutOrg) {
             return self::$scoutOrg;
         }
+
+        jimport('scoutorg.scoutnetloader');
+        jimport('scoutorg.compositeloader');
         
         $params = self::getParams();
 
@@ -47,21 +50,21 @@ class ScoutOrgLoader {
         $scoutnetController = new \Org\Scoutnet\ScoutnetController($scoutnetConnection);
 
         if ($scoutGroupDataSource == 'scoutnet') {
-            $branchConfigs = self::getBranchConfigs();
-            $scoutGroupFactory = new \Org\Scoutnet\ScoutGroupFactory($scoutnetController, $branchConfigs);
+            $scoutGroupProvider = ScoutOrgScoutnetLoader::getScoutGroupProvider();
         } else if ($scoutGroupDataSource == 'composite') {
+            $scoutGroupProvider = ScoutOrgCompositeLoader::getScoutGroupProvider();
             return false; // TODO: Implement.
         }
 
         if ($customListsDataSource == 'scoutnet') {
-            $customListsFactory = new \Org\Scoutnet\CustomListsFactory($scoutnetController);
+            $customListsProvider = ScoutOrgScoutnetLoader::getCustomListsProvider();
         }
 
         if ($waitingListDataSource == 'scoutnet') {
-            $waitingListFactory = new \Org\Scoutnet\WaitingListFactory($scoutnetController);
+            $waitingListProvider = ScoutOrgScoutnetLoader::getWaitingListProvider();
         }
 
-        self::$scoutOrg = new \Org\Lib\ScoutOrg($scoutGroupFactory, $customListsFactory, $waitingListFactory);
+        self::$scoutOrg = new \Org\Lib\ScoutOrg($scoutGroupProvider, $customListsProvider, $waitingListProvider);
 
         return self::$scoutOrg;
     }
@@ -72,33 +75,5 @@ class ScoutOrgLoader {
      */
     private static function getParams() {
         return JComponentHelper::getParams('com_scoutorg');
-    }
-
-    /**
-     * Gets the branch configs from the database.
-     * @return \Org\Scoutnet\BranchConfig[]
-     */
-    private static function getBranchConfigs() {
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
-        $query->select('id, name')->from($db->quoteName('#__scoutorg_branches'));
-        $db->setQuery($query);
-
-        $configs = array();
-        foreach ($db->loadObjectList() as $branchRow) {
-            $query = $db->getQuery(true);
-            $query->select('troop')
-                ->from($db->quoteName('#__scoutorg_troops'))
-                ->where("branch = {$branchRow->id}");
-            $db->setQuery($query);
-
-            $troops = array();
-            foreach ($db->loadObjectList() as $troopRow) {
-                $troops[] = $troopRow->troop;
-            }
-            $configs[] = new Org\Scoutnet\BranchConfig($branchRow->id, $branchRow->name, $troops);
-        }
-
-        return $configs;
     }
 }

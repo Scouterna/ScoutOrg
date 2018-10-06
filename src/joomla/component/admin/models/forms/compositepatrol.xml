@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="compositepatrol" label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL">
+        <field
+            name="id"
+            type="hidden"
+        />
+        <field
+            name="name"
+            type="text"
+            label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_NAME_LABEL"
+            description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_NAME_DESC"
+            size="40"
+            required="true"
+        />
+        <field
+            name="troop"
+            type="compositetroops"
+            label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_TROOP_LABEL"
+            description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_TROOP_DESC"
+            required="true"
+        />
+        <field
+            name="members"
+            type="compositemembers"
+            label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS_LABEL"
+            description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS_DESC"
+        >
+    </fieldset>
+    <fieldset name="compositepatrolmembers" label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS">
+        <field
+            name="member[]"
+            type=""
+        />
+    </fieldset>
+</form>

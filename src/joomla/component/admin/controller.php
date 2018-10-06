@@ -11,5 +11,5 @@ class ScoutOrgController extends JControllerLegacy {
 	 * @var string
 	 * @since 12.2
 	 */
-	protected $default_view = 'branches';
+	protected $default_view = 'scoutnetbranches';
 }
