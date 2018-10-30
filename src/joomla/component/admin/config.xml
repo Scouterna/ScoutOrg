@@ -11,7 +11,7 @@
 			label="COM_SCOUTORG_CONFIG_DATASOURCES_SCOUTGROUPSOURCE_LABEL"
 		>
 			<option value="scoutnet">Scoutnet</option>
-			<option value="composite">Composite</option>
+			<!--<option value="composite">Composite</option>-->
 		</field>
 		<field name="datasources_customListsSource" type="radio"
 			default="scoutnet"
