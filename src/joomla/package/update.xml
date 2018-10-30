@@ -51,4 +51,21 @@
 		</tags>
 		<targetplatform name="joomla" version="3" />
 	</update>
+	<update>
+		<name>ScoutOrg Package</name>
+		<description>ScoutOrg extension package</description>
+		<element>pkg_scoutorg</element>
+		<type>package</type>
+		<version>1.2.2</version>
+		<client_id>0</client_id>
+		<client>site</client>
+		<infourl title="ScoutOrg">https://github.com/scouternasetjanster/ScoutOrg</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/scouternasetjanster/ScoutOrg/releases/download/v1.2.2/scoutorg.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<targetplatform name="joomla" version="3" />
+	</update>
 </updates>
