@@ -10,27 +10,18 @@
             type="text"
             label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_NAME_LABEL"
             description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_NAME_DESC"
-            size="40"
+            size="64"
             required="true"
         />
         <field
             name="troop"
-            type="compositetroops"
-            label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_TROOP_LABEL"
-            description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_TROOP_DESC"
-            required="true"
+            type="hidden"
         />
-        <field
-            name="members"
-            type="compositemembers"
-            label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS_LABEL"
-            description="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS_DESC"
-        >
     </fieldset>
     <fieldset name="compositepatrolmembers" label="COM_SCOUTORG_MANAGER_COMPOSITEPATROL_MEMBERS">
         <field
             name="member[]"
-            type=""
+            type="compositetroopmembers"
         />
     </fieldset>
 </form>

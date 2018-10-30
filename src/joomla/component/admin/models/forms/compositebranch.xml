@@ -10,7 +10,7 @@
             type="text"
             label="COM_SCOUTORG_MANAGER_COMPOSITEBRANCH_NAME_LABEL"
             description="COM_SCOUTORG_MANAGER_COMPOSITEBRANCH_NAME_DESC"
-            size="40"
+            size="64"
             required="true"
         />
     </fieldset>
