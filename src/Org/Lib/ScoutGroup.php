@@ -42,13 +42,13 @@ class ScoutGroup {
      */
     public function __construct(int $id) {
         $this->id = $id;
-        $this->members = new \ArrayObject();
-        $this->troopsIdIndexed = new \ArrayObject();
-        $this->troopsNameIndexed = new \ArrayObject();
-        $this->branchesIdIndexed = new \ArrayObject();
-        $this->branchesNameIndexed = new \ArrayObject();
-        $this->roleGroupsIdIndexed = new \ArrayObject();
-        $this->roleGroupsNameIndexed = new \ArrayObject();
+        $this->members = array();
+        $this->troopsIdIndexed = array();
+        $this->troopsNameIndexed = array();
+        $this->branchesIdIndexed = array();
+        $this->branchesNameIndexed = array();
+        $this->roleGroupsIdIndexed = array();
+        $this->roleGroupsNameIndexed = array();
     }
 
     /**
@@ -64,7 +64,7 @@ class ScoutGroup {
      * @return Member[]
      */
     public function getMembers() {
-        return $this->members->getArrayCopy();
+        return $this->members;
     }
 
     /**
@@ -83,9 +83,9 @@ class ScoutGroup {
      */
     public function getBranches(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->branchesIdIndexed->getArrayCopy();
+            return $this->branchesIdIndexed;
         } else {
-            return $this->branchesNameIndexed->getArrayCopy();
+            return $this->branchesNameIndexed;
         }
     }
 
@@ -106,9 +106,9 @@ class ScoutGroup {
      */
     public function getTroops(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->troopsIdIndexed->getArrayCopy();
+            return $this->troopsIdIndexed;
         } else {
-            return $this->troopsNameIndexed->getArrayCopy();
+            return $this->troopsNameIndexed;
         }
     }
 
@@ -129,9 +129,9 @@ class ScoutGroup {
      */
     public function getRoleGroups(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->roleGroupsIdIndexed->getArrayCopy();
+            return $this->roleGroupsIdIndexed;
         } else {
-            return $this->roleGroupsNameIndexed->getArrayCopy();
+            return $this->roleGroupsNameIndexed;
         }
     }
 

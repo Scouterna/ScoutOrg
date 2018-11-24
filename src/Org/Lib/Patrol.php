@@ -35,8 +35,8 @@ class Patrol {
     public function __construct(int $id, string $name) {
         $this->id = $id;
         $this->name = $name;
-        $this->members = new \ArrayObject();
-        $this->memberRoles = new \ArrayObject();
+        $this->members = array();
+        $this->memberRoles = array();
     }
 
     /**
@@ -77,7 +77,7 @@ class Patrol {
      * @return Member[]
      */ 
     public function getMembers() {
-        return $this->members->getArrayCopy();
+        return $this->members;
     }
 
     /**
@@ -85,7 +85,7 @@ class Patrol {
      * @return string[]
      */
     public function getMemberRoles() {
-        return $this->memberRoles->getArrayCopy();
+        return $this->memberRoles;
     }
     
     /**

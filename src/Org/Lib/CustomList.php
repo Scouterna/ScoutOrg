@@ -40,9 +40,9 @@ class CustomList {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
-        $this->members = new \ArrayObject();
-        $this->subListsIdIndexed = new \ArrayObject();
-        $this->subListsTitleIndexed = new \ArrayObject();
+        $this->members = array();
+        $this->subListsIdIndexed = array();
+        $this->subListsTitleIndexed = array();
     }
 
     /** 
@@ -94,7 +94,7 @@ class CustomList {
      */ 
     public function getMembers()
     {
-        return $this->members->getArrayCopy();
+        return $this->members;
     }
 
     /**
@@ -104,9 +104,9 @@ class CustomList {
      */ 
     public function getSubLists(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->subListsIdIndexed->getArrayCopy();
+            return $this->subListsIdIndexed;
         } else {
-            return $this->subListsTitleIndexed->getArrayCopy();
+            return $this->subListsTitleIndexed;
         }
     }
 }

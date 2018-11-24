@@ -32,8 +32,8 @@ class Branch {
     public function __construct(int $id, string $name) {
         $this->id = $id;
         $this->name = $name;
-        $this->troopsIdIndexed = new \ArrayObject();
-        $this->troopsNameIndexed = new \ArrayObject();
+        $this->troopsIdIndexed = array();
+        $this->troopsNameIndexed = array();
     }
 
     /**
@@ -69,9 +69,9 @@ class Branch {
      */ 
     public function getTroops(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->troopsIdIndexed->getArrayCopy();
+            return $this->troopsIdIndexed;
         } else {
-            return $this->troopsNameIndexed->getArrayCopy();
+            return $this->troopsNameIndexed;
         }
     }
 }
