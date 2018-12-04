@@ -23,6 +23,16 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
+    <files folder="site">
+        <file>scoutorg.php</file>
+        <file>controller.php</file>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+    </files>
+    <languages folder="site/language">
+        <language tag="sv-SE">sv-SE/sv-SE.com_scoutorg.ini</language>
+    </languages>
     <administration>
         <menu>ScoutOrg</menu>
         <files folder="admin">

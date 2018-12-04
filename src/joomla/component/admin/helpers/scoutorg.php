@@ -13,6 +13,9 @@ class ScoutOrgHelper {
         JHtmlSidebar::addEntry(JText::_('COM_SCOUTORG_ADMIN_TROOPS'),
             'index.php?option=com_scoutorg&view=troops',
             $view == 'troops');
+        JHtmlSidebar::addEntry(JText::_('COM_SCOUTORG_ADMIN_USERPROFILEFIELDS'),
+            'index.php?option=com_scoutorg&view=userprofilefields',
+            $view == 'userprofilefields');
         return JHtmlSidebar::render();
     }
 }
