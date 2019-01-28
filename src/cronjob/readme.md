@@ -2,7 +2,7 @@
 ScoutnetCache.php är en fil som kan användas i ett cron job eller en liknande lösning för att på schemalagd tid ladda in data in i cachen så att man slipper vänta i 20 sekunder då och då när cachen är utdaterad.
 
 ## Installation
-Eftersom APCu är en in-memory cache som är starkt kopplad till den process den används i t.ex. apache2, så måste den hanteras genom den processen. Därför måste scriptet köras genom att initiera ett http-request till ScoutnetCache.php med t.ex. ``` wget ```. För att vidare göra att en användare inte kan göra det så kan filen läggas i en mapp tillsammans med en fil .htaccess (så länge AllowOverride är satt till Allow i rootinställningarna eller en övre mapp):
+Eftersom APCu är en in-memory cache som är starkt kopplad till den process den används i t.ex. apache2, så måste den hanteras genom den processen. Därför måste scriptet köras genom att initiera ett http-request till ScoutnetCache.php med t.ex. ``` wget ```. För att vidare göra att en användare inte kan göra det så kan filen läggas i en mapp tillsammans med en fil [.htaccess](.htaccess) (så länge AllowOverride är satt till Allow i rootinställningarna eller en övre mapp):
 
 ```
 <If "!(-R '127.0.0.1')">
