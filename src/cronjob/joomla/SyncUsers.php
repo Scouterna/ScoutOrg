@@ -98,5 +98,3 @@ foreach ($userIds as $userId) {
 foreach ($membersToAdd as $member) {
     addUser($member, $scoutorgGroup->id);
 }
-
-// TODO: Set access levels?

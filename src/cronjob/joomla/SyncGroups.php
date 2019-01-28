@@ -113,3 +113,4 @@ foreach ($allUserIds as $userId) {
 
 createGroups($scoutOrg->getCustomLists(), $rootGroup->id, $allUsers);
 
+// TODO: Set access levels?
