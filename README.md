@@ -1,5 +1,5 @@
 # ScoutOrg
-ScoutOrg är ett bibliotek i php som innehåller en datastruktur för en scoutorganisation. Biblioteket är skrivet för att vara grunden till många olika applikationer där organisationen hanteras på scoutkårers hemsidor. Datastrukturen är skriven så att den fungerar bäst för data som hämtas från scoutnet. Biblioteket är dock skrivet så att det även går att implementera andra datakällor som en egen databas eller en blandning av en egen databas och scoutnet. Under titeln [Användning](#användning-utveckling-av-extensions)
+ScoutOrg är ett bibliotek i php som innehåller en datastruktur för en scoutorganisation. Biblioteket är skrivet för att vara grunden till många olika applikationer där organisationen hanteras på scoutkårers hemsidor. Datastrukturen är skriven så att den fungerar bäst för data som hämtas från scoutnet. Biblioteket är dock skrivet så att det även går att implementera andra datakällor som en egen databas eller en blandning av en egen databas och scoutnet. Under titeln [Användning](#användning-utveckling-utav-extensions)
 Just nu finns endast support för joomla men utrymme finns att implementera ScoutOrg i t.ex. wordpress.
 
 ## Installation och användning
