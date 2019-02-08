@@ -1,12 +1,11 @@
 # ScoutOrg
-ScoutOrg är ett bibliotek i php som innehåller en datastruktur för en scoutorganisation. Biblioteket är skrivet för att vara grunden till många olika applikationer där organisationen hanteras på scoutkårers hemsidor. Datastrukturen är skriven så att den fungerar bäst för data som hämtas från scoutnet. Biblioteket är dock skrivet så att det även går att implementera andra datakällor som en egen databas eller en blandning av en egen databas och scoutnet.
-Det finns ett förhoppningsvis uppdaterat [klassdiagram](https://github.com/scouternasetjanster/ScoutOrg/blob/master/docs/classDiag.asta) som kan läsas med [astah community](http://astah.net/editions/community).
-Just nu finns endast support för joomla men utrymme finns att skapa en plugin för t.ex. wordpress.
+ScoutOrg är ett bibliotek i php som innehåller en datastruktur för en scoutorganisation. Biblioteket är skrivet för att vara grunden till många olika applikationer där organisationen hanteras på scoutkårers hemsidor. Datastrukturen är skriven så att den fungerar bäst för data som hämtas från scoutnet. Biblioteket är dock skrivet så att det även går att implementera andra datakällor som en egen databas eller en blandning av en egen databas och scoutnet. Under titeln [Användning](#användning-utveckling-av-extensions)
+Just nu finns endast support för joomla men utrymme finns att implementera ScoutOrg i t.ex. wordpress.
 
 ## Installation och användning
-Just nu finns endast installation för joomla och detta görs just nu manuellt.
+Just nu finns endast installation för joomla.
 
-Biblioteket använder några paket som inte är inkluderade i php:
+Biblioteket använder några paket för php som kanske måste hämtas:
 
 * cURL: ``` sudo apt install php-curl ```
 * APCu: ``` sudo apt install php-apcu ```
@@ -14,28 +13,29 @@ Biblioteket använder några paket som inte är inkluderade i php:
 
 Cache-funktionen stöds inte av windows implicit. Antingen kan den inaktiveras genom att sätta livstiden till noll eller så kan man installera eller implementera följande funktioner:
 
-* sem_get
-* sem_acquire
-* sem_release
-* apcu_fetch
-* apcu_store
+* Semaphores
+    * sem_get
+    * sem_acquire
+    * sem_release
+* APCu
+    * apcu_fetch
+    * apcu_store
 
 ### Joomla
 
 #### Installation
 Se först till att ha scoutnets webbkoppling aktiverad och ha api-nycklarna.
-1. Hämta rätt release från github eller bygg den själv. Den ska heta 'scoutorg.zip'.
+1. Hitta senaste release från github eller bygg den själv. Den ska heta 'scoutorg.zip'. Kopiera länken till den filen.
 2. Logga in som admin i joomla och gå till Extensions->Manage.
-3. Välj Upload Package File och dra in zipfilen.
+3. Välj 'Install From URL' och använd länken till scoutorg.zip.
 4. Konfigurera komponenten 'ScoutOrg Component' i System->'Global Configuration' att använda rätt kår och api-nycklar. (Måste göras innan den används av andra extensions)
     * Konfiguera alternativt access till komponentens adminsida.
-    * Det går även att konfigurera var datan ska komma från. Standard är från scoutnet, men det går att implementera andra datakällor. (kommer snart till joomla)
-        * OBS: det går i scoutorg_joomla_1.3.0 att välja 'composite' som datakälla för scoutkåren, men den fungerar inte än.
+    * Det går även att konfiguera var datan ska komma från. Standard är från scoutnet, men det går att implementera andra datakällor eller sätt att hämta data.
 
 #### Advancerad konfiguration
-Eftersom scoutnet inte ger ut grenarna som varje avdelning är i så ges istället lösningen i komponenten som konfiguerades i steg 4. Klickar man på Components->ScoutOrg så får man upp listor över grenar och avdelningar där man kan skapa grenar och sätta avdelningarnas grentillhörighet.
+Eftersom scoutnet inte ger ut grenarna som varje avdelning är i så ges istället lösningen i scoutorg. Klickar man på Components->ScoutOrg så får man upp listor över grenar och avdelningar där man kan skapa grenar och sätta avdelningarnas grentillhörighet.
 
-Om man inte vill att användarna ska behöva vänta i 20 sekunder ibland när cachen laddar in så kan man sätta upp ett cronjob efter instruktionerna i [/src/cronjob/](https://github.com/scouternasetjanster/ScoutOrg/tree/master/src/cronjob)
+Om man inte vill att användarna ska behöva vänta i 20 sekunder ibland när cachen laddar in så kan man sätta upp ett cronjob efter instruktionerna i [/src/cronjob/](src/cronjob)
 
 #### Användning (Utveckling utav extensions)
 När biblioteket ska användas av en annan extension behöver man två rader kod:
@@ -43,7 +43,7 @@ När biblioteket ska användas av en annan extension behöver man två rader kod
 jimport('scoutorg.loader');
 $scoutOrg = ScoutOrgLoader::load();
 ```
-Då kommer $scoutOrg att sättas till en singleton-instans av typen [Org\Lib\ScoutOrg](https://github.com/scouternasetjanster/ScoutOrg/blob/master/src/Org/Lib/ScoutOrg.php) som lever tills http-förfrågan är över. Använder flera olika extensions sig av den laddaren kommer de alltså få ut samma instans för att förhindra redundant dataprocessering. I den senaste [dokumentationen](https://github.com/scouternasetjanster/ScoutOrg/releases/download/v1.0/doc_exdev.zip) kan man hitta samtliga metoder för att hämta de olika objekten i datastrukturerna.
+Då kommer $scoutOrg att sättas till en instans av typen [Org\Lib\ScoutOrg](src/Org/Lib/ScoutOrg.php). Använder flera olika extensions sig av ```ScoutOrgLoader::load()``` kommer de få ut samma instans. I den senaste [dokumentationen](https://github.com/scouternasetjanster/ScoutOrg/releases/download/v1.2.2/doc_exdev.zip) kan man hitta hur datamodellen ser ut.
 
 ## Att bygga projektet och generera dokumentation
 Om man vill bygga installationsfiler eller generera dokumentationen för biblioteket krävs att kunna köra 'make' samt några program beroende på vad man bygger.
@@ -51,7 +51,7 @@ Om man vill bygga installationsfiler eller generera dokumentationen för bibliot
 ### Bygga projektet
 För att bygga paketet för joomla kan man köra ``` make ``` eller ``` make joomla ```.
 Zipfilen kommer då att hamna i 'build/joomla/'.
-Om projektet skulle expandera och börjar ge stöd för att bygga en plugin för t.ex. wordpress så kommer ``` make ``` att bygga för samtliga mål.
+Om projektet skulle expandera och börja ge stöd för att bygga en plugin för t.ex. wordpress så kommer ``` make ``` att bygga för samtliga mål.
 
 ``` make joomla ``` kräver programmet zip: ``` sudo apt install zip ```
 
