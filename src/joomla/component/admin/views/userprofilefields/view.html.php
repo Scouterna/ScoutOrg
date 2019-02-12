@@ -4,6 +4,7 @@ class ScoutorgViewUserprofilefields extends JViewLegacy {
 	function display($tpl = null) {
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+		$this->state = $this->get('State');
 
 		$this->addToolbar();
 		$this->sidebar = ScoutOrgHelper::addSubMenu('userprofilefields');
@@ -16,7 +17,6 @@ class ScoutorgViewUserprofilefields extends JViewLegacy {
 	private function setDocument() {
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_SCOUTORG_ADMINISTRATION'));
-		//$document->addScript(__DIR__.'/submitbutton.js');
 	}
 
 	private function addToolbar() {	
