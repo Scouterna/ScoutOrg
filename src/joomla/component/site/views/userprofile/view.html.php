@@ -3,17 +3,19 @@
 class ScoutorgViewUserprofile extends JViewLegacy {
     /** @var \Org\Lib\Member */
     protected $member;
+    protected $user;
+    protected $fields;
 
-    public function display($tpl) {
+    public function display($tpl = null) {
         jimport('scoutorg.loader');
         $members = ScoutOrgLoader::load()->getScoutGroup()->getMembers();
 
-        $input = JFactory::getApplication()->input;
+        $fieldsModel = $this->getModel('Userprofilefields');
+        $this->fields = $fieldsModel->getItems();
 
-        $memberId = $input->get('id');
-
-        if ($memberId === null) {
-
+        $memberId = $this->getMemberId();
+        if ($memberId !== null && isset($members[$memberId])) {
+            $this->member = $members[$memberId];
         }
 
         parent::display($tpl);
@@ -27,7 +29,7 @@ class ScoutorgViewUserprofile extends JViewLegacy {
             if ($user->guest) {
                 return null;
             }
-            return $user->id;
+            return $user->username;
         }
         return $memberId;
     }
