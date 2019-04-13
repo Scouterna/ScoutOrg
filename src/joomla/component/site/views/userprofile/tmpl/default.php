@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<h1>Member profile</h1>
+<h1>Medlemsprofil</h1>
 
 <?php if ($this->member === null) : ?>
     <h3>Invalid member id</h3>
@@ -15,8 +15,8 @@ defined('_JEXEC') or die('Restricted access');
             }
             ?>
             <tr>
-                <td><?= $field->title ?></td>
-                <td><?= ScoutOrgHelper::renderField($field->fieldtype, $this->member) ?></td>
+                <td><b><?= $field->title ?></b></td>
+                <td><?= ScoutOrgHelper::renderField($field->fieldtype, $field->fieldcode, $this->member) ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

@@ -55,6 +55,8 @@ class ScoutOrgHelper {
             return JText::_('COM_SCOUTORG_USERPROFILEFIELD_FIELD_TROOPS');
         } elseif ($field === 'org-rolegroups') {
             return JText::_('COM_SCOUTORG_USERPROFILEFIELD_FIELD_ROLEGROUPS');
+        } elseif ($field === 'org-code') {
+            return JText::_('COM_SCOUTORG_USERPROFILEFIELD_FIELD_CODE');
         } else {
             return false;
         }

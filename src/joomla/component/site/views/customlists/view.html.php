@@ -6,13 +6,18 @@ class ScoutOrgViewCustomlists extends JViewLegacy {
 
     /** @var \Org\Lib\CustomList */
     protected $list;
+
+    /** @var string */
+    protected $path;
     
     public function display($tpl = null) {
         jimport('scoutorg.loader');
 
         $scoutorg = ScoutOrgLoader::load();
 
-        $this->list = $this->getList($scoutorg);
+        $path = array();
+        $this->list = $this->getList($scoutorg, $path);
+        $this->path = implode('.', $path);
 
         if ($this->list === null) {
             $this->lists = $scoutorg->getCustomLists(true);
@@ -25,23 +30,36 @@ class ScoutOrgViewCustomlists extends JViewLegacy {
      * Gets custom list with input id.
      * @param \Org\Lib\ScoutOrg $scoutorg
      */
-    private function getList($scoutorg) {
-        $idList = $scoutorg->getCustomLists(true);
-        $nameList = $scoutorg->getCustomLists(false);
+    private function getList($scoutorg, &$path) {
+        $lists = $scoutorg->getCustomLists(true);
 
         $input = JFactory::getApplication()->input;
-        $listId = $input->get('id', null);
-
-        if ($listId === null) {
+        $ids = explode('.', $input->get('id', null));
+        if ($ids === null) {
             return null;
         }
 
-        if (isset($idList[$listId])) {
-            return $idList[$listId];
-        } elseif (isset($nameList[$listId])) {
-            return $nameList[$listId];
-        }
+        return $this->traverseListsPath(null, $lists, $ids, $path);
+    }
 
+    /**
+     * Traverses custom list to find the correct
+     * list corresponding to the given list of ids
+     * @param \Org\Lib\CustomList $parent
+     * @param \Org\Lib\CustomList[] $idList
+     * @param mixed[] $ids
+     */
+    private function traverseListsPath($parent, $lists, $ids, &$path) {
+        if (empty($ids)) {
+            return $parent;
+        }
+        $id = array_shift($ids);
+        if (isset($lists[$id])) {
+            $list = $lists[$id];
+            array_push($path, $list->getId());
+            $subLists = $list->getSubLists(true);
+            return $this->traverseListsPath($list, $subLists, $ids, $path);
+        }
         return null;
     }
 }

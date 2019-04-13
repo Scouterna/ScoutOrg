@@ -7,7 +7,7 @@ class ScoutOrgHelper {
      * @param \Org\Lib\Member $member
      * @return string|false
      */
-    public static function renderField(string $field, $member) {
+    public static function renderField(string $field, string $code, $member) {
         if ($field === 'org-id') {
             return $member->getId();
         } elseif ($field === 'org-fullname') {
@@ -60,6 +60,8 @@ class ScoutOrgHelper {
                 $roles[] = $roleGroup->getRoleName();
             }
             return implode(', ', $roles);
+        } elseif ($field === 'org-code') {
+            return eval($code);
         } else {
             return false;
         }

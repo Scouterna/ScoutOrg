@@ -19,12 +19,18 @@ defined('_JEXEC') or die('Restricted Access');
         <?php endforeach; ?>
     </table>
 <?php else : ?>
+    <h1>
+        <?= $this->list->getTitle() ?>
+    </h1>
+    <p>
+        <?= $this->list->getDescription() ?>
+    </p>
     <h3>Sub lists</h3>
     <table>
         <?php foreach ($this->list->getSubLists() as $subList) : ?>
             <tr>
                 <td>
-                    <a href="<?= JRoute::_("index.php?option=com_scoutorg&view=customlists&id={$subList->getId()}") ?>">
+                    <a href="<?= JRoute::_("index.php?option=com_scoutorg&view=customlists&id={$this->path}.{$subList->getId()}") ?>">
                         <?= $subList->getTitle() ?>
                     </a>
                 </td>

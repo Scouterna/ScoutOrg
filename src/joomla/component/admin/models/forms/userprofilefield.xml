@@ -38,6 +38,7 @@
 			<option value="org-contacts">COM_SCOUTORG_USERPROFILEFIELD_FIELD_CONTACTS</option>
 			<option value="org-troops">COM_SCOUTORG_USERPROFILEFIELD_FIELD_TROOPS</option>
 			<option value="org-rolegroups">COM_SCOUTORG_USERPROFILEFIELD_FIELD_ROLEGROUPS</option>
+			<option value="org-code">COM_SCOUTORG_USERPROFILEFIELD_FIELD_CODE</option>
 		</field>
         <field 
 			name="access"
@@ -46,6 +47,13 @@
 			description="JFIELD_ACCESS_DESC"
 			size="1"
 			default="1"
+		/>
+		<field
+			name="fieldcode"
+			type="textarea"
+			label="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDCODE_LABEL"
+			description="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDCODE_DESC"
+			default=""
 		/>
 	</fieldset>
 </form>
