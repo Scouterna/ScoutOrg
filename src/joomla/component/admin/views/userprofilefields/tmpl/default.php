@@ -26,6 +26,9 @@ JHtml::_('sortablelist.sortable', 'fieldlist', 'adminForm', 'asc', $saveOrdering
 						<th width="1%">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
+						<th width="1%">
+							Status
+						</th>
 						<th width="20%">
 							<?php echo JText::_('COM_SCOUTORG_ADMIN_USERPROFILEFIELD_TITLE_LABEL'); ?>
 						</th>
@@ -49,19 +52,22 @@ JHtml::_('sortablelist.sortable', 'fieldlist', 'adminForm', 'asc', $saveOrdering
 				</tfoot>
 				<tbody>
 				<?php foreach ($this->items as $i => $item) : ?>
-					<tr class="row<?php echo $i % 2; ?>">
+					<tr class="row<?= $i % 2 ?>">
 						<td class="order nowrap center hidden-phone">
 							<span class="sortable-handler">
 								<span class="icon-menu" aria-hidden="true"></span>
 							</span>
-							<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
+							<input type="text" style="display:none" name="order[]" size="5" value="<?= $item->ordering ?>" class="width-20 text-area-order" />
 						</td>
 						<td class="center">
-							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+							<?= JHtml::_('grid.id', $i, $item->id) ?>
+						</td>
+						<td>
+							<?= JHtml::_('jgrid.published', $item->published, $i, 'userprofilefields.') ?>
 						</td>
 						<td>
 							<a href="<?= JRoute::_('index.php?option=com_scoutorg&task=userprofilefield.edit&id=' . $item->id); ?>">
-								<?php echo $this->escape($item->title); ?>
+								<?= $this->escape($item->title) ?>
                             </a>
 						</td>
 						<td class="hidden-phone">
@@ -71,7 +77,7 @@ JHtml::_('sortablelist.sortable', 'fieldlist', 'adminForm', 'asc', $saveOrdering
 							<?= $this->escape($item->access_level); ?>
 						</td>
 						<td class="hidden-phone">
-							<?php echo (int) $item->id; ?>
+							<?= (int) $item->id ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
