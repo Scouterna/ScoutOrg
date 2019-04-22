@@ -196,7 +196,7 @@ class WaitingMemberEntry {
         $phoneNumbers = [];
         $emailAddresses = [];
         if ($this->email !== NULL) {
-            $emailAddresses[] = $this->email;
+            $emailAddresses[] = $this->email->value;
         }
         return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
     }
@@ -220,10 +220,10 @@ class WaitingMemberEntry {
         // Create contact 1
         if ($this->contact_mothers_name !== NULL) {
             $phoneNumbers = [
-                $this->contact_mobile_mum,
+                $this->contact_mobile_mum->value,
             ];
             $emails = [
-                $this->contact_email_mum,
+                $this->contact_email_mum->value,
             ];
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
             $contacts[] = new Lib\Contact($this->contact_mothers_name->value, $contactInfo);
@@ -231,10 +231,10 @@ class WaitingMemberEntry {
         // Create contact 2
         if ($this->contact_fathers_name !== NULL) {
             $phoneNumbers = [
-                $this->contact_mobile_dad,
+                $this->contact_mobile_dad->value,
             ];
             $emails = [
-                $this->contact_email_dad,
+                $this->contact_email_dad->value,
             ];
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
             $contacts[] = new Lib\Contact($this->contact_fathers_name->value, $contactInfo);
