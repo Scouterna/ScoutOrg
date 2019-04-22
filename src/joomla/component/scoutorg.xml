@@ -6,7 +6,7 @@
     <creationDate>[[current_date]]</creationDate>
     <license>GNU General Public License version 2 or later</license>
     <url>https://github.com/scouternasetjanster/ScoutOrg</url>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>COM_SCOUTORG_DESCRIPTION</description>
     <install>
 		<sql>
@@ -23,6 +23,19 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
+    <files folder="site">
+        <file>scoutorg.php</file>
+        <file>controller.php</file>
+        <file>router.php</file>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site/language">
+        <language tag="sv-SE">sv-SE/sv-SE.com_scoutorg.ini</language>
+        <language tag="en-GB">en-GB/en-GB.com_scoutorg.ini</language>
+    </languages>
     <administration>
         <menu>ScoutOrg</menu>
         <files folder="admin">

@@ -1,21 +1,13 @@
 <?php
-/**
- * @package Joomla.Administrator
- * @subpackage com_scoutorg
- */
 
-class ScoutOrgViewTroops extends JViewLegacy {
-    /**
-	 * Display the troops view
-	 * @param string $tpl
-	 * @return void
-	 */
+class ScoutorgViewUserprofilefields extends JViewLegacy {
 	function display($tpl = null) {
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
+		$this->state = $this->get('State');
 
 		$this->addToolbar();
-		$this->sidebar = ScoutOrgHelper::addSubMenu('troops');
+		$this->sidebar = ScoutOrgHelper::addSubMenu('userprofilefields');
 
 		parent::display($tpl);
 
@@ -25,13 +17,12 @@ class ScoutOrgViewTroops extends JViewLegacy {
 	private function setDocument() {
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_SCOUTORG_ADMINISTRATION'));
-		$document->addScript(__DIR__.'/submitbutton.js');
 	}
 
 	private function addToolbar() {	
 		JToolBarHelper::title(JText::_('COM_SCOUTORG_ADMINISTRATION'), 'generic.png');
-		JToolBarHelper::addNew('troop.add');
-		JToolBarHelper::editList('troop.edit');
-		JToolBarHelper::deleteList('', 'troops.delete');
+		JToolBarHelper::addNew('userprofilefield.add');
+		JToolBarHelper::editList('userprofilefield.edit');
+		JToolBarHelper::deleteList('', 'userprofilefields.delete');
 	}
 }

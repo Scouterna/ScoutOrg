@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="userprofilefield" label="COM_SCOUTORG_ADMIN_USERPROFILEFIELD">
+		<field 
+			name="id" 
+			type="hidden"
+			default="0"
+			readonly="true"
+			required="true"
+		/>
+		<field 
+			name="title" 
+			type="text"
+			label="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_TITLE_LABEL"
+			description="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_TITLE_DESC"
+			required="true"
+			size="50"
+		/>
+        <field
+            name="fieldtype"
+            type="list"
+            label="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDTYPE_LABEL"
+            description="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDTYPE_DESC"
+			required="true"
+		>
+			<option value="org-id">COM_SCOUTORG_USERPROFILEFIELD_FIELD_ID</option>
+			<option value="org-fullname">COM_SCOUTORG_USERPROFILEFIELD_FIELD_FULLNAME</option>
+			<option value="org-firstname">COM_SCOUTORG_USERPROFILEFIELD_FIELD_FIRSTNAME</option>
+			<option value="org-lastname">COM_SCOUTORG_USERPROFILEFIELD_FIELD_LASTNAME</option>
+			<option value="org-age">COM_SCOUTORG_USERPROFILEFIELD_FIELD_AGE</option>
+			<option value="org-birthdate">COM_SCOUTORG_USERPROFILEFIELD_FIELD_BIRTHDATE</option>
+			<option value="org-gender">COM_SCOUTORG_USERPROFILEFIELD_FIELD_GENDER</option>
+			<option value="org-ssno">COM_SCOUTORG_USERPROFILEFIELD_FIELD_SSNO</option>
+			<option value="org-home">COM_SCOUTORG_USERPROFILEFIELD_FIELD_HOME</option>
+			<option value="org-emails">COM_SCOUTORG_USERPROFILEFIELD_FIELD_EMAILS</option>
+			<option value="org-telnrs">COM_SCOUTORG_USERPROFILEFIELD_FIELD_TELNRS</option>
+			<option value="org-startdate">COM_SCOUTORG_USERPROFILEFIELD_FIELD_STARTDATE</option>
+			<option value="org-contacts">COM_SCOUTORG_USERPROFILEFIELD_FIELD_CONTACTS</option>
+			<option value="org-troops">COM_SCOUTORG_USERPROFILEFIELD_FIELD_TROOPS</option>
+			<option value="org-rolegroups">COM_SCOUTORG_USERPROFILEFIELD_FIELD_ROLEGROUPS</option>
+			<option value="org-code">COM_SCOUTORG_USERPROFILEFIELD_FIELD_CODE</option>
+		</field>
+        <field 
+			name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			size="1"
+			default="1"
+		/>
+		<field
+			name="fieldcode"
+			type="textarea"
+			label="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDCODE_LABEL"
+			description="COM_SCOUTORG_ADMIN_USERPROFILEFIELD_FIELDCODE_DESC"
+			rows="7"
+			cols="50"
+			default=""
+			filter="raw"
+		/>
+	</fieldset>
+</form>
