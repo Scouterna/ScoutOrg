@@ -356,7 +356,7 @@ class MemberEntry {
             $phoneNumbers[] = $this->contact_work_phone->value;
         }
         $emailAddresses = [];
-        if ($this->contact_email !== NULL) {
+        if ($this->email !== NULL) {
             $emailAddresses[] = $this->email->value;
         }
         if ($this->contact_alt_email !== NULL) {
@@ -381,23 +381,27 @@ class MemberEntry {
         $contacts = [];
         // Create contact 1
         if ($this->contact_mothers_name !== NULL) {
-            $phoneNumbers = [
-                $this->contact_mobile_mum->value,
-            ];
-            $emails = [
-                $this->contact_email_mum->value,
-            ];
+            $phoneNumbers = [];
+            if ($this->contact_mobile_mum !== NULL) {
+                $phoneNumbers[] = $this->contact_mobile_mum->value;
+            }
+            $emails = [];
+            if ($this->contact_email_mum !== NULL) {
+                $emails[] = $this->contact_email_mum->value;
+            }
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
             $contacts[] = new Lib\Contact($this->contact_mothers_name->value, $contactInfo);
         }
         // Create contact 2
         if ($this->contact_fathers_name !== NULL) {
-            $phoneNumbers = [
-                $this->contact_mobile_dad->value,
-            ];
-            $emails = [
-                $this->contact_email_dad->value,
-            ];
+            $phoneNumbers = [];
+            if ($this->contact_mobile_dad !== NULL) {
+                $phoneNumbers[] = $this->contact_mobile_dad->value;
+            }
+            $emails = [];
+            if ($this->contact_email_dad !== NULL) {
+                $emails[] = $this->contact_email_dad->value;
+            }
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
             $contacts[] = new Lib\Contact($this->contact_fathers_name->value, $contactInfo);
         }
