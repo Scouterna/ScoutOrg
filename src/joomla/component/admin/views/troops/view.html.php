@@ -11,9 +11,8 @@ class ScoutOrgViewTroops extends JViewLegacy {
 	 * @return void
 	 */
 	function display($tpl = null) {
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->items = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 
 		$this->addToolbar();
 		$this->sidebar = ScoutOrgHelper::addSubMenu('troops');

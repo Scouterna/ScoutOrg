@@ -164,12 +164,12 @@ class WaitingMemberEntry {
      * @return Lib\WaitingMember
      */
     public function getMember() {
-        $member = new Lib\WaitingMember($this->member_no->value,
+        $member = new Lib\WaitingMember((int)$this->member_no->value,
             $this->getPersonInfo(),
             $this->getContactInfo(),
             $this->getAccommodation(),
             $this->getContacts(),
-            $this->waiting_since,
+            $this->waiting_since->value,
             $this->note !== null ? $this->note : '',
             $this->contact_leader_interest == "Ja");
         return $member;
@@ -180,11 +180,11 @@ class WaitingMemberEntry {
      * @return Lib\PersonInfo
      */
     private function getPersonInfo() {
-        $personInfo = new Lib\PersonInfo($this->first_name,
-            $this->last_name,
-            $this->ssno,
-            $this->sex,
-            $this->date_of_birth);
+        $personInfo = new Lib\PersonInfo($this->first_name->value,
+            $this->last_name->value,
+            $this->ssno->value,
+            $this->sex->value,
+            $this->date_of_birth->value);
         return $personInfo;
     }
 
@@ -196,7 +196,7 @@ class WaitingMemberEntry {
         $phoneNumbers = [];
         $emailAddresses = [];
         if ($this->email !== NULL) {
-            $emailAddresses[] = $this->email;
+            $emailAddresses[] = $this->email->value;
         }
         return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
     }
@@ -207,7 +207,7 @@ class WaitingMemberEntry {
      * @return Lib\Location
      */
     private function getAccommodation() {
-        return new Lib\Location($this->address_1, $this->postcode, $this->town);
+        return new Lib\Location($this->address_1->value, $this->postcode->value, $this->town->value);
     }
 
     /**
@@ -220,24 +220,24 @@ class WaitingMemberEntry {
         // Create contact 1
         if ($this->contact_mothers_name !== NULL) {
             $phoneNumbers = [
-                $this->contact_mobile_mum,
+                $this->contact_mobile_mum->value,
             ];
             $emails = [
-                $this->contact_email_mum,
+                $this->contact_email_mum->value,
             ];
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
-            $contacts[] = new Lib\Contact($this->contact_mothers_name, $contactInfo);
+            $contacts[] = new Lib\Contact($this->contact_mothers_name->value, $contactInfo);
         }
         // Create contact 2
         if ($this->contact_fathers_name !== NULL) {
             $phoneNumbers = [
-                $this->contact_mobile_dad,
+                $this->contact_mobile_dad->value,
             ];
             $emails = [
-                $this->contact_email_dad,
+                $this->contact_email_dad->value,
             ];
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
-            $contacts[] = new Lib\Contact($this->contact_fathers_name, $contactInfo);
+            $contacts[] = new Lib\Contact($this->contact_fathers_name->value, $contactInfo);
         }
         return $contacts;
     }

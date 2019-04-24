@@ -29,7 +29,7 @@ class RoleGroup {
     public function __construct(int $id, string $roleName) {
         $this->id = $id;
         $this->roleName = $roleName;
-        $this->members = new \ArrayObject();
+        $this->members = array();
     }
 
     /**
@@ -62,6 +62,6 @@ class RoleGroup {
      * @return Member[]
      */
     public function getMembers() {
-        return $this->members->getArrayCopy();
+        return $this->members;
     }
 }

@@ -41,10 +41,10 @@ class Troop {
     public function __construct(int $id, string $name) {
         $this->id = $id;
         $this->name = $name;
-        $this->members = new \ArrayObject();
-        $this->memberRoles = new \ArrayObject();
-        $this->patrolsIdIndexed = new \ArrayObject();
-        $this->patrolsNameIndexed = new \ArrayObject();
+        $this->members = array();
+        $this->memberRoles = array();
+        $this->patrolsIdIndexed = array();
+        $this->patrolsNameIndexed = array();
     }
     
     /**
@@ -85,7 +85,7 @@ class Troop {
      * @return Member[]
      */
     public function getMembers() {
-        return $this->members->getArrayCopy();
+        return $this->members;
     }
 
     /**
@@ -93,7 +93,7 @@ class Troop {
      * @return string[]
      */
     public function getMemberRoles() {
-        return $this->memberRoles->getArrayCopy();
+        return $this->memberRoles;
     }
 
     /**
@@ -116,9 +116,9 @@ class Troop {
      */
     public function getPatrols(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->patrolsIdIndexed->getArrayCopy();
+            return $this->patrolsIdIndexed;
         } else {
-            return $this->patrolsNameIndexed->getArrayCopy();
+            return $this->patrolsNameIndexed;
         }
     }
 

@@ -66,11 +66,11 @@ class Member {
         $this->accommodation = $accommodation;
         $this->contacts = $contacts;
         $this->startdate = $startDate;
-        $this->troopsIdIndexed = new \ArrayObject();
-        $this->troopsNameIndexed = new \ArrayObject();
-        $this->patrolsIdIndexed = new \ArrayObject();
-        $this->roleGroupsIdIndexed = new \ArrayObject();
-        $this->roleGroupsNameIndexed = new \ArrayObject();
+        $this->troopsIdIndexed = array();
+        $this->troopsNameIndexed = array();
+        $this->patrolsIdIndexed = array();
+        $this->roleGroupsIdIndexed = array();
+        $this->roleGroupsNameIndexed = array();
     }
 
     /**
@@ -157,9 +157,9 @@ class Member {
      */
     public function getTroops(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->troopsIdIndexed->getArrayCopy();
+            return $this->troopsIdIndexed;
         } else {
-            return $this->troopsNameIndexed->getArrayCopy();
+            return $this->troopsNameIndexed;
         }
     }
 
@@ -178,9 +178,9 @@ class Member {
      */
     public function getRoleGroups(bool $idIndexed = false) {
         if ($idIndexed) {
-            return $this->roleGroupsIdIndexed->getArrayCopy();
+            return $this->roleGroupsIdIndexed;
         } else {
-            return $this->roleGroupsNameIndexed->getArrayCopy();
+            return $this->roleGroupsNameIndexed;
         }
     }
 }

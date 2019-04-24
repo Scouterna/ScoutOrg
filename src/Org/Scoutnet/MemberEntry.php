@@ -332,11 +332,11 @@ class MemberEntry {
      * @return Lib\PersonInfo
      */
     private function getPersonInfo() {
-        $personInfo = new Lib\PersonInfo($this->first_name,
-            $this->last_name,
-            $this->ssno,
-            $this->sex,
-            $this->date_of_birth);
+        $personInfo = new Lib\PersonInfo($this->first_name->value,
+            $this->last_name->value,
+            $this->ssno->value,
+            $this->sex->value,
+            $this->date_of_birth->value);
         return $personInfo;
     }
 
@@ -347,20 +347,20 @@ class MemberEntry {
     private function getContactInfo() {
         $phoneNumbers = [];
         if ($this->contact_mobile_phone !== NULL) {
-            $phoneNumbers[] = $this->contact_mobile_phone;
+            $phoneNumbers[] = $this->contact_mobile_phone->value;
         }
         if ($this->contact_home_phone !== NULL) {
-            $phoneNumbers[] = $this->contact_home_phone;
+            $phoneNumbers[] = $this->contact_home_phone->value;
         }
         if ($this->contact_work_phone !== NULL) {
-            $phoneNumbers[] = $this->contact_work_phone;
+            $phoneNumbers[] = $this->contact_work_phone->value;
         }
         $emailAddresses = [];
-        if ($this->contact_email !== NULL) {
-            $emailAddresses[] = $this->contact_email;
+        if ($this->email !== NULL) {
+            $emailAddresses[] = $this->email->value;
         }
         if ($this->contact_alt_email !== NULL) {
-            $emailAddresses[] = $this->contact_alt_email;
+            $emailAddresses[] = $this->contact_alt_email->value;
         }
         return new Lib\ContactInfo($phoneNumbers, $emailAddresses);
     }
@@ -370,7 +370,7 @@ class MemberEntry {
      * @return Lib\Location
      */
     private function getAccommodation() {
-        return new Lib\Location($this->address_1, $this->postcode, $this->town);
+        return new Lib\Location($this->address_1->value, $this->postcode->value, $this->town->value);
     }
 
     /**
@@ -381,25 +381,29 @@ class MemberEntry {
         $contacts = [];
         // Create contact 1
         if ($this->contact_mothers_name !== NULL) {
-            $phoneNumbers = [
-                $this->contact_mobile_mum,
-            ];
-            $emails = [
-                $this->contact_email_mum,
-            ];
+            $phoneNumbers = [];
+            if ($this->contact_mobile_mum !== NULL) {
+                $phoneNumbers[] = $this->contact_mobile_mum->value;
+            }
+            $emails = [];
+            if ($this->contact_email_mum !== NULL) {
+                $emails[] = $this->contact_email_mum->value;
+            }
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
-            $contacts[] = new Lib\Contact($this->contact_mothers_name, $contactInfo);
+            $contacts[] = new Lib\Contact($this->contact_mothers_name->value, $contactInfo);
         }
         // Create contact 2
         if ($this->contact_fathers_name !== NULL) {
-            $phoneNumbers = [
-                $this->contact_mobile_dad,
-            ];
-            $emails = [
-                $this->contact_email_dad,
-            ];
+            $phoneNumbers = [];
+            if ($this->contact_mobile_dad !== NULL) {
+                $phoneNumbers[] = $this->contact_mobile_dad->value;
+            }
+            $emails = [];
+            if ($this->contact_email_dad !== NULL) {
+                $emails[] = $this->contact_email_dad->value;
+            }
             $contactInfo = new Lib\ContactInfo($phoneNumbers, $emails);
-            $contacts[] = new Lib\Contact($this->contact_fathers_name, $contactInfo);
+            $contacts[] = new Lib\Contact($this->contact_fathers_name->value, $contactInfo);
         }
         return $contacts;
     }
@@ -409,7 +413,7 @@ class MemberEntry {
      * @return Lib\Member
      */
     public function getMember() {
-        $member = new Lib\Member($this->member_no->value,
+        $member = new Lib\Member((int)$this->member_no->value,
             $this->getPersonInfo(),
             $this->getContactInfo(),
             $this->getAccommodation(),
@@ -426,7 +430,7 @@ class MemberEntry {
         if ($this->unit === null) {
             return null;
         }
-        return new Lib\Troop($this->unit->rawValue, $this->unit->value);
+        return new Lib\Troop((int)$this->unit->rawValue, $this->unit->value);
     }
 
     /**
@@ -437,7 +441,7 @@ class MemberEntry {
         if ($this->patrol === null) {
             return null;
         }
-        return new Lib\Patrol($this->patrol->rawValue, $this->patrol->value);
+        return new Lib\Patrol((int)$this->patrol->rawValue, $this->patrol->value);
     }
 
     /**
