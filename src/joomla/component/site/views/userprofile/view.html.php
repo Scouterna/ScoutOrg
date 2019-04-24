@@ -24,13 +24,13 @@ class ScoutorgViewUserprofile extends JViewLegacy {
     private function getMemberId() {
         $input = JFactory::getApplication()->input;
         $memberId = $input->get('id', null);
-        if ($memberId === null) {
+        if (!$memberId) {
             $user = JFactory::getUser();
             if ($user->guest) {
                 return null;
             }
-            return $user->username;
+            return (int)$user->username;
         }
-        return $memberId;
+        return (int)$memberId;
     }
 }
